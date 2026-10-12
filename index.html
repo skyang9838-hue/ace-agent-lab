@@ -10,6 +10,7 @@
 /* insane-design apple/design.md 토큰 — 발표 디자인 예시와 같은 값. 웹 크기(17px 본문)로 */
 :root {
   --font: "SF Pro Display", "SF Pro Text", -apple-system, "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", "Helvetica Neue", Arial, sans-serif;
+  --mono: "SF Mono", Consolas, "D2Coding", "Pretendard", monospace;
   --blue: #0071E3;
   --side-w: 260px;
 }
@@ -23,6 +24,7 @@
   --side: #FAFAFC; --side-hover: #E8E8ED;
   --pill: rgba(210,210,215,.64);
   --bar: rgba(250,250,252,.8);
+  --good: #03A10E; --warn: #B64400;
   color-scheme: light;
 }
 :root[data-theme="dark"] {
@@ -35,10 +37,12 @@
   --side: #161617; --side-hover: #272729;
   --pill: rgba(51,51,54,.72);
   --bar: rgba(22,22,23,.8);
+  --good: #30D158; --warn: #FF9F0A;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+html, body { height: 100%; overflow: hidden; }
+html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0; background: var(--bg); color: var(--ink);
   font: 400 17px/1.47059 var(--font); letter-spacing: 0;
@@ -48,19 +52,20 @@ body {
 a { color: var(--link); text-decoration: none; }
 a:hover { text-decoration: underline; }
 b { font-weight: 600; }
+code { font-family: var(--mono); font-size: .9em; background: var(--chip); color: var(--chip-ink); padding: 1px 6px; border-radius: 6px; }
 
-/* 목차 사이드바: Apple localnav처럼 작고 조용하게 */
+/* 목차 사이드바 */
 #side {
   position: fixed; top: 0; left: 0; bottom: 0; width: var(--side-w);
   background: var(--side); border-right: 1px solid var(--hairline);
   display: flex; flex-direction: column; padding: 20px 12px; z-index: 30;
   transition: transform .3s ease, background .3s;
 }
-.side-head { display: flex; align-items: center; justify-content: space-between; padding: 0 8px 16px; min-height: 48px; }
+.side-head { display: flex; align-items: center; justify-content: space-between; padding: 0 8px 12px; min-height: 44px; }
 .side-head b { font-size: 12px; font-weight: 600; color: var(--soft); letter-spacing: .02em; }
 #toc { list-style: none; margin: 0; padding: 0; flex: 1; overflow-y: auto; }
 #toc a {
-  display: flex; gap: 12px; align-items: baseline; padding: 11px 12px; border-radius: 10px;
+  display: flex; gap: 12px; align-items: baseline; padding: 9px 12px; border-radius: 10px;
   font-size: 15px; line-height: 1.35; color: var(--muted); text-decoration: none;
 }
 #toc a:hover { background: var(--side-hover); }
@@ -68,10 +73,10 @@ b { font-weight: 600; }
 #toc a.on { color: var(--ink); font-weight: 600; }
 #toc a.on .n { color: var(--accent); }
 #toc a.done::after { content: "✓"; margin-left: auto; color: var(--accent); font-size: 13px; }
-#toc .sub { list-style: none; margin: 0 0 6px; padding: 0 0 0 30px; }
+#toc .sub { list-style: none; margin: 0 0 4px; padding: 0 0 0 30px; display: none; }
+#toc li.open .sub { display: block; }
 #toc .sub a { padding: 5px 12px; font-size: 13px; color: var(--soft); }
-#toc .sub a.on { color: var(--ink); font-weight: 600; }
-.toc-target { scroll-margin-top: 64px; }
+#toc .sub a.on { color: var(--ink); font-weight: 600; background: var(--side-hover); }
 .icon-btn {
   width: 32px; height: 32px; border: 0; border-radius: 999px; background: var(--pill);
   color: var(--ink); cursor: pointer; font-size: 15px; line-height: 1; display: grid; place-items: center;
@@ -79,10 +84,12 @@ b { font-weight: 600; }
 #theme { margin: 12px 8px 4px; display: flex; background: var(--pill); border-radius: 999px; padding: 3px; }
 #theme button { flex: 1; border: 0; border-radius: 999px; padding: 8px 0; background: none; cursor: pointer; font: 400 13px/1 var(--font); color: var(--muted); }
 #theme button.on { background: var(--bg-alt); color: var(--ink); font-weight: 600; }
+.keys { margin: 8px 8px 0; font-size: 11px; color: var(--soft); line-height: 1.6; }
+.keys kbd { font: 600 10px var(--font); padding: 1px 5px; border-radius: 4px; background: var(--pill); color: var(--muted); }
 
-/* 모바일 위 막대 (사이드바가 숨을 때만) */
+/* 위 막대 (모바일, 데스크톱에서 목차 접었을 때) */
 #bar {
-  display: none; position: sticky; top: 0; z-index: 20; height: 48px;
+  display: none; position: fixed; top: 0; left: 0; right: 0; z-index: 20; height: 48px;
   align-items: center; gap: 12px; padding: 0 16px;
   background: var(--bar); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px);
   border-bottom: 1px solid var(--hairline);
@@ -90,21 +97,42 @@ b { font-weight: 600; }
 #bar span { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 #scrim { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.32); z-index: 25; }
 
-main { margin-left: var(--side-w); transition: margin-left .3s; }
+/* 가로 슬라이드 */
+main { position: fixed; top: 0; right: 0; bottom: 0; left: var(--side-w); overflow: hidden; transition: left .3s; }
+#track { display: flex; height: 100%; }
+#track.anim { transition: transform .55s cubic-bezier(.2,.75,.2,1); }
+.slide {
+  flex: 0 0 100%; height: 100%; overflow-y: auto; overscroll-behavior: contain;
+  display: flex; flex-direction: column;
+  padding: 64px max(24px, calc((100% - 980px) / 2)) 104px;
+}
+.slide > .wrap { margin: auto 0; width: 100%; }
 
-/* 섹션: 가운데 정렬 머리 + 980px 내용 */
-section { padding: 96px 24px 32px; max-width: 1028px; margin: 0 auto; }
-.head { text-align: center; margin: 0 auto 56px; max-width: 820px; }
-.eyebrow { font-size: 21px; font-weight: 600; color: var(--muted); margin: 0 0 8px; }
+/* 아래 넘김 버튼 */
+#pager {
+  position: fixed; right: 20px; bottom: 20px; z-index: 20; display: flex; align-items: center; gap: 6px;
+  padding: 4px; border-radius: 999px; border: 1px solid var(--hairline);
+  background: var(--bar); -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
+}
+#pager .icon-btn { width: 40px; height: 40px; font-size: 19px; }
+#count { font-size: 13px; color: var(--muted); min-width: 56px; text-align: center; font-variant-numeric: tabular-nums; }
+#progress { position: fixed; left: var(--side-w); right: 0; bottom: 0; height: 3px; z-index: 20; transition: left .3s; }
+#progress i { display: block; height: 100%; background: var(--accent); transition: width .4s; }
+
+/* 글자 */
+.head { text-align: center; margin: 0 auto 40px; max-width: 820px; }
+.eyebrow { font-size: 19px; font-weight: 600; color: var(--muted); margin: 0 0 8px; }
 .display { font-size: 56px; font-weight: 600; line-height: 1.07143; letter-spacing: -0.022em; margin: 0; }
-.headline { font-size: 48px; font-weight: 600; line-height: 1.08349; letter-spacing: -0.022em; margin: 0; }
+.headline { font-size: 44px; font-weight: 600; line-height: 1.09; letter-spacing: -0.022em; margin: 0; }
 .subhead { font-size: 21px; font-weight: 400; line-height: 1.381; letter-spacing: .011em; color: var(--muted); margin: 16px 0 0; }
 .accent { color: var(--accent); }
 .badge { display: inline-block; margin-top: 20px; font-size: 14px; font-weight: 600; padding: 6px 14px; border-radius: 980px; background: var(--chip); color: var(--chip-ink); }
 .badge.blue { background: var(--blue); color: #fff; }
+.muted { color: var(--muted); }
+.small { font-size: 14px; }
 
 /* 표지 */
-.hero { min-height: 92vh; display: grid; place-items: center; text-align: center; padding-top: 64px; }
+.hero .wrap, .end .wrap { text-align: center; }
 .hero .display { font-size: 72px; line-height: 1.05; }
 .cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 36px; }
 .btn {
@@ -118,41 +146,61 @@ section { padding: 96px 24px 32px; max-width: 1028px; margin: 0 auto; }
 .btn.gray { background: var(--chip); color: var(--chip-ink); }
 .link-chev::after { content: " ›"; }
 .note { margin: 28px auto 0; max-width: 560px; font-size: 14px; color: var(--soft); }
+.hint { margin-top: 40px; font-size: 13px; color: var(--soft); }
+.hint kbd { font: 600 12px var(--font); padding: 2px 7px; border-radius: 6px; background: var(--chip); color: var(--chip-ink); }
 
 /* 타일 */
-.tile { background: var(--tile); border-radius: 18px; padding: 40px; transition: background .3s; }
-.tile + .tile, .tile + .grid2, .grid2 + .tile { margin-top: 24px; }
-.tile h3 { font-size: 28px; font-weight: 600; line-height: 1.14; letter-spacing: -0.016em; margin: 0 0 8px; }
-.tile .cap { font-size: 17px; color: var(--muted); margin: 0 0 24px; }
-.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.tile { background: var(--tile); border-radius: 18px; padding: 36px 40px; transition: background .3s; }
+.tile + .tile, .tile + .grid2, .grid2 + .tile, .grid2 + .grid2, .prompt-card + .tile, .tile + .prompt-card { margin-top: 20px; }
+.tile h3 { font-size: 26px; font-weight: 600; line-height: 1.14; letter-spacing: -0.016em; margin: 0 0 8px; }
+.tile h4 { font-size: 19px; font-weight: 600; margin: 0 0 6px; }
+.tile .cap { font-size: 17px; color: var(--muted); margin: 0 0 20px; }
+.tile p { margin: 0 0 10px; }
+.tile p:last-child { margin-bottom: 0; }
+.grid2 > *, .grid3 > * { margin-top: 0 !important; }
+.grid2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.label-sm { font-size: 13px; font-weight: 600; color: var(--soft); letter-spacing: .02em; margin: 0 0 10px; }
 
 /* 오늘의 흐름 */
 .grid6 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-.step { background: var(--tile); border-radius: 18px; padding: 28px 24px 24px; display: flex; flex-direction: column; min-height: 220px; color: var(--ink); text-decoration: none; transition: background .3s; }
-.step:hover { text-decoration: none; }
+.step { background: var(--tile); border-radius: 18px; padding: 28px 24px 24px; display: flex; flex-direction: column; min-height: 200px; color: var(--ink); text-decoration: none; transition: background .3s; }
+.step:hover { text-decoration: none; background: var(--side-hover); }
 .step .no { font-size: 14px; font-weight: 600; color: var(--accent); }
-.step .icon { font-size: 44px; margin: 20px 0 auto; filter: drop-shadow(3px 5px 30px rgba(0,0,0,.22)); }
-.step h4 { font-size: 24px; font-weight: 600; letter-spacing: -0.016em; margin: 20px 0 2px; }
+.step .icon { font-size: 40px; margin: 16px 0 auto; filter: drop-shadow(3px 5px 30px rgba(0,0,0,.22)); }
+.step h4 { font-size: 22px; font-weight: 600; letter-spacing: -0.016em; margin: 16px 0 2px; }
 .step p { font-size: 15px; color: var(--muted); margin: 0; }
 .step.must { outline: 2px solid var(--accent); outline-offset: -2px; }
 
-/* 챗봇 vs 에이전트 */
+/* 칩 흐름 */
 .flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .chip { font-size: 15px; padding: 8px 14px; border-radius: 980px; background: var(--chip); color: var(--chip-ink); white-space: nowrap; }
 .chip.blue { background: var(--blue); color: #fff; }
 .arrow { color: var(--soft); }
 
-/* 준비 단계 */
-.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; }
-.steps > li { counter-increment: s; display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 0 16px; padding: 28px 0; border-top: 1px solid var(--hairline); }
-.steps > li:first-child { border-top: 0; padding-top: 0; }
-.steps > li::before { content: counter(s); grid-row: span 2; width: 32px; height: 32px; border-radius: 999px; background: var(--chip); color: var(--chip-ink); display: grid; place-items: center; font-size: 15px; font-weight: 600; }
-.steps h4 { font-size: 21px; font-weight: 600; margin: 2px 0 6px; }
-.steps p { margin: 0 0 8px; color: var(--muted); }
-.steps p b { color: var(--ink); }
+/* 큰 번호 단계 */
+.bigstep { display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 0 24px; align-items: start; }
+.bigstep .num { width: 56px; height: 56px; border-radius: 999px; background: var(--blue); color: #fff; display: grid; place-items: center; font-size: 24px; font-weight: 600; }
+.bigstep h3 { font-size: 32px; margin: 8px 0 12px; }
+.bigstep p { color: var(--muted); }
+.bigstep p b { color: var(--ink); }
+
+/* 순서 목록 */
+.olist { list-style: none; margin: 0; padding: 0; counter-reset: o; }
+.olist li { counter-increment: o; position: relative; padding: 14px 0 14px 44px; border-top: 1px solid var(--hairline); color: var(--muted); }
+.olist li:first-child { border-top: 0; padding-top: 0; }
+.olist li:first-child::before { top: 0; }
+.olist li::before { content: counter(o); position: absolute; left: 0; top: 14px; width: 28px; height: 28px; border-radius: 999px; background: var(--chip); color: var(--chip-ink); display: grid; place-items: center; font-size: 14px; font-weight: 600; }
+.olist li b { color: var(--ink); }
+.dots { list-style: none; margin: 0; padding: 0; }
+.dots li { padding: 10px 0 10px 22px; position: relative; color: var(--muted); border-top: 1px solid var(--hairline); }
+.dots li:first-child { border-top: 0; padding-top: 0; }
+.dots li::before { content: ""; position: absolute; left: 4px; top: 20px; width: 6px; height: 6px; border-radius: 9px; background: var(--accent); }
+.dots li:first-child::before { top: 10px; }
+.dots li b { color: var(--ink); }
 
 /* 파일 줄 */
-.file { display: flex; align-items: center; gap: 20px; padding: 18px 0; border-top: 1px solid var(--hairline); color: var(--ink); }
+.file { display: flex; align-items: center; gap: 20px; padding: 16px 0; border-top: 1px solid var(--hairline); color: var(--ink); }
 .file:hover { text-decoration: none; }
 .file:first-of-type { border-top: 0; padding-top: 0; }
 .file .ext { width: 52px; height: 52px; border-radius: 12px; background: #1F7A45; color: #fff; display: grid; place-items: center; font-size: 13px; font-weight: 600; flex: none; }
@@ -160,8 +208,31 @@ section { padding: 96px 24px 32px; max-width: 1028px; margin: 0 auto; }
 .file .name { font-size: 17px; font-weight: 600; }
 .file .sub { font-size: 14px; color: var(--muted); }
 
+/* 엑셀 미리보기 */
+.sheet-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--hairline); }
+.sheet { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+.sheet th, .sheet td { padding: 6px 12px; border-bottom: 1px solid var(--hairline); text-align: left; white-space: nowrap; }
+.sheet th { background: var(--tile-alt); color: var(--muted); font-weight: 600; font-size: 13px; }
+.sheet td.r, .sheet th.r { text-align: right; }
+.sheet tr:last-child td { border-bottom: 0; }
+.sheet tr.hl td { background: rgba(41,151,255,.12); }
+.sheet td.empty { color: var(--soft); }
+.sheet tfoot td { font-weight: 600; background: var(--tile-alt); }
+
+/* md 파일 상자 */
+.mdfile { background: var(--tile-alt); border-radius: 14px; overflow: hidden; }
+.mdfile .fname { font: 600 13px var(--mono); color: var(--accent); padding: 10px 16px; border-bottom: 1px solid var(--hairline); }
+.mdfile pre { margin: 0; padding: 14px 16px; font: 400 14px/1.6 var(--mono); white-space: pre-wrap; color: var(--ink); }
+.mdfile pre .add { color: var(--good); }
+.mdfile pre .chg { color: var(--accent); }
+
+/* AI 답 예시 */
+.say { background: var(--tile-alt); border-radius: 14px; padding: 18px 20px; font-size: 16px; color: var(--ink); }
+.say .who { display: block; font-size: 12px; font-weight: 600; color: var(--soft); margin-bottom: 8px; }
+.say ol, .say ul { margin: 6px 0 0; padding-left: 20px; }
+.say li { margin: 3px 0; }
+
 /* 프롬프트 */
-.prompts { display: grid; gap: 20px; }
 .prompt-card { background: var(--tile); border-radius: 18px; padding: 28px 32px; }
 .prompt-card .label { display: flex; align-items: baseline; gap: 10px; margin: 0 0 14px; }
 .prompt-card .label .no { font-size: 14px; font-weight: 600; color: var(--accent); }
@@ -171,64 +242,79 @@ section { padding: 96px 24px 32px; max-width: 1028px; margin: 0 auto; }
   font: 400 19px/1.55 var(--font); background: var(--tile-alt); color: var(--ink);
   border-radius: 14px; padding: 22px 24px; margin: 0 0 18px; white-space: pre-wrap; overflow-wrap: anywhere;
 }
-.copied { font-size: 15px; color: #03A10E; margin-left: 12px; opacity: 0; transition: opacity .3s; }
+.copied { font-size: 15px; color: var(--good); margin-left: 12px; opacity: 0; transition: opacity .3s; }
 .copied.show { opacity: 1; }
 
 /* 성공 · 막히면 */
 .result { text-align: center; }
 .result .cap { margin-bottom: 8px; }
-.nums { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 24px 0 8px; }
+.nums { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 20px 0 8px; }
 .nums span { display: block; font-size: 15px; color: var(--muted); }
 .nums strong { display: block; font-size: 40px; font-weight: 600; letter-spacing: -0.022em; line-height: 1.1; font-variant-numeric: tabular-nums; }
 .nums strong small { font-size: 21px; font-weight: 600; margin-left: 2px; }
 .result p { color: var(--muted); margin: 16px auto 0; max-width: 620px; }
 .result p b { color: var(--ink); }
-.stuck h3 { font-size: 21px; margin-bottom: 16px; }
 .stuck ul { list-style: none; margin: 0; padding: 0; }
 .stuck li { padding: 14px 0; border-top: 1px solid var(--hairline); color: var(--muted); }
 .stuck li:first-child { border-top: 0; padding-top: 0; }
 .stuck li b { color: var(--ink); display: block; }
 
-/* 캡처: 제품 사진처럼 그림자 */
-figure.shot { margin: 24px 0 0; min-width: 0; }
+/* 캡처 */
+figure.shot { margin: 0; min-width: 0; }
 figure.shot img { display: block; width: 100%; height: auto; border-radius: 12px; filter: drop-shadow(3px 5px 30px rgba(0,0,0,.22)); }
 figure.shot figcaption { font-size: 14px; color: var(--soft); margin-top: 12px; text-align: center; }
 figure.shot.missing img { display: none; }
 figure.shot.missing::before {
   content: "여기에 " attr(data-label) " 화면 캡처";
   display: flex; align-items: center; justify-content: center; text-align: center;
-  min-height: 200px; padding: 16px; border: 1.5px dashed var(--hairline); border-radius: 12px;
+  min-height: 220px; padding: 16px; border: 1.5px dashed var(--hairline); border-radius: 12px;
   background: var(--tile-alt); color: var(--soft); font-size: 15px;
 }
-.shots2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
+.shots2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; }
 
 /* 미니 비서 구조 */
 .tree { display: flex; align-items: stretch; gap: 12px; }
 .node { flex: 1; min-width: 0; background: var(--tile-alt); border-radius: 14px; padding: 20px; }
-.node code { font: 600 19px var(--font); color: var(--accent); }
+.node code { font: 600 19px var(--font); color: var(--accent); background: none; padding: 0; }
 .node p { margin: 6px 0 0; font-size: 15px; color: var(--muted); }
 .tree .arrow { align-self: center; font-size: 21px; }
 .subcards { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
 
-/* 표 */
+/* 에이전트 루프 */
+.loop { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; counter-reset: l; }
+.loop div { counter-increment: l; background: var(--tile-alt); border-radius: 14px; padding: 20px 18px; position: relative; }
+.loop div::before { content: counter(l); display: block; font-size: 13px; font-weight: 600; color: var(--accent); margin-bottom: 8px; }
+.loop b { display: block; font-size: 19px; margin-bottom: 4px; }
+.loop p { margin: 0; font-size: 14px; color: var(--muted); }
+
+/* 비교 표 */
 .def { width: 100%; border-collapse: collapse; }
-.def td { padding: 16px 0; border-top: 1px solid var(--hairline); vertical-align: top; }
-.def tr:first-child td { border-top: 0; }
-.def td:first-child { width: 34%; font-weight: 600; padding-right: 16px; }
-.def td:last-child { color: var(--muted); }
+.def th { text-align: left; font-size: 13px; color: var(--soft); font-weight: 600; padding: 0 12px 12px 0; }
+.def td { padding: 14px 12px 14px 0; border-top: 1px solid var(--hairline); vertical-align: top; }
+.def td:first-child { width: 28%; font-weight: 600; }
+.def td { color: var(--muted); }
+.def td:first-child { color: var(--ink); }
+.def td b { color: var(--ink); }
+
+/* 좋은 예 · 나쁜 예 */
+.ex { border-radius: 14px; padding: 18px 20px; background: var(--tile-alt); font-size: 16px; }
+.ex .tag { display: inline-block; font-size: 12px; font-weight: 600; margin-bottom: 8px; }
+.ex.bad .tag { color: var(--warn); }
+.ex.good .tag { color: var(--good); }
 
 /* 진행 체크 */
-.check { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; margin: 32px auto 0; cursor: pointer; color: var(--muted); font-size: 15px; }
+.check { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; margin: 28px auto 0; cursor: pointer; color: var(--muted); font-size: 15px; }
 .check input { width: 20px; height: 20px; accent-color: var(--blue); margin: 0; }
 
-.end { text-align: center; padding: 120px 24px 96px; }
 .end .display { font-size: 64px; }
-footer { margin-left: var(--side-w); padding: 24px; text-align: center; font-size: 12px; color: var(--soft); border-top: 1px solid var(--hairline); }
+.end footer { margin-top: 56px; font-size: 12px; color: var(--soft); }
 
 /* 태블릿 */
 @media (max-width: 1068px) {
   .grid6 { grid-template-columns: repeat(2, 1fr); }
   .hero .display { font-size: 56px; }
+  .loop { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .grid3 { grid-template-columns: minmax(0, 1fr); }
 }
 /* 모바일: 사이드바는 서랍으로 */
 @media (max-width: 734px) {
@@ -236,35 +322,41 @@ footer { margin-left: var(--side-w); padding: 24px; text-align: center; font-siz
   body.open #side { transform: none; }
   body.open #scrim { display: block; }
   #bar { display: flex; }
-  main, footer { margin-left: 0; }
-  section { padding: 64px 16px 24px; }
-  .head { margin-bottom: 36px; }
-  .eyebrow { font-size: 17px; }
+  main { left: 0; top: 48px; }
+  #progress { left: 0; }
+  .slide { padding: 32px 16px 104px; }
+  .head { margin-bottom: 28px; }
+  .eyebrow { font-size: 16px; }
   .display, .end .display { font-size: 40px; }
-  .hero { min-height: auto; padding: 72px 16px 48px; }
   .hero .display { font-size: 44px; }
-  .headline { font-size: 32px; line-height: 1.125; }
-  .subhead { font-size: 19px; }
+  .headline { font-size: 30px; line-height: 1.13; }
+  .subhead { font-size: 18px; }
   .tile { padding: 24px 20px; }
-  .tile h3 { font-size: 24px; }
+  .tile h3 { font-size: 22px; }
   .grid2, .shots2 { grid-template-columns: minmax(0, 1fr); }
   .grid6 { grid-template-columns: 1fr 1fr; gap: 12px; }
-  .step { min-height: 170px; padding: 20px 16px; }
-  .step .icon { font-size: 34px; }
-  .step h4 { font-size: 19px; }
+  .step { min-height: 160px; padding: 20px 16px; }
+  .step .icon { font-size: 32px; }
+  .step h4 { font-size: 18px; }
   .prompt-card { padding: 20px; }
   .prompt { font-size: 17px; padding: 18px; }
   .nums { grid-template-columns: 1fr; gap: 12px; }
   .nums div { display: flex; justify-content: space-between; align-items: baseline; }
   .nums strong { font-size: 30px; }
-  .steps > li { grid-template-columns: 32px minmax(0, 1fr); gap: 0 12px; }
   .tree { flex-direction: column; }
   .tree .arrow { transform: rotate(90deg); }
+  .bigstep { grid-template-columns: minmax(0, 1fr); }
+  .bigstep .num { width: 44px; height: 44px; font-size: 19px; margin-bottom: 8px; }
+  .bigstep h3 { font-size: 24px; }
+  .loop { grid-template-columns: minmax(0, 1fr); }
+  #pager { right: 12px; bottom: 12px; }
+  .hint { display: none; }
 }
 /* 데스크톱: 목차 접기 */
 @media (min-width: 735px) {
   body.collapsed #side { transform: translateX(-100%); }
-  body.collapsed main, body.collapsed footer { margin-left: 0; }
+  body.collapsed main { left: 0; top: 48px; }
+  body.collapsed #progress { left: 0; }
   body.collapsed #bar { display: flex; }
 }
 </style>
@@ -276,34 +368,26 @@ footer { margin-left: var(--side-w); padding: 24px; text-align: center; font-siz
     <b>목차</b>
     <button class="icon-btn" id="close-side" type="button" aria-label="목차 닫기">‹</button>
   </div>
-  <ol id="toc">
-    <li><a href="#top"><span class="n">0</span><span>표지</span></a></li>
-    <li><a href="#flow"><span class="n">·</span><span>오늘의 흐름</span></a></li>
-    <li><a href="#s0"><span class="n">1</span><span>준비</span></a></li>
-    <li><a href="#s1"><span class="n">2</span><span>챗봇과 에이전트</span></a></li>
-    <li><a href="#s2"><span class="n">3</span><span>친목회 결산</span></a></li>
-    <li><a href="#s3"><span class="n">4</span><span>MCP</span></a></li>
-    <li><a href="#s4"><span class="n">5</span><span>가격 채우기</span></a></li>
-    <li><a href="#s5"><span class="n">6</span><span>미니 비서</span></a></li>
-    <li><a href="#s6"><span class="n">7</span><span>마무리</span></a></li>
-  </ol>
+  <ol id="toc"></ol>
   <div id="theme">
     <button type="button" data-theme="light">☀ 낮</button>
     <button type="button" data-theme="dark">☾ 다크</button>
   </div>
+  <p class="keys"><kbd>Enter</kbd> <kbd>→</kbd> 다음 · <kbd>Shift+Enter</kbd> <kbd>←</kbd> 이전 · <kbd>F</kbd> 전체화면 · <kbd>T</kbd> 목차</p>
 </aside>
 <div id="scrim"></div>
 
 <div id="bar">
   <button class="icon-btn" id="open-side" type="button" aria-label="목차 열기">☰</button>
-  <span>나만의 AI Agent 업무 비서</span>
+  <span id="bar-title">나만의 AI Agent 업무 비서</span>
 </div>
 
 <main>
+<div id="track">
 
-<!-- 표지 -->
-<section class="hero" id="top">
-  <div>
+<!-- ============ 표지 ============ -->
+<section class="slide hero" data-sec="top" id="top">
+  <div class="wrap">
     <p class="eyebrow">ACE AI TED · 10월 16일</p>
     <h1 class="display">나만의<br><span class="accent">AI Agent</span> 업무 비서<br>만들기</h1>
     <p class="subhead">대답만 하는 AI 말고, 일을 끝내는 AI.<br>인천효성남초 양상경</p>
@@ -312,204 +396,503 @@ footer { margin-left: var(--side-w); padding: 24px; text-align: center; font-siz
       <a class="btn big gray" href="#s0">시작하기</a>
     </div>
     <p class="note">무료 계정은 사용 한도가 있어 중간에 멈출 수 있어요. 막히면 잠시 기다리거나 강사 화면을 보며 따라 보세요.</p>
+    <p class="hint"><kbd>Enter</kbd> 또는 <kbd>→</kbd> 로 다음 장 · <kbd>F</kbd> 전체화면 · <kbd>T</kbd> 목차</p>
   </div>
 </section>
 
-<!-- 오늘의 흐름 -->
-<section id="flow">
-  <div class="head">
-    <p class="eyebrow">오늘의 흐름</p>
-    <h2 class="headline">여섯 걸음.</h2>
-  </div>
-  <div class="grid6">
-    <a class="step" href="#s1"><span class="no">01</span><span class="icon">💬</span><h4>챗봇과 에이전트</h4><p>무엇이 다른가</p></a>
-    <a class="step must" href="#s2"><span class="no">02 · 모두 함께</span><span class="icon">📊</span><h4>친목회 결산</h4><p>파일을 읽고 보고서로</p></a>
-    <a class="step" href="#s3"><span class="no">03 · 시연</span><span class="icon">🔌</span><h4>MCP</h4><p>한글 문서 만들기</p></a>
-    <a class="step" href="#s4"><span class="no">04 · 도전</span><span class="icon">🌐</span><h4>가격 채우기</h4><p>브라우저로 검색</p></a>
-    <a class="step" href="#s5"><span class="no">05 · 도전</span><span class="icon">🗂️</span><h4>미니 비서</h4><p>파일로 기억하기</p></a>
-    <a class="step" href="#s6"><span class="no">06</span><span class="icon">✨</span><h4>마무리</h4><p>프롬프트 · 주의할 점</p></a>
-  </div>
-</section>
-
-<!-- 준비 -->
-<section id="s0">
-  <div class="head">
-    <p class="eyebrow">준비</p>
-    <h2 class="headline">설치하고, 받고, 열기.</h2>
-  </div>
-  <div class="tile">
-    <ol class="steps">
-      <li>
-        <div>
-          <h4>Codex 앱 받기</h4>
-          <p><a id="codex-link" class="link-chev" href="https://openai.com/ko-KR/codex/" target="_blank" rel="noopener">Codex 다운로드 페이지 열기</a><br>「Windows 버전 다운로드」를 눌러 설치합니다. Microsoft Store로 열려요.</p>
-        </div>
-        <figure class="shot" data-label="Codex 다운로드 페이지">
-          <img src="captures/web-codex-download.png" alt="Codex 다운로드 페이지" onerror="this.parentNode.classList.add('missing')">
-        </figure>
-      </li>
-      <li>
-        <div>
-          <h4>ChatGPT 계정으로 로그인</h4>
-          <p>무료 ChatGPT 계정으로 로그인하면 됩니다.</p>
-        </div>
-        <figure class="shot" data-label="Codex 앱 로그인">
-          <img src="captures/app-01-login.png" alt="Codex 앱 로그인 화면" onerror="this.parentNode.classList.add('missing')">
-        </figure>
-      </li>
-      <li>
-        <div>
-          <h4>실습 폴더 받아 압축 풀기</h4>
-          <p>받은 <b>실습폴더.zip</b>을 <b>바탕화면</b>에 압축 풉니다.</p>
-          <p><a class="btn" href="실습폴더.zip" download>실습 폴더 내려받기 ↓</a></p>
-        </div>
-      </li>
-      <li>
-        <div>
-          <h4>앱에서 '실습폴더' 열기</h4>
-          <p>AI에게 <b>"여기가 네 작업 공간이야"</b> 하고 정해 주는 단계예요. AI는 이 폴더 안의 파일만 다룹니다.</p>
-        </div>
-        <div class="shots2">
-          <figure class="shot" data-label="폴더 열기">
-            <img src="captures/app-02-open-folder.png" alt="Codex 앱에서 폴더 여는 화면" onerror="this.parentNode.classList.add('missing')">
-          </figure>
-          <figure class="shot" data-label="첫 프롬프트 입력">
-            <img src="captures/app-03-first-prompt.png" alt="첫 프롬프트를 입력하는 화면" onerror="this.parentNode.classList.add('missing')">
-          </figure>
-        </div>
-      </li>
-    </ol>
-  </div>
-  <div class="tile">
-    <p class="cap" style="margin-bottom:16px">실습폴더 안에 있는 것</p>
-    <a class="file" href="실습폴더.zip" download><span class="ext">XLSX</span><span><span class="name">가온초 친목회</span><br><span class="sub">3~10월 친목회 통장 내역</span></span></a>
-    <a class="file" href="실습폴더.zip" download><span class="ext md">MD</span><span><span class="name">친목회 상황 메모</span><br><span class="sub">결산 보고를 하게 된 사정</span></span></a>
-    <a class="file" href="실습폴더.zip" download><span class="ext">XLSX</span><span><span class="name">학습준비물 빈 양식</span><br><span class="sub">품목·수량만 있고 가격은 빈칸</span></span></a>
-    <a class="file" href="실습폴더.zip" download><span class="ext md">DIR</span><span><span class="name">미니 비서</span><br><span class="sub">AGENTS.md · HOME.md · 카드 3장</span></span></a>
-  </div>
-  <label class="check"><input type="checkbox" data-step="s0"> 준비 끝</label>
-</section>
-
-<!-- ① -->
-<section id="s1">
-  <div class="head">
-    <p class="eyebrow">챗봇과 에이전트</p>
-    <h2 class="headline">묻고 답하는 AI에서<br>일을 이어서 하는 AI로.</h2>
-  </div>
-  <div class="grid2">
-    <div class="tile">
-      <h3>챗봇</h3>
-      <p class="cap">답을 준다. 나머지는 내가 한다.</p>
-      <div class="flow"><span class="chip">질문</span><span class="arrow">→</span><span class="chip">답</span></div>
+<!-- ============ 오늘의 흐름 ============ -->
+<section class="slide" data-sec="flow" data-title="여섯 걸음">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">오늘의 흐름</p>
+      <h2 class="headline">여섯 걸음.</h2>
+      <p class="subhead">설명 → 시연 → 직접 해 보기를 반복합니다.</p>
     </div>
-    <div class="tile">
-      <h3>AI Agent</h3>
-      <p class="cap">직접 찾고, 만들고, 이어서 한다.</p>
-      <div class="flow">
-        <span class="chip">부탁</span><span class="arrow">→</span>
-        <span class="chip blue">파일 읽기</span><span class="arrow">→</span>
-        <span class="chip blue">새 파일 만들기</span><span class="arrow">→</span>
-        <span class="chip blue">검산</span>
+    <div class="grid6">
+      <a class="step" href="#s1"><span class="no">01</span><span class="icon">💬</span><h4>챗봇과 에이전트</h4><p>무엇이 다른가</p></a>
+      <a class="step must" href="#s2"><span class="no">02 · 모두 함께</span><span class="icon">📊</span><h4>친목회 결산</h4><p>엑셀을 읽고 보고서로</p></a>
+      <a class="step" href="#s3"><span class="no">03 · 시연</span><span class="icon">🔌</span><h4>MCP</h4><p>한글 문서 만들기</p></a>
+      <a class="step" href="#s4"><span class="no">04 · 도전</span><span class="icon">🌐</span><h4>가격 채우기</h4><p>브라우저로 검색</p></a>
+      <a class="step" href="#s5"><span class="no">05 · 도전</span><span class="icon">🗂️</span><h4>미니 비서</h4><p>파일로 기억하기</p></a>
+      <a class="step" href="#s6"><span class="no">06</span><span class="icon">✨</span><h4>마무리</h4><p>프롬프트 · 주의할 점</p></a>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="flow" data-title="오늘 쓰는 도구">
+  <div class="wrap">
+    <div class="head">
+      <p class="eyebrow">오늘 쓰는 도구</p>
+      <h2 class="headline">Codex 앱 하나면 됩니다.</h2>
+      <p class="subhead">OpenAI가 만든 AI Agent 앱. 무료 ChatGPT 계정으로 로그인해 씁니다.</p>
+    </div>
+    <div class="grid2">
+      <div class="tile">
+        <p class="label-sm">이런 일을 해요</p>
+        <ul class="dots">
+          <li><b>내 컴퓨터의 폴더</b>를 열어 그 안의 파일을 읽어요</li>
+          <li>새 파일을 <b>만들고 고쳐요</b> (보고서, 엑셀 시트)</li>
+          <li>필요하면 <b>브라우저</b>로 웹을 찾아봐요</li>
+          <li>하기 전에 <b>허용해도 될지</b> 물어봐요</li>
+        </ul>
+      </div>
+      <div class="tile">
+        <p class="label-sm">미리 알아 둘 것</p>
+        <ul class="dots">
+          <li><b>무료 계정은 사용 한도</b>가 있어요. 실습 중에 멈추면 잠시 기다리거나 강사 화면을 보며 따라 보세요</li>
+          <li>오늘 쓰는 파일은 모두 <b>가상 자료</b>예요. 실제 학교·사람과 관계없어요</li>
+          <li>Claude 같은 다른 Agent 앱에서도 <b>같은 프롬프트</b>로 따라 할 수 있어요</li>
+        </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ② -->
-<section id="s2">
-  <div class="head">
-    <p class="eyebrow">실습 1 · 친목회 결산</p>
-    <h2 class="headline">엑셀을 주면,<br>보고서가 나온다.</h2>
-    <p class="subhead">나는 가온초 친목회 총무. 10월 협의회에서 중간 결산을 보고해야 한다.</p>
-    <span class="badge blue">모두 함께</span>
+<!-- ============ 준비 ============ -->
+<section class="slide" data-sec="s0" data-title="① Codex 앱 받기">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">준비 1 / 4</p><h2 class="headline">Codex 앱 받기.</h2></div>
+    <div class="grid2">
+      <div class="tile bigstep">
+        <span class="num">1</span>
+        <div>
+          <h3>다운로드 페이지 열기</h3>
+          <p><a id="codex-link" class="link-chev" href="https://openai.com/ko-KR/codex/" target="_blank" rel="noopener">Codex 다운로드 페이지 열기</a></p>
+          <p>「Windows 버전 다운로드」를 눌러 설치합니다. <b>Microsoft Store</b>로 열려요.</p>
+          <p class="small">Mac이면 같은 페이지에서 Mac 버전을 받으세요.</p>
+        </div>
+      </div>
+      <figure class="shot" data-label="Codex 다운로드 페이지">
+        <img src="captures/web-codex-download.png" alt="Codex 다운로드 페이지" onerror="this.parentNode.classList.add('missing')">
+        <figcaption>Codex 다운로드 페이지</figcaption>
+      </figure>
+    </div>
   </div>
+</section>
 
-  <div class="prompts">
+<section class="slide" data-sec="s0" data-title="② 로그인">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">준비 2 / 4</p><h2 class="headline">ChatGPT 계정으로 로그인.</h2></div>
+    <div class="grid2">
+      <div class="tile bigstep">
+        <span class="num">2</span>
+        <div>
+          <h3>무료 계정이면 충분</h3>
+          <p>설치한 Codex 앱을 열고 <b>ChatGPT 계정</b>으로 로그인합니다.</p>
+          <p>계정이 없으면 그 자리에서 새로 만들 수 있어요.</p>
+          <p class="small">학교 업무용 계정과 섞이지 않게 개인 계정을 권해요.</p>
+        </div>
+      </div>
+      <figure class="shot" data-label="Codex 앱 로그인">
+        <img src="captures/app-01-login.png" alt="Codex 앱 로그인 화면" onerror="this.parentNode.classList.add('missing')">
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="s0" data-title="③ 실습 폴더 받기">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">준비 3 / 4</p><h2 class="headline">실습 폴더 받아 압축 풀기.</h2></div>
+    <div class="grid2">
+      <div class="tile bigstep">
+        <span class="num">3</span>
+        <div>
+          <h3>바탕화면에 풀기</h3>
+          <p>받은 <b>실습폴더.zip</b>을 오른쪽 클릭 → <b>모두 압축 풀기</b> → 위치를 <b>바탕화면</b>으로.</p>
+          <p><a class="btn" href="실습폴더.zip" download>실습 폴더 내려받기 ↓</a></p>
+        </div>
+      </div>
+      <div class="tile">
+        <p class="label-sm">실습폴더 안에 있는 것</p>
+        <a class="file" href="실습폴더.zip" download><span class="ext">XLSX</span><span><span class="name">가온초 친목회</span><br><span class="sub">3~10월 친목회 통장 내역 (실습 1)</span></span></a>
+        <a class="file" href="실습폴더.zip" download><span class="ext md">MD</span><span><span class="name">친목회 상황 메모</span><br><span class="sub">결산 보고를 하게 된 사정 (실습 1)</span></span></a>
+        <a class="file" href="실습폴더.zip" download><span class="ext">XLSX</span><span><span class="name">학습준비물 빈 양식</span><br><span class="sub">품목·수량만 있고 가격은 빈칸 (실습 2)</span></span></a>
+        <a class="file" href="실습폴더.zip" download><span class="ext md">DIR</span><span><span class="name">미니 비서</span><br><span class="sub">AGENTS.md · HOME.md · 카드 3장 (실습 3)</span></span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="s0" data-title="④ 폴더 열기">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">준비 4 / 4</p><h2 class="headline">앱에서 '실습폴더' 열기.</h2>
+      <p class="subhead">AI에게 <b>"여기가 네 작업 공간이야"</b> 하고 정해 주는 단계. AI는 이 폴더 안의 파일을 다룹니다.</p></div>
+    <div class="shots2">
+      <figure class="shot" data-label="폴더 열기">
+        <img src="captures/app-02-open-folder.png" alt="Codex 앱에서 폴더 여는 화면" onerror="this.parentNode.classList.add('missing')">
+        <figcaption>바탕화면의 '실습폴더'를 고릅니다</figcaption>
+      </figure>
+      <figure class="shot" data-label="첫 프롬프트 입력">
+        <img src="captures/app-03-first-prompt.png" alt="첫 프롬프트를 입력하는 화면" onerror="this.parentNode.classList.add('missing')">
+        <figcaption>아래 입력창에 프롬프트를 붙여 넣어요</figcaption>
+      </figure>
+    </div>
+    <label class="check"><input type="checkbox" data-step="s0"> 준비 끝</label>
+  </div>
+</section>
+
+<!-- ============ 챗봇과 에이전트 ============ -->
+<section class="slide" data-sec="s1" data-title="챗봇 vs Agent">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">챗봇과 에이전트</p><h2 class="headline">묻고 답하는 AI에서<br>일을 이어서 하는 AI로.</h2></div>
+    <div class="grid2">
+      <div class="tile">
+        <h3>챗봇</h3>
+        <p class="cap">답을 준다. 나머지는 내가 한다.</p>
+        <div class="flow"><span class="chip">질문</span><span class="arrow">→</span><span class="chip">답</span></div>
+      </div>
+      <div class="tile">
+        <h3>AI Agent</h3>
+        <p class="cap">직접 찾고, 만들고, 이어서 한다.</p>
+        <div class="flow">
+          <span class="chip">부탁</span><span class="arrow">→</span>
+          <span class="chip blue">파일 읽기</span><span class="arrow">→</span>
+          <span class="chip blue">새 파일 만들기</span><span class="arrow">→</span>
+          <span class="chip blue">검산</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="s1" data-title="같은 부탁, 다른 결과">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">같은 부탁, 다른 결과</p><h2 class="headline">"친목회 결산해 줘."</h2></div>
+    <div class="tile">
+      <table class="def">
+        <tr><th></th><th>챗봇</th><th>AI Agent</th></tr>
+        <tr><td>자료</td><td>엑셀 내용을 <b>내가 복사해서</b> 붙여 넣어야 함</td><td>폴더의 엑셀을 <b>직접 열어</b> 읽음</td></tr>
+        <tr><td>계산</td><td>답 안에서 계산 (틀려도 모름)</td><td>계산하고 <b>다시 검산</b>까지 시킬 수 있음</td></tr>
+        <tr><td>결과</td><td>채팅창의 글 → <b>내가 옮겨 적음</b></td><td><b>파일로 저장</b>됨 (보고서.md, 엑셀 새 시트)</td></tr>
+        <tr><td>다음 일</td><td>새로 설명해야 함</td><td>폴더의 메모·카드를 읽고 <b>이어서</b> 함</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="s1" data-title="Agent가 일하는 순서">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">Agent가 일하는 순서</p><h2 class="headline">계획하고, 손대고, 확인한다.</h2>
+      <p class="subhead">앱 화면에 이 과정이 한 줄씩 지나갑니다. 오늘은 그걸 지켜보는 게 절반이에요.</p></div>
+    <div class="loop">
+      <div><b>계획</b><p>부탁을 읽고 무엇부터 할지 정한다</p></div>
+      <div><b>도구 사용</b><p>파일 열기, 계산, 웹 검색 같은 일을 직접 한다</p></div>
+      <div><b>확인</b><p>결과를 보고 틀렸으면 다시 한다</p></div>
+      <div><b>보고</b><p>무엇을 했는지 알려 주고 파일을 남긴다</p></div>
+    </div>
+    <div class="tile" style="margin-top:20px">
+      <h4>중간에 "허용할까요?" 창이 뜨면</h4>
+      <p class="muted">Agent가 파일을 바꾸거나 명령을 실행하기 전에 묻는 거예요. <b style="color:var(--ink)">무엇을 하려는지 읽어 보고</b> 괜찮으면 허용을 누르세요.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 실습 1 친목회 결산 ============ -->
+<section class="slide" data-sec="s2" data-title="상황">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">실습 1 · 친목회 결산</p><h2 class="headline">엑셀을 주면,<br>보고서가 나온다.</h2>
+      <span class="badge blue">모두 함께</span></div>
+    <div class="grid2">
+      <div class="mdfile">
+        <div class="fname">친목회 상황 메모.md</div>
+        <pre>- 나는 올해 가온초 친목회 총무다.
+- 10월 교직원 협의회에서 친목회
+  중간 결산을 보고해야 한다.
+- 기간: 2026년 3월 ~ 10월 15일
+- 회비는 매달 학교 이름(인천가온초)으로
+  한꺼번에 들어온다.
+- 7월 22일 지출(친목비 반환)은 휴직한
+  선생님께 7월분 회비를 돌려드린 것이다.
+- 보고서는 A4 한 장 분량이면 충분하다.
+  선생님들이 한눈에 볼 수 있게 표로 정리한다.</pre>
+      </div>
+      <div class="tile">
+        <p class="label-sm">가온초 친목회.xlsx — 입출금통장 시트</p>
+        <ul class="dots">
+          <li>왼쪽은 <b>입금</b> 8건 (3월~10월 회비)</li>
+          <li>오른쪽은 <b>지출</b> 13건 (식대·경조사·다과·선물…)</li>
+          <li>지출마다 <b>사용내역 · 비고</b>가 적혀 있음</li>
+          <li>맨 위에 수입·지출·잔액 합계 칸</li>
+        </ul>
+        <p class="small muted" style="margin-top:16px">이걸 사람이 손으로 정리하면 항목 묶기·합계·표 만들기에 한참 걸려요.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="s2" data-title="엑셀 미리보기">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">실습 1 · 원본 엑셀</p><h2 class="headline">이런 통장 내역이에요.</h2></div>
+    <div class="grid2">
+      <div class="sheet-wrap">
+        <table class="sheet">
+          <thead><tr><th>입금일자</th><th class="r">입금금액</th><th>입금자명</th></tr></thead>
+          <tbody>
+            <tr><td>3/12</td><td class="r">500,000</td><td>인천가온초</td></tr>
+            <tr><td>4/12</td><td class="r">490,000</td><td>인천가온초</td></tr>
+            <tr><td>5/8</td><td class="r">470,000</td><td>인천가온초</td></tr>
+            <tr><td>6/12</td><td class="r">500,000</td><td>인천가온초</td></tr>
+            <tr><td>7/7</td><td class="r">460,000</td><td>인천가온초</td></tr>
+            <tr><td>8/12</td><td class="r">480,000</td><td>인천가온초</td></tr>
+            <tr><td>9/7</td><td class="r">460,000</td><td>인천가온초</td></tr>
+            <tr><td>10/5</td><td class="r">500,000</td><td>인천가온초</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="sheet-wrap">
+        <table class="sheet">
+          <thead><tr><th>사용일자</th><th class="r">사용금액</th><th>사용내역</th></tr></thead>
+          <tbody>
+            <tr><td>3/6</td><td class="r">150,000</td><td>꽃다발 구매</td></tr>
+            <tr><td>3/20</td><td class="r">320,000</td><td>환영회 식대</td></tr>
+            <tr><td>4/17</td><td class="r">100,000</td><td>경조사 부조금</td></tr>
+            <tr><td>5/14</td><td class="r">85,000</td><td>스승의 날 다과</td></tr>
+            <tr><td>5/28</td><td class="r">50,000</td><td>경조사 부조금</td></tr>
+            <tr><td>6/26</td><td class="r">60,000</td><td>전출 회비 지원</td></tr>
+            <tr><td>7/17</td><td class="r">380,000</td><td>1학기 종업 식대</td></tr>
+            <tr><td>7/22</td><td class="r">20,000</td><td>친목비반환</td></tr>
+            <tr><td>8/24</td><td class="r">100,000</td><td>경조사 부조금</td></tr>
+            <tr><td>9/1</td><td class="r">45,000</td><td>개학 다과</td></tr>
+            <tr><td>9/23</td><td class="r">120,000</td><td>추석 선물</td></tr>
+            <tr><td>10/8</td><td class="r">50,000</td><td>경조사 부조금</td></tr>
+            <tr><td>10/15</td><td class="r">36,000</td><td>다과 구입</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="s2" data-title="P2-1 살펴보기">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">실습 1 · 첫 번째 부탁</p><h2 class="headline">먼저, 둘러보게 하기.</h2>
+      <p class="subhead">바로 시키지 않고 무엇이 있는지 먼저 보게 하면 실수가 줄어요.</p></div>
     <div class="prompt-card">
       <p class="label"><span class="no">P2-1</span><b>살펴보기</b></p>
       <pre class="prompt" id="p21">이 폴더에 어떤 파일이 있는지 살펴보고, 각 파일이 무엇인지 한 줄씩 알려 줘. 아직 아무것도 고치지 마.</pre>
       <button class="btn" type="button" data-copy="p21">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
     </div>
+    <div class="grid2" style="margin-top:20px">
+      <div class="tile">
+        <p class="label-sm">지켜볼 것</p>
+        <ul class="dots">
+          <li>Agent가 폴더 목록을 보고 <b>파일을 하나씩 여는</b> 과정</li>
+          <li>"아직 고치지 마"라고 했으니 <b>아무 파일도 바뀌지 않아야</b> 해요</li>
+        </ul>
+      </div>
+      <div class="say">
+        <span class="who">이런 식으로 답해요 (예시)</span>
+        <ul>
+          <li>가온초 친목회.xlsx — 3~10월 친목회 입출금 내역</li>
+          <li>친목회 상황 메모.md — 결산 보고 배경과 조건</li>
+          <li>학습준비물 빈 양식.xlsx — 가격이 빈 구입 목록</li>
+          <li>미니 비서/ — 업무 카드 폴더</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="s2" data-title="P2-2 보고서 만들기">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">실습 1 · 두 번째 부탁</p><h2 class="headline">보고서를 파일로.</h2>
+      <p class="subhead">무엇을 · 어떤 파일로 · 어떤 모양으로 · 어디에 저장할지 다 적었어요.</p></div>
     <div class="prompt-card">
       <p class="label"><span class="no">P2-2</span><b>보고서 만들기</b></p>
       <pre class="prompt" id="p22">'가온초 친목회.xlsx'와 '친목회 상황 메모.md'를 읽고 10월 협의회에서 보고할 친목회 중간 결산 보고서를 만들어 줘. 수입·지출·잔액 합계, 지출을 항목별(경조사, 식대, 다과, 선물, 기타)로 묶은 표, 눈에 띄는 점 2~3줄을 넣어서 '친목회 결산 보고서.md'로 저장해 줘.</pre>
       <button class="btn" type="button" data-copy="p22">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
     </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="s2" data-title="항목별로 묶이면">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">실습 1 · 결과 미리보기</p><h2 class="headline">지출이 이렇게 묶이면 맞아요.</h2>
+      <p class="subhead">항목 이름이나 순서는 조금 달라도 괜찮아요. 합계가 맞는지가 중요합니다.</p></div>
+    <div class="grid2">
+      <div class="sheet-wrap">
+        <table class="sheet">
+          <thead><tr><th>항목</th><th>들어간 지출</th><th class="r">금액</th></tr></thead>
+          <tbody>
+            <tr><td>식대</td><td>환영회 · 1학기 종업</td><td class="r">700,000</td></tr>
+            <tr><td>선물</td><td>꽃다발 · 전출 송별 · 추석</td><td class="r">330,000</td></tr>
+            <tr><td>경조사</td><td>부조금 4건</td><td class="r">300,000</td></tr>
+            <tr><td>다과</td><td>스승의 날 · 개학 · 협의회</td><td class="r">166,000</td></tr>
+            <tr><td>기타</td><td>친목비 반환</td><td class="r">20,000</td></tr>
+          </tbody>
+          <tfoot><tr><td>합계</td><td></td><td class="r">1,516,000</td></tr></tfoot>
+        </table>
+      </div>
+      <div class="tile">
+        <p class="label-sm">살펴볼 점</p>
+        <ul class="dots">
+          <li><b>메모를 읽었는지</b>: 7/22 친목비 반환을 "휴직 선생님 회비 반환"으로 설명하면 메모까지 읽은 거예요</li>
+          <li><b>표로 정리했는지</b>: 메모에 "한눈에 볼 수 있게 표로"라고 적혀 있어요</li>
+          <li><b>새 파일이 생겼는지</b>: 폴더에 '친목회 결산 보고서.md'</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="s2" data-title="P2-3 검산">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">실습 1 · 세 번째 부탁</p><h2 class="headline">AI도 틀린다.<br>그래서 검산까지 시킨다.</h2></div>
     <div class="prompt-card">
       <p class="label"><span class="no">P2-3</span><b>검산</b></p>
       <pre class="prompt" id="p23">보고서의 숫자가 엑셀 원본과 맞는지 직접 다시 계산해서 검산해 줘. 틀린 곳이 있으면 고쳐 줘.</pre>
       <button class="btn" type="button" data-copy="p23">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
     </div>
+    <div class="tile" style="margin-top:20px">
+      <p class="muted">Agent는 엑셀을 <b style="color:var(--ink)">다시 열어 직접 더해 봅니다</b>. 챗봇에게 "맞아?"라고 묻는 것과 달리, 실제로 원본과 대조해요. 돈이 걸린 문서는 이 한 줄을 습관처럼 붙이세요.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="s2" data-title="P2-4 엑셀에 결산 시트">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">실습 1 · 도전</p><h2 class="headline">엑셀 안에도 넣어 달라고.</h2>
+      <p class="subhead">원본은 그대로 두고 새 시트로. 원본을 지키라고 꼭 말해 주세요.</p></div>
     <div class="prompt-card">
       <p class="label"><span class="no">P2-4</span><b>엑셀에 결산 시트</b><span class="tag">도전</span></p>
       <pre class="prompt" id="p24">같은 내용을 '가온초 친목회.xlsx'에 '결산'이라는 새 시트로 추가해 줘. 원래 시트는 건드리지 마.</pre>
       <button class="btn" type="button" data-copy="p24">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
     </div>
-  </div>
-
-  <div class="tile result" style="margin-top:24px">
-    <p class="cap">이렇게 나오면 성공</p>
-    <div class="nums">
-      <div><span>수입</span><strong>3,860,000<small>원</small></strong></div>
-      <div><span>지출</span><strong>1,516,000<small>원</small></strong></div>
-      <div><span>잔액</span><strong class="accent">2,344,000<small>원</small></strong></div>
+    <div class="tile" style="margin-top:20px">
+      <p class="muted">엑셀을 열어 아래 시트 탭에 <b style="color:var(--ink)">'결산'</b>이 생겼는지, '입출금통장' 시트가 그대로인지 확인하세요. 엑셀을 열어 둔 채면 저장이 안 될 수 있으니 닫고 시키세요.</p>
     </div>
-    <p>폴더에 <b>친목회 결산 보고서.md</b>가 새로 생깁니다. Agent가 파일을 읽고 → 계산하고 → 새 파일을 만드는 과정을 앱에서 지켜보세요.</p>
-    <figure class="shot" data-label="결산 보고서 결과">
+  </div>
+</section>
+
+<section class="slide" data-sec="s2" data-title="이렇게 나오면 성공">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">실습 1 · 확인</p><h2 class="headline">이렇게 나오면 성공.</h2></div>
+    <div class="tile result">
+      <div class="nums">
+        <div><span>수입</span><strong>3,860,000<small>원</small></strong></div>
+        <div><span>지출</span><strong>1,516,000<small>원</small></strong></div>
+        <div><span>잔액</span><strong class="accent">2,344,000<small>원</small></strong></div>
+      </div>
+      <p>폴더에 <b>친목회 결산 보고서.md</b>가 새로 생깁니다. Agent가 파일을 읽고 → 계산하고 → 새 파일을 만드는 과정을 앱에서 지켜보세요.</p>
+    </div>
+    <figure class="shot" data-label="결산 보고서 결과" style="margin-top:20px">
       <img src="captures/app-04-report.png" alt="Codex 앱에서 결산 보고서를 만든 화면" onerror="this.parentNode.classList.add('missing')">
     </figure>
   </div>
-  <div class="tile stuck">
-    <h3>막히면</h3>
-    <ul>
-      <li><b>파일을 못 찾는다</b>앱에서 연 폴더가 '실습폴더'인지 확인하세요.</li>
-      <li><b>승인(허용) 창이 뜬다</b>무엇을 하려는지 읽어 보고 허용을 누르세요.</li>
-    </ul>
-  </div>
-  <label class="check"><input type="checkbox" data-step="s2"> 친목회 결산 끝</label>
 </section>
 
-<!-- ③ -->
-<section id="s3">
-  <div class="head">
-    <p class="eyebrow">MCP</p>
-    <h2 class="headline">도구를 꽂으면,<br>할 수 있는 일이 는다.</h2>
-    <p class="subhead">MCP는 AI에게 도구를 꽂아 주는 플러그입니다.</p>
-    <span class="badge">시연</span>
-  </div>
-  <div class="tile" style="text-align:center">
-    <div class="flow" style="justify-content:center">
-      <span class="chip">AI Agent</span><span class="arrow">+</span><span class="chip blue">KorDoc 플러그</span><span class="arrow">→</span><span class="chip">한글(HWP) 문서</span>
+<section class="slide" data-sec="s2" data-title="막히면">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">실습 1 · 막히면</p><h2 class="headline">이럴 땐 이렇게.</h2></div>
+    <div>
+      <div class="tile stuck">
+        <h3>막히면</h3>
+        <ul>
+          <li><b>파일을 못 찾는다</b>앱에서 연 폴더가 '실습폴더'인지 확인하세요.</li>
+          <li><b>승인(허용) 창이 뜬다</b>무엇을 하려는지 읽어 보고 허용을 누르세요.</li>
+          <li><b>숫자가 다르다</b>P2-3 검산을 한 번 더 시키세요. 그래도 다르면 위 숫자를 알려 주고 어디가 다른지 찾게 하세요.</li>
+          <li><b>멈췄다 (한도)</b>잠시 기다리거나 강사 화면을 보며 따라 보세요.</li>
+        </ul>
+      </div>
     </div>
-    <p class="cap" style="margin:20px 0 0">강사가 한글 파일 만들기를 시연합니다. 따라 하지 않아도 돼요.</p>
+    <label class="check"><input type="checkbox" data-step="s2"> 친목회 결산 끝</label>
   </div>
 </section>
 
-<!-- ④ -->
-<section id="s4">
-  <div class="head">
-    <p class="eyebrow">실습 2 · 가격 채우기</p>
-    <h2 class="headline">빈칸은 AI가<br>찾아서 채운다.</h2>
-    <p class="subhead">학습준비물 양식의 단가·링크·금액 칸이 비어 있다. Agent가 아이스크림몰을 직접 열어 검색한다.</p>
-    <span class="badge">도전</span>
+<!-- ============ MCP ============ -->
+<section class="slide" data-sec="s3" data-title="MCP란">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">MCP</p><h2 class="headline">도구를 꽂으면,<br>할 수 있는 일이 는다.</h2>
+      <p class="subhead">MCP는 AI에게 도구를 꽂아 주는 플러그입니다.</p></div>
+    <div class="tile" style="text-align:center">
+      <div class="flow" style="justify-content:center">
+        <span class="chip">AI Agent</span><span class="arrow">+</span><span class="chip blue">플러그(MCP)</span><span class="arrow">→</span><span class="chip">새로 할 수 있는 일</span>
+      </div>
+    </div>
+    <div class="grid3" style="margin-top:20px">
+      <div class="tile"><h4>📄 KorDoc</h4><p class="muted">한글(HWP) 문서를 읽고 만든다</p></div>
+      <div class="tile"><h4>🌐 브라우저</h4><p class="muted">웹페이지를 열고 검색한다</p></div>
+      <div class="tile"><h4>📅 캘린더</h4><p class="muted">일정을 읽고 넣는다</p></div>
+    </div>
   </div>
+</section>
 
-  <div class="prompts">
+<section class="slide" data-sec="s3" data-title="시연: 한글 문서">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">MCP · 시연</p><h2 class="headline">한글 파일도 만든다.</h2>
+      <span class="badge">시연 · 따라 하지 않아도 돼요</span></div>
+    <div class="tile" style="text-align:center">
+      <div class="flow" style="justify-content:center">
+        <span class="chip">AI Agent</span><span class="arrow">+</span><span class="chip blue">KorDoc 플러그</span><span class="arrow">→</span><span class="chip">한글(HWP) 문서</span>
+      </div>
+    </div>
+    <div class="tile" style="margin-top:20px">
+      <p class="label-sm">강사 화면에서 볼 것</p>
+      <ul class="dots">
+        <li>Agent가 <b>"이 일엔 KorDoc을 써야겠다"</b>고 스스로 고르는 장면</li>
+        <li>만들어진 <b>.hwp 파일</b>을 한글에서 열어 보기</li>
+        <li>학교 문서 대부분이 한글이라, 플러그 하나로 <b>업무 범위가 크게 넓어진다</b>는 것</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 실습 2 가격 채우기 ============ -->
+<section class="slide" data-sec="s4" data-title="상황">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">실습 2 · 가격 채우기</p><h2 class="headline">빈칸은 AI가 찾아서 채운다. <span class="badge" style="vertical-align:middle;margin:0">도전</span></h2>
+      <p class="subhead">단가·금액·링크 칸이 비어 있다. Agent가 아이스크림몰을 직접 열어 검색한다.</p></div>
+    <div class="sheet-wrap">
+      <table class="sheet">
+        <thead><tr><th>내용</th><th>규격</th><th class="r">수량</th><th class="r">단가</th><th class="r">금액</th><th>상품 링크</th></tr></thead>
+        <tbody>
+          <tr class="hl"><td>A4 복사용지 500매</td><td>80g</td><td class="r">10</td><td class="empty r">?</td><td class="empty r">?</td><td class="empty">?</td></tr>
+          <tr class="hl"><td>유성매직 12색 세트</td><td></td><td class="r">15</td><td class="empty r">?</td><td class="empty r">?</td><td class="empty">?</td></tr>
+          <tr class="hl"><td>4절 도화지 100매</td><td>180g</td><td class="r">3</td><td class="empty r">?</td><td class="empty r">?</td><td class="empty">?</td></tr>
+          <tr><td>양면테이프 10m</td><td>12mm</td><td class="r">30</td><td></td><td></td><td></td></tr>
+          <tr><td>가위 (안전가위)</td><td></td><td class="r">28</td><td></td><td></td><td></td></tr>
+          <tr><td>딱풀 대용량</td><td>35g</td><td class="r">56</td><td></td><td></td><td></td></tr>
+          <tr><td>색종이 양면 20매</td><td></td><td class="r">60</td><td></td><td></td><td></td></tr>
+          <tr><td>전지 하드보드지 10매</td><td></td><td class="r">2</td><td></td><td></td><td></td></tr>
+          <tr><td>학습용 화이트보드 개인용</td><td>A4</td><td class="r">28</td><td></td><td></td><td></td></tr>
+          <tr><td>보드마카 4색 세트</td><td></td><td class="r">28</td><td></td><td></td><td></td></tr>
+          <tr><td>투명 L자 파일 10매</td><td>A4</td><td class="r">10</td><td></td><td></td><td></td></tr>
+          <tr><td>하이클레이 6색</td><td></td><td class="r">28</td><td></td><td></td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small muted" style="text-align:center;margin-top:12px">12개 품목 중 오늘은 파랗게 칠한 처음 3개만. 무료 한도 안에서 끝나게요.</p>
+  </div>
+</section>
+
+<section class="slide" data-sec="s4" data-title="P4-1 3개 찾아 채우기">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">실습 2 · 첫 번째 부탁</p><h2 class="headline">브라우저로 직접 찾게.</h2></div>
     <div class="prompt-card">
       <p class="label"><span class="no">P4-1</span><b>3개만 찾아 채우기</b></p>
       <pre class="prompt" id="p41">'학습준비물 빈 양식.xlsx'의 처음 3개 품목만 아이스크림몰에서 찾아 줘. 브라우저로 직접 검색해서 규격이 가장 비슷한 상품의 단가와 상품 링크를 칸에 넣고, 금액 칸에는 수량×단가 수식을 넣어 줘. 검색은 https://i-screammall.co.kr/search?searchWord=검색어 주소로 하면 돼. 가격이 '선생님 혜택가'로 가려진 상품은 건너뛰고 가격이 보이는 상품을 골라 줘. 장바구니에는 담지 마.</pre>
       <button class="btn" type="button" data-copy="p41">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
     </div>
-    <div class="prompt-card">
-      <p class="label"><span class="no">P4-2</span><b>규격 확인</b></p>
-      <pre class="prompt" id="p42">찾은 상품 중 규격이 양식과 다른 게 있으면 표시하고 이유를 알려 줘.</pre>
-      <button class="btn" type="button" data-copy="p42">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
+  </div>
+</section>
+
+<section class="slide" data-sec="s4" data-title="프롬프트에 넣은 장치">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">실습 2 · 프롬프트 뜯어보기</p><h2 class="headline">한 줄 한 줄이 장치다.</h2></div>
+    <div class="tile">
+      <ul class="dots">
+        <li><b>처음 3개만</b> — 범위를 좁혀 한도와 시간을 아낌</li>
+        <li><b>검색 주소를 알려 줌</b> — 헤매지 않고 바로 검색 결과로</li>
+        <li><b>금액은 수식으로</b> — 수량을 바꿔도 금액이 따라 바뀜</li>
+        <li><b>장바구니에는 담지 마</b> — 하지 말아야 할 일도 적는다</li>
+      </ul>
     </div>
   </div>
+</section>
 
-  <div class="tile result" style="margin-top:24px">
-    <p class="cap">이렇게 나오면 성공</p>
-    <p style="margin-top:0">양식의 처음 3줄에 <b>단가 · 상품 링크 · 금액(수식)</b>이 채워집니다.</p>
+<section class="slide" data-sec="s4" data-title="Agent가 보는 화면">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">실습 2 · Agent가 보는 화면</p><h2 class="headline">사람처럼 검색하고, 고른다.</h2></div>
     <div class="shots2">
       <figure class="shot" data-label="아이스크림몰 검색 결과">
         <img src="captures/web-mall-search.png" alt="아이스크림몰 검색 결과 화면" onerror="this.parentNode.classList.add('missing')">
@@ -521,109 +904,298 @@ footer { margin-left: var(--side-w); padding: 24px; text-align: center; font-siz
       </figure>
     </div>
   </div>
-  <div class="tile stuck">
-    <h3>막히면</h3>
-    <ul>
-      <li><b>브라우저를 못 연다</b>프롬프트의 "브라우저로 직접 검색해서"를 "웹 검색으로 찾아 줘"로 바꿔 보세요.</li>
-      <li><b>가격 대신 「선생님 혜택가」가 보인다</b>로그인해야 보이는 상품이에요. 로그인하지 말고 다른 상품을 고르라고 하세요.</li>
-    </ul>
-  </div>
-  <label class="check"><input type="checkbox" data-step="s4"> 가격 채우기 끝</label>
 </section>
 
-<!-- ⑤ -->
-<section id="s5">
-  <div class="head">
-    <p class="eyebrow">실습 3 · 미니 비서</p>
-    <h2 class="headline">대화는 잊어도,<br>파일은 기억한다.</h2>
-    <p class="subhead">Codex 앱에서 실습폴더 안의 <b>'미니 비서'</b> 폴더를 새로 엽니다.</p>
-    <span class="badge">도전</span>
+<section class="slide" data-sec="s4" data-title="P4-2 규격 확인">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">실습 2 · 두 번째 부탁</p><h2 class="headline">비슷한 것과 같은 것은 다르다.</h2>
+      <p class="subhead">80g이 아니라 75g, 100매가 아니라 50매일 수 있어요.</p></div>
+    <div class="prompt-card">
+      <p class="label"><span class="no">P4-2</span><b>규격 확인</b></p>
+      <pre class="prompt" id="p42">찾은 상품 중 규격이 양식과 다른 게 있으면 표시하고 이유를 알려 줘.</pre>
+      <button class="btn" type="button" data-copy="p42">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
+    </div>
   </div>
+</section>
 
-  <div class="tile">
-    <p class="cap" style="margin-bottom:16px">미니 비서 폴더는 이렇게 생겼어요</p>
-    <div class="tree">
-      <div class="node"><code>AGENTS.md</code><p>폴더를 열면 앱이 자동으로 읽는 규칙. "HOME.md부터 읽어라"</p></div>
-      <span class="arrow">→</span>
-      <div class="node"><code>HOME.md</code><p>내 소개 · 카드 목록</p></div>
-      <span class="arrow">→</span>
-      <div class="node"><code>카드/</code><p>일마다 한 장씩</p>
-        <div class="subcards"><span class="chip">친목회 결산</span><span class="chip">학습준비물 구입</span><span class="chip">학부모 상담 주간</span></div>
+<section class="slide" data-sec="s4" data-title="이렇게 나오면 성공">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">실습 2 · 확인</p><h2 class="headline">이렇게 나오면 성공.</h2></div>
+    <div class="grid2">
+      <div class="tile result">
+        <p class="cap">양식의 처음 3줄에</p>
+        <div class="flow" style="justify-content:center"><span class="chip blue">단가</span><span class="chip blue">금액(수식)</span><span class="chip blue">상품 링크</span></div>
+        <p>가 채워집니다. 링크를 눌러 <b>실제 상품 페이지</b>가 열리는지, 금액 칸을 눌러 <b>=수량×단가 수식</b>인지 확인하세요.</p>
+      </div>
+      <div class="tile stuck">
+        <h3>막히면</h3>
+        <ul>
+          <li><b>브라우저를 못 연다</b>프롬프트의 "브라우저로 직접 검색해서"를 "웹 검색으로 찾아 줘"로 바꿔 보세요.</li>
+          <li><b>가격 대신 「선생님 혜택가」가 보인다</b>로그인해야 보이는 상품이에요. 로그인하지 말고 다른 상품을 고르라고 하세요.</li>
+          <li><b>엑셀이 저장되지 않는다</b>엑셀 창을 닫고 다시 시키세요.</li>
+        </ul>
+      </div>
+    </div>
+    <label class="check"><input type="checkbox" data-step="s4"> 가격 채우기 끝</label>
+  </div>
+</section>
+
+<!-- ============ 실습 3 미니 비서 ============ -->
+<section class="slide" data-sec="s5" data-title="왜 파일로 기억할까">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">실습 3 · 미니 비서</p><h2 class="headline">대화는 잊어도,<br>파일은 기억한다.</h2>
+      <span class="badge">도전</span></div>
+    <div class="grid2">
+      <div class="tile">
+        <h3>대화에만 두면</h3>
+        <p class="cap">새 대화를 열면 처음부터 다시 설명해야 한다.</p>
+        <div class="flow"><span class="chip">어제 대화</span><span class="arrow">✕</span><span class="chip">오늘 대화</span></div>
+      </div>
+      <div class="tile">
+        <h3>파일에 두면</h3>
+        <p class="cap">언제 열어도 폴더의 파일을 읽고 이어서 한다.</p>
+        <div class="flow"><span class="chip">오늘 대화</span><span class="arrow">→</span><span class="chip blue">HOME.md · 카드</span><span class="arrow">→</span><span class="chip">이어서</span></div>
+      </div>
+    </div>
+    <div class="tile" style="margin-top:20px">
+      <p class="muted">Codex 앱에서 실습폴더 안의 <b style="color:var(--ink)">'미니 비서'</b> 폴더를 <b style="color:var(--ink)">새로 엽니다</b>. 이 폴더가 오늘 만드는 비서예요.</p>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="s5" data-title="폴더 구조">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">실습 3 · 구조</p><h2 class="headline">파일 세 겹이면 비서가 된다.</h2></div>
+    <div class="tile">
+      <div class="tree">
+        <div class="node"><code>AGENTS.md</code><p>폴더를 열면 앱이 자동으로 읽는 규칙. "HOME.md부터 읽어라"</p></div>
+        <span class="arrow">→</span>
+        <div class="node"><code>HOME.md</code><p>내 소개 · 카드 목록</p></div>
+        <span class="arrow">→</span>
+        <div class="node"><code>카드/</code><p>일마다 한 장씩</p>
+          <div class="subcards"><span class="chip">친목회 결산</span><span class="chip">학습준비물 구입</span><span class="chip">학부모 상담 주간</span></div>
+        </div>
       </div>
     </div>
   </div>
-
-  <div class="prompts" style="margin-top:24px">
-    <div class="prompt-card">
-      <p class="label"><span class="no">P5-1</span><b>브리핑</b></p>
-      <pre class="prompt" id="p51">오늘 뭐 해?</pre>
-      <button class="btn" type="button" data-copy="p51">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
-    </div>
-    <div class="prompt-card">
-      <p class="label"><span class="no">P5-2</span><b>끝난 일 반영</b></p>
-      <pre class="prompt" id="p52">친목회 결산 보고서 다 만들었어. 카드 고쳐 줘.</pre>
-      <button class="btn" type="button" data-copy="p52">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
-    </div>
-    <div class="prompt-card">
-      <p class="label"><span class="no">P5-3</span><b>할 일 추가</b></p>
-      <pre class="prompt" id="p53">다음 주 화요일까지 학부모 상담 시간표를 만들어야 해. 카드에 할 일로 추가해 줘.</pre>
-      <button class="btn" type="button" data-copy="p53">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
-    </div>
-  </div>
-
-  <div class="tile result" style="margin-top:24px">
-    <p class="cap">이렇게 나오면 성공</p>
-    <p style="margin-top:0">"오늘 뭐 해?"에 카드를 읽고 할 일을 정리해 답하고, P5-2·P5-3 뒤에는 <b>카드 파일 내용이 실제로 바뀝니다.</b></p>
-    <figure class="shot" data-label="미니 비서 대화">
-      <img src="captures/app-05-assistant.png" alt="미니 비서 폴더에서 대화하는 화면" onerror="this.parentNode.classList.add('missing')">
-    </figure>
-  </div>
-  <div class="tile stuck">
-    <h3>막히면</h3>
-    <ul>
-      <li><b>카드를 모른다고 한다</b>앱에서 연 폴더가 '실습폴더'가 아니라 '미니 비서'인지 확인하세요.</li>
-      <li><b>캘린더 연결은?</b>강사 시연만 합니다.</li>
-    </ul>
-  </div>
-  <label class="check"><input type="checkbox" data-step="s5"> 미니 비서 끝</label>
 </section>
 
-<!-- ⑥ -->
-<section id="s6">
-  <div class="head">
-    <p class="eyebrow">마무리</p>
-    <h2 class="headline">잘 맡기는 법.</h2>
+<section class="slide" data-sec="s5" data-title="AGENTS.md 들여다보기">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">실습 3 · 규칙 파일</p><h2 class="headline">AGENTS.md는 비서의 업무 지침.</h2>
+      <p class="subhead">사람에게 인수인계하듯 평범한 말로 적으면 됩니다.</p></div>
+    <div class="mdfile">
+      <div class="fname">미니 비서/AGENTS.md</div>
+      <pre># 미니 비서 규칙
+
+너는 가온초 6학년 담임 김가온 선생님의 업무 비서다.
+
+1. 대화를 시작하면 먼저 `HOME.md`를 읽는다.
+2. "오늘 뭐 해?"라고 물으면 `카드/` 폴더의 카드들을 읽고,
+   마감이 가까운 순서로 할 일 3개를 알려 준다.
+3. 일이 끝났다고 하면 해당 카드의 할 일에 체크하고
+   `기록`에 날짜와 한 줄을 적는다.
+4. 새 일을 말하면 맞는 카드에 할 일로 추가한다.
+   맞는 카드가 없으면 새 카드를 만든다.
+5. 카드를 고친 뒤에는 `HOME.md`의 카드 목록도 맞게 고친다.
+6. 학생 이름·연락처 같은 개인정보는 적지 않는다.</pre>
+    </div>
   </div>
-  <div class="grid2">
+</section>
+
+<section class="slide" data-sec="s5" data-title="HOME.md와 카드">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">실습 3 · 대시보드와 카드</p><h2 class="headline">HOME은 목록, 카드는 일 한 건.</h2></div>
+    <div class="grid2">
+      <div class="mdfile">
+        <div class="fname">미니 비서/HOME.md</div>
+        <pre># HOME
+
+김가온 선생님 (가온초 6학년 담임, 친목회 총무)
+
+## 카드 목록
+| 카드             | 마감  | 상태   |
+|------------------|-------|--------|
+| 친목회 결산      | 10/20 | 진행 중 |
+| 학습준비물 구입  | 10/23 | 진행 중 |
+| 학부모 상담 주간 | 10/27 | 준비 전 |</pre>
+      </div>
+      <div class="mdfile">
+        <div class="fname">미니 비서/카드/친목회 결산.md</div>
+        <pre># 친목회 결산
+- 마감: 10/20 (10월 교직원 협의회)
+
+## 할 일
+- [ ] 친목회 엑셀로 중간 결산 보고서 만들기
+- [ ] 교감선생님께 보고서 미리 보여 드리기
+- [ ] 협의회에서 보고하기
+
+## 기록
+- 10/12 통장 내역을 엑셀에 다 옮김</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="s5" data-title="P5-1 브리핑">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">실습 3 · 첫 번째 부탁</p><h2 class="headline">"오늘 뭐 해?"</h2>
+      <p class="subhead">짧게 물어도 규칙(AGENTS.md 2번)대로 카드를 읽고 답해요.</p></div>
+    <div class="grid2">
+      <div class="prompt-card">
+        <p class="label"><span class="no">P5-1</span><b>브리핑</b></p>
+        <pre class="prompt" id="p51">오늘 뭐 해?</pre>
+        <button class="btn" type="button" data-copy="p51">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
+      </div>
+      <div class="say">
+        <span class="who">이런 식으로 답해요 (예시)</span>
+        마감이 가까운 순서로 할 일 3개예요.
+        <ol>
+          <li>친목회 엑셀로 중간 결산 보고서 만들기 — 10/20</li>
+          <li>아이스크림몰에서 12개 품목 가격 찾기 — 10/23</li>
+          <li>상담 신청 안내장 보내기 — 10/27</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="s5" data-title="P5-2 끝난 일 반영">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">실습 3 · 두 번째 부탁</p><h2 class="headline">끝났다고 말하면,<br>카드가 바뀐다.</h2></div>
+    <div class="grid2">
+      <div class="prompt-card">
+        <p class="label"><span class="no">P5-2</span><b>끝난 일 반영</b></p>
+        <pre class="prompt" id="p52">친목회 결산 보고서 다 만들었어. 카드 고쳐 줘.</pre>
+        <button class="btn" type="button" data-copy="p52">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
+      </div>
+      <div class="mdfile">
+        <div class="fname">카드/친목회 결산.md — 바뀐 뒤 (예시)</div>
+        <pre>## 할 일
+<span class="chg">- [x] 친목회 엑셀로 중간 결산 보고서 만들기</span>
+- [ ] 교감선생님께 보고서 미리 보여 드리기
+- [ ] 협의회에서 보고하기
+
+## 기록
+- 10/12 통장 내역을 엑셀에 다 옮김
+<span class="add">- 10/16 중간 결산 보고서 완성</span></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="s5" data-title="P5-3 할 일 추가">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">실습 3 · 세 번째 부탁</p><h2 class="headline">새 일은 맞는 카드로.</h2></div>
+    <div class="grid2">
+      <div class="prompt-card">
+        <p class="label"><span class="no">P5-3</span><b>할 일 추가</b></p>
+        <pre class="prompt" id="p53">다음 주 화요일까지 학부모 상담 시간표를 만들어야 해. 카드에 할 일로 추가해 줘.</pre>
+        <button class="btn" type="button" data-copy="p53">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
+      </div>
+      <div class="mdfile">
+        <div class="fname">카드/학부모 상담 주간.md — 바뀐 뒤 (예시)</div>
+        <pre>## 할 일
+- [ ] 상담 신청 안내장 보내기
+<span class="add">- [ ] 학부모 상담 시간표 만들기 (다음 주 화요일까지)</span></pre>
+      </div>
+    </div>
+    <p class="small muted" style="text-align:center;margin-top:16px">"다음 주 화요일"을 실제 날짜로 바꿔 적었는지도 보세요.</p>
+  </div>
+</section>
+
+<section class="slide" data-sec="s5" data-title="이렇게 나오면 성공">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">실습 3 · 확인</p><h2 class="headline">이렇게 나오면 성공.</h2></div>
+    <div class="grid2">
+      <div>
+        <div class="tile result">
+          <p style="margin-top:0">"오늘 뭐 해?"에 카드를 읽고 할 일을 정리해 답하고, P5-2·P5-3 뒤에는 <b>카드 파일 내용이 실제로 바뀝니다.</b></p>
+        </div>
+        <figure class="shot" data-label="미니 비서 대화" style="margin-top:20px">
+          <img src="captures/app-05-assistant.png" alt="미니 비서 폴더에서 대화하는 화면" onerror="this.parentNode.classList.add('missing')">
+        </figure>
+      </div>
+      <div class="tile stuck">
+        <h3>막히면</h3>
+        <ul>
+          <li><b>카드를 모른다고 한다</b>앱에서 연 폴더가 '실습폴더'가 아니라 '미니 비서'인지 확인하세요.</li>
+          <li><b>HOME.md는 그대로다</b>"HOME.md 카드 목록도 고쳐 줘"라고 한 번 더 말하세요.</li>
+          <li><b>캘린더 연결은?</b>강사 시연만 합니다. MCP로 캘린더를 꽂으면 카드 마감을 일정으로 넣을 수 있어요.</li>
+        </ul>
+      </div>
+    </div>
+    <label class="check"><input type="checkbox" data-step="s5"> 미니 비서 끝</label>
+  </div>
+</section>
+
+<!-- ============ 마무리 ============ -->
+<section class="slide" data-sec="s6" data-title="프롬프트 요령">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">마무리</p><h2 class="headline">잘 맡기는 법.</h2>
+      <p class="subhead">네 가지만 넣으면 됩니다.</p></div>
+    <div class="tile" style="text-align:center">
+      <div class="flow" style="justify-content:center"><span class="chip">무엇을</span><span class="chip">어떤 파일로</span><span class="chip">어디에 저장</span><span class="chip blue">검산까지</span></div>
+    </div>
+    <div class="grid2" style="margin-top:20px">
+      <div class="ex bad"><span class="tag">이렇게 말고</span><br>친목회 정리해 줘.</div>
+      <div class="ex good"><span class="tag">이렇게</span><br>'가온초 친목회.xlsx'를 읽고 항목별 지출 표를 만들어 '결산 보고서.md'로 저장해 줘. 다 하면 원본과 숫자를 검산해 줘.</div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="s6" data-title="일이 바뀌면 새 대화">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">마무리</p><h2 class="headline">일이 바뀌면 새 대화.</h2>
+      <p class="subhead">한 대화에 일을 계속 쌓으면 앞 내용과 섞여 엉뚱한 답이 나와요.</p></div>
+    <div class="grid2">
+      <div class="tile"><h4>새 대화로 끊기</h4><p class="muted">친목회 결산이 끝났으면 가격 채우기는 새 대화에서. 앞의 맥락을 끊어 주세요.</p></div>
+      <div class="tile"><h4>기억할 건 파일로</h4><p class="muted">계속 알아야 할 것은 대화가 아니라 AGENTS.md나 카드에 적어 두세요. 새 대화도 그 파일을 읽어요.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="s6" data-title="헷갈리는 세 가지">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">마무리</p><h2 class="headline">헷갈리는 세 가지.</h2></div>
     <div class="tile">
-      <h3>프롬프트 요령</h3>
-      <p class="cap">네 가지만 넣으면 됩니다.</p>
-      <div class="flow"><span class="chip">무엇을</span><span class="chip">어떤 파일로</span><span class="chip">어디에 저장</span><span class="chip blue">검산까지</span></div>
+      <table class="def">
+        <tr><td>AGENTS.md</td><td>폴더를 열면 자동으로 읽는 <b>규칙</b>. 오늘 미니 비서의 업무 지침</td></tr>
+        <tr><td>Skills</td><td>필요할 때 꺼내 쓰는 <b>작업 설명서</b>. 자주 하는 일의 순서를 적어 둔 것</td></tr>
+        <tr><td>MCP</td><td>AI에게 꽂아 주는 <b>도구 플러그</b>. 한글·브라우저·캘린더</td></tr>
+      </table>
     </div>
-    <div class="tile">
-      <h3>일이 바뀌면 새 대화</h3>
-      <p class="cap" style="margin:0">다른 일을 시킬 때는 새 대화로 시작해 앞의 맥락을 끊어 주세요.</p>
-    </div>
-  </div>
-  <div class="tile">
-    <h3>헷갈리는 세 가지</h3>
-    <table class="def">
-      <tr><td>AGENTS.md</td><td>폴더를 열면 자동으로 읽는 <b>규칙</b></td></tr>
-      <tr><td>Skills</td><td>필요할 때 꺼내 쓰는 <b>작업 설명서</b></td></tr>
-      <tr><td>MCP</td><td>AI에게 꽂아 주는 <b>도구 플러그</b></td></tr>
-      <tr><td>개인정보</td><td>학생 이름·연락처는 AI에게 넣지 않기</td></tr>
-    </table>
   </div>
 </section>
 
-<section class="end">
-  <h2 class="display">이제,<br><span class="accent">맡겨 보세요.</span></h2>
-  <p class="subhead">질문은 언제든 채팅창에.</p>
+<section class="slide" data-sec="s6" data-title="안전하게 쓰기">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">마무리</p><h2 class="headline">안전하게 쓰기.</h2></div>
+    <div class="grid3">
+      <div class="tile"><h4>🔒 개인정보</h4><p class="muted">학생 이름·연락처·성적은 AI에게 넣지 않기.</p></div>
+      <div class="tile"><h4>✋ 허용 창 읽기</h4><p class="muted">무엇을 바꾸려는지 읽고 누르기. 모르면 거절해도 돼요.</p></div>
+      <div class="tile"><h4>📁 원본 지키기</h4><p class="muted">중요한 파일은 복사본으로 실습하고, "원본은 건드리지 마"를 적기.</p></div>
+    </div>
+  </div>
 </section>
 
+<section class="slide end" data-sec="end" data-title="끝">
+  <div class="wrap">
+    <h2 class="display">이제,<br><span class="accent">맡겨 보세요.</span></h2>
+    <p class="subhead">질문은 언제든 채팅창에.</p>
+    <footer>ACE 연구회 AI TED · 나만의 AI Agent 업무 비서 만들기 · 인천효성남초 양상경</footer>
+  </div>
+</section>
+
+</div>
 </main>
 
-<footer>ACE 연구회 AI TED · 나만의 AI Agent 업무 비서 만들기 · 인천효성남초 양상경</footer>
+<div id="pager">
+  <button class="icon-btn" id="prev" type="button" aria-label="이전 장">‹</button>
+  <span id="count"></span>
+  <button class="icon-btn" id="next" type="button" aria-label="다음 장">›</button>
+</div>
+<div id="progress"><i></i></div>
 
 <script>
 // 저장소는 편의용: 막혀 있어도 기본값으로 동작
@@ -638,22 +1210,53 @@ function setTheme(t) {
 document.querySelectorAll('#theme button').forEach(b => b.onclick = () => setTheme(b.dataset.theme));
 setTheme(load('ace-theme') || 'dark');
 
-// 세부 목차: 섹션 안의 단계·프롬프트·타일 제목을 모아 붙인다
-document.querySelectorAll('#toc > li > a').forEach(a => {
-  const sec = document.querySelector(a.getAttribute('href'));
-  const items = sec ? [...sec.querySelectorAll('.steps h4, .prompt-card .label, .tile > h3, .tile > p.cap:first-child')] : [];
-  if (!items.length) return;
-  const ol = document.createElement('ol'); ol.className = 'sub';
-  items.forEach((el, i) => {
-    el.id = sec.id + '-' + (i + 1); el.classList.add('toc-target');
-    const no = el.querySelector('.no'), b = el.querySelector('b');
-    const li = document.createElement('li'), sa = document.createElement('a');
-    sa.href = '#' + el.id;
-    sa.textContent = no && b ? no.textContent + ' ' + b.textContent : el.textContent;
-    li.appendChild(sa); ol.appendChild(li);
-  });
-  a.parentNode.appendChild(ol);
+// 목차: 섹션(큰 줄) + 슬라이드(작은 줄)
+const SEC = { top: ['0', '표지'], flow: ['·', '오늘의 흐름'], s0: ['1', '준비'], s1: ['2', '챗봇과 에이전트'], s2: ['3', '친목회 결산'], s3: ['4', 'MCP'], s4: ['5', '가격 채우기'], s5: ['6', '미니 비서'], s6: ['7', '마무리'], end: ['', '끝'] };
+const slides = [...document.querySelectorAll('.slide')];
+const toc = document.getElementById('toc');
+const secLink = {}, subLink = [];
+slides.forEach((s, i) => {
+  const g = s.dataset.sec;
+  if (!secLink[g]) {
+    const li = document.createElement('li'), a = document.createElement('a');
+    a.href = '#' + g; a.innerHTML = '<span class="n">' + SEC[g][0] + '</span><span>' + SEC[g][1] + '</span>';
+    const ol = document.createElement('ol'); ol.className = 'sub';
+    li.append(a, ol); toc.appendChild(li);
+    secLink[g] = { li, a, ol };
+    if (g !== 'top' && g !== 'end') s.id = g;
+  }
+  if (!s.id) s.id = g + '-' + i;
+  const ol = secLink[g].ol;
+  if (s.dataset.title && g !== 'end') {
+    const li = document.createElement('li'), a = document.createElement('a');
+    a.href = '#' + s.id; a.textContent = s.dataset.title;
+    li.appendChild(a); ol.appendChild(li); subLink[i] = a;
+  }
 });
+
+// 가로 슬라이드
+const track = document.getElementById('track'), main = document.querySelector('main');
+let cur = 0;
+function go(i) {
+  cur = Math.max(0, Math.min(slides.length - 1, i));
+  track.style.transform = 'translateX(' + (-100 * cur) + '%)';
+  const s = slides[cur], g = s.dataset.sec;
+  slides.forEach((x, j) => x.inert = j !== cur);
+  Object.entries(secLink).forEach(([k, v]) => { v.a.classList.toggle('on', k === g); v.li.classList.toggle('open', k === g); });
+  subLink.forEach((a, j) => a && a.classList.toggle('on', j === cur));
+  if (subLink[cur]) subLink[cur].scrollIntoView({ block: 'nearest' });
+  document.getElementById('count').textContent = (cur + 1) + ' / ' + slides.length;
+  document.getElementById('progress').firstChild.style.width = (100 * (cur + 1) / slides.length) + '%';
+  document.getElementById('bar-title').textContent = SEC[g][1] + (s.dataset.title && g !== 'end' ? ' · ' + s.dataset.title : '');
+  history.replaceState(null, '', '#' + s.id);
+}
+const find = id => { const i = slides.findIndex(s => s.id === id); return i >= 0 ? i : slides.findIndex(s => s.dataset.sec === id); };
+main.addEventListener('scroll', () => { main.scrollLeft = 0; });
+go(Math.max(0, find(location.hash.slice(1))));
+requestAnimationFrame(() => track.classList.add('anim'));
+
+document.getElementById('prev').onclick = () => go(cur - 1);
+document.getElementById('next').onclick = () => go(cur + 1);
 
 // 목차: 모바일은 서랍, 데스크톱은 접기
 const open = v => document.body.classList.toggle('open', v);
@@ -663,30 +1266,42 @@ if (load('ace-side') === '0') collapse(true);
 document.getElementById('open-side').onclick = () => desk() ? collapse(false) : open(true);
 document.getElementById('close-side').onclick = () => desk() ? collapse(true) : open(false);
 document.getElementById('scrim').onclick = () => open(false);
-document.querySelectorAll('#toc a').forEach(a => a.addEventListener('click', () => open(false)));
 
-// 지금 보는 섹션 표시
-const links = [...document.querySelectorAll('#toc a')];
-const io = new IntersectionObserver(es => es.forEach(e => {
-  if (!e.isIntersecting) return;
-  const sub = e.target.classList.contains('toc-target');
-  links.filter(a => !!a.closest('.sub') === sub).forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id));
-}), { rootMargin: '-45% 0px -50% 0px' });
-links.forEach(a => { const s = document.querySelector(a.getAttribute('href')); if (s) io.observe(s); });
+// 페이지 안 링크(#…)는 해당 장으로
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[href^="#"]');
+  if (!a) return;
+  const i = find(a.getAttribute('href').slice(1));
+  if (i < 0) return;
+  e.preventDefault(); open(false); go(i);
+});
 
-// 키보드: Enter 다음 / Shift+Enter 이전, F 전체화면
-const targets = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+// 키보드: Enter/→ 다음, Shift+Enter/← 이전, F 전체화면, T 목차
 document.addEventListener('keydown', e => {
   if (e.ctrlKey || e.metaKey || e.altKey || e.target.closest('button, input, textarea, select, label') || (e.target.closest('a') && !e.target.closest('#toc'))) return;
-  if (e.key === 'Enter') {
-    e.preventDefault();
-    const tops = targets.map(t => t.getBoundingClientRect().top - parseFloat(getComputedStyle(t).scrollMarginTop || 0));
-    const i = e.shiftKey ? tops.map(t => t < -5).lastIndexOf(true) : tops.findIndex(t => t > 5);
-    if (i >= 0) targets[i].scrollIntoView({ behavior: 'smooth' });
-  } else if (e.key === 'f' || e.key === 'F' || e.key === 'ㄹ') {
+  if (e.key === 'Enter') { e.preventDefault(); go(cur + (e.shiftKey ? -1 : 1)); }
+  else if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); go(cur + 1); }
+  else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(cur - 1); }
+  else if (e.key === 't' || e.key === 'T' || e.key === 'ㅅ') desk() ? collapse(!document.body.classList.contains('collapsed')) : open(!document.body.classList.contains('open'));
+  else if (e.key === 'Home') go(0);
+  else if (e.key === 'End') go(slides.length - 1);
+  else if (e.key === 'f' || e.key === 'F' || e.key === 'ㄹ') {
     document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
   }
 });
+
+// 터치 스와이프 · 트랙패드 가로 밀기
+let tx = 0, ty = 0;
+main.addEventListener('touchstart', e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+main.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty;
+  if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) go(cur + (dx < 0 ? 1 : -1));
+});
+let wheelLock = 0;
+main.addEventListener('wheel', e => {
+  if (Math.abs(e.deltaX) < 30 || Math.abs(e.deltaX) < Math.abs(e.deltaY) || Date.now() < wheelLock) return;
+  wheelLock = Date.now() + 700; go(cur + (e.deltaX > 0 ? 1 : -1));
+}, { passive: true });
 
 // 복사
 document.querySelectorAll('[data-copy]').forEach(btn => {
@@ -702,7 +1317,7 @@ document.querySelectorAll('[data-copy]').forEach(btn => {
 // 진행 체크
 document.querySelectorAll('[data-step]').forEach(cb => {
   const k = 'ace-done-' + cb.dataset.step;
-  const mark = () => { const a = document.querySelector('#toc a[href="#' + cb.dataset.step + '"]'); if (a) a.classList.toggle('done', cb.checked); };
+  const mark = () => secLink[cb.dataset.step] && secLink[cb.dataset.step].a.classList.toggle('done', cb.checked);
   cb.checked = load(k) === '1'; mark();
   cb.onchange = () => { save(k, cb.checked ? '1' : '0'); mark(); };
 });
