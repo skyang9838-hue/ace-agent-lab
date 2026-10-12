@@ -393,7 +393,7 @@ figure.shot.missing::before {
     <p class="subhead">대답만 하는 AI 말고, 일을 끝내는 AI.<br>인천효성남초 양상경</p>
     <div class="cta">
       <a class="btn big" href="실습폴더.zip" download>실습 폴더 내려받기 ↓</a>
-      <a class="btn big gray" href="#s0">시작하기</a>
+      <a class="btn big gray" href="#flow">시작하기</a>
     </div>
     <p class="note">무료 계정은 사용 한도가 있어 중간에 멈출 수 있어요. 막히면 잠시 기다리거나 강사 화면을 보며 따라 보세요.</p>
     <p class="hint"><kbd>Enter</kbd> 또는 <kbd>→</kbd> 로 다음 장 · <kbd>F</kbd> 전체화면 · <kbd>T</kbd> 목차</p>
@@ -1261,8 +1261,7 @@ document.getElementById('next').onclick = () => go(cur + 1);
 // 목차: 모바일은 서랍, 데스크톱은 접기
 const open = v => document.body.classList.toggle('open', v);
 const desk = () => matchMedia('(min-width: 735px)').matches;
-const collapse = v => { document.body.classList.toggle('collapsed', v); save('ace-side', v ? '0' : '1'); };
-if (load('ace-side') === '0') collapse(true);
+const collapse = v => document.body.classList.toggle('collapsed', v);  // 열 때마다 목차는 보이게 시작
 document.getElementById('open-side').onclick = () => desk() ? collapse(false) : open(true);
 document.getElementById('close-side').onclick = () => desk() ? collapse(true) : open(false);
 document.getElementById('scrim').onclick = () => open(false);
