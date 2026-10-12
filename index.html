@@ -68,6 +68,10 @@ b { font-weight: 600; }
 #toc a.on { color: var(--ink); font-weight: 600; }
 #toc a.on .n { color: var(--accent); }
 #toc a.done::after { content: "✓"; margin-left: auto; color: var(--accent); font-size: 13px; }
+#toc .sub { list-style: none; margin: 0 0 6px; padding: 0 0 0 30px; }
+#toc .sub a { padding: 5px 12px; font-size: 13px; color: var(--soft); }
+#toc .sub a.on { color: var(--ink); font-weight: 600; }
+.toc-target { scroll-margin-top: 64px; }
 .icon-btn {
   width: 32px; height: 32px; border: 0; border-radius: 999px; background: var(--pill);
   color: var(--ink); cursor: pointer; font-size: 15px; line-height: 1; display: grid; place-items: center;
@@ -86,7 +90,7 @@ b { font-weight: 600; }
 #bar span { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 #scrim { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.32); z-index: 25; }
 
-main { margin-left: var(--side-w); }
+main { margin-left: var(--side-w); transition: margin-left .3s; }
 
 /* 섹션: 가운데 정렬 머리 + 980px 내용 */
 section { padding: 96px 24px 32px; max-width: 1028px; margin: 0 auto; }
@@ -257,7 +261,12 @@ footer { margin-left: var(--side-w); padding: 24px; text-align: center; font-siz
   .tree { flex-direction: column; }
   .tree .arrow { transform: rotate(90deg); }
 }
-@media (min-width: 735px) { #close-side { display: none; } }
+/* 데스크톱: 목차 접기 */
+@media (min-width: 735px) {
+  body.collapsed #side { transform: translateX(-100%); }
+  body.collapsed main, body.collapsed footer { margin-left: 0; }
+  body.collapsed #bar { display: flex; }
+}
 </style>
 </head>
 <body>
@@ -629,19 +638,55 @@ function setTheme(t) {
 document.querySelectorAll('#theme button').forEach(b => b.onclick = () => setTheme(b.dataset.theme));
 setTheme(load('ace-theme') || 'dark');
 
-// 모바일 서랍
+// 세부 목차: 섹션 안의 단계·프롬프트·타일 제목을 모아 붙인다
+document.querySelectorAll('#toc > li > a').forEach(a => {
+  const sec = document.querySelector(a.getAttribute('href'));
+  const items = sec ? [...sec.querySelectorAll('.steps h4, .prompt-card .label, .tile > h3, .tile > p.cap:first-child')] : [];
+  if (!items.length) return;
+  const ol = document.createElement('ol'); ol.className = 'sub';
+  items.forEach((el, i) => {
+    el.id = sec.id + '-' + (i + 1); el.classList.add('toc-target');
+    const no = el.querySelector('.no'), b = el.querySelector('b');
+    const li = document.createElement('li'), sa = document.createElement('a');
+    sa.href = '#' + el.id;
+    sa.textContent = no && b ? no.textContent + ' ' + b.textContent : el.textContent;
+    li.appendChild(sa); ol.appendChild(li);
+  });
+  a.parentNode.appendChild(ol);
+});
+
+// 목차: 모바일은 서랍, 데스크톱은 접기
 const open = v => document.body.classList.toggle('open', v);
-document.getElementById('open-side').onclick = () => open(true);
-document.getElementById('close-side').onclick = () => open(false);
+const desk = () => matchMedia('(min-width: 735px)').matches;
+const collapse = v => { document.body.classList.toggle('collapsed', v); save('ace-side', v ? '0' : '1'); };
+if (load('ace-side') === '0') collapse(true);
+document.getElementById('open-side').onclick = () => desk() ? collapse(false) : open(true);
+document.getElementById('close-side').onclick = () => desk() ? collapse(true) : open(false);
 document.getElementById('scrim').onclick = () => open(false);
 document.querySelectorAll('#toc a').forEach(a => a.addEventListener('click', () => open(false)));
 
 // 지금 보는 섹션 표시
 const links = [...document.querySelectorAll('#toc a')];
 const io = new IntersectionObserver(es => es.forEach(e => {
-  if (e.isIntersecting) links.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id));
+  if (!e.isIntersecting) return;
+  const sub = e.target.classList.contains('toc-target');
+  links.filter(a => !!a.closest('.sub') === sub).forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id));
 }), { rootMargin: '-45% 0px -50% 0px' });
 links.forEach(a => { const s = document.querySelector(a.getAttribute('href')); if (s) io.observe(s); });
+
+// 키보드: Enter 다음 / Shift+Enter 이전, F 전체화면
+const targets = links.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+document.addEventListener('keydown', e => {
+  if (e.ctrlKey || e.metaKey || e.altKey || e.target.closest('button, input, textarea, select, label') || (e.target.closest('a') && !e.target.closest('#toc'))) return;
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    const tops = targets.map(t => t.getBoundingClientRect().top - parseFloat(getComputedStyle(t).scrollMarginTop || 0));
+    const i = e.shiftKey ? tops.map(t => t < -5).lastIndexOf(true) : tops.findIndex(t => t > 5);
+    if (i >= 0) targets[i].scrollIntoView({ behavior: 'smooth' });
+  } else if (e.key === 'f' || e.key === 'F' || e.key === 'ㄹ') {
+    document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+  }
+});
 
 // 복사
 document.querySelectorAll('[data-copy]').forEach(btn => {
