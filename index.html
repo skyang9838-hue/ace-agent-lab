@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ko" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,281 +7,454 @@
 <meta name="description" content="ACE 연구회 AI TED · 나만의 AI Agent 업무 비서 만들기 실습 페이지">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
+/* insane-design apple/design.md 토큰 — 발표 디자인 예시와 같은 값. 웹 크기(17px 본문)로 */
 :root {
-  --font: "Pretendard", -apple-system, "SF Pro Text", "Apple SD Gothic Neo", "Malgun Gothic", "Helvetica Neue", Arial, sans-serif;
-  --mono: ui-monospace, "Cascadia Mono", Consolas, "D2Coding", monospace;
+  --font: "SF Pro Display", "SF Pro Text", -apple-system, "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", "Helvetica Neue", Arial, sans-serif;
+  --blue: #0071E3;
+  --side-w: 260px;
+}
+:root[data-theme="light"] {
   --bg: #F5F5F7; --bg-alt: #FFFFFF;
   --tile: #FFFFFF; --tile-alt: #F5F5F7;
   --ink: #1D1D1F; --muted: #6E6E73; --soft: #86868B;
-  --accent: #0071E3; --accent-ink: #FFFFFF; --link: #0066CC;
+  --accent: #0071E3; --link: #0066CC;
   --chip: #E8E8ED; --chip-ink: #424245;
   --hairline: rgba(0,0,0,.16);
+  --side: #FAFAFC; --side-hover: #E8E8ED;
   --pill: rgba(210,210,215,.64);
-  --ok: #1E8E3E; --ok-bg: #E6F4EA;
-  --warn: #B25E00; --warn-bg: #FFF4E5;
-  --bar: rgba(245,245,247,.86);
+  --bar: rgba(250,250,252,.8);
   color-scheme: light;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #000000; --bg-alt: #161617;
-    --tile: #1D1D1F; --tile-alt: #161617;
-    --ink: #F5F5F7; --muted: rgba(255,255,255,.64); --soft: rgba(255,255,255,.5);
-    --accent: #2997FF; --accent-ink: #000000; --link: #2997FF;
-    --chip: #333336; --chip-ink: #D2D2D7;
-    --hairline: rgba(255,255,255,.16);
-    --pill: rgba(51,51,54,.72);
-    --ok: #5BD27A; --ok-bg: rgba(91,210,122,.12);
-    --warn: #FFB65C; --warn-bg: rgba(255,182,92,.12);
-    --bar: rgba(0,0,0,.82);
-    color-scheme: dark;
-  }
 }
 :root[data-theme="dark"] {
   --bg: #000000; --bg-alt: #161617;
   --tile: #1D1D1F; --tile-alt: #161617;
-  --ink: #F5F5F7; --muted: rgba(255,255,255,.64); --soft: rgba(255,255,255,.5);
-  --accent: #2997FF; --accent-ink: #000000; --link: #2997FF;
+  --ink: #F5F5F7; --muted: rgba(255,255,255,.56); --soft: rgba(255,255,255,.48);
+  --accent: #2997FF; --link: #2997FF;
   --chip: #333336; --chip-ink: #D2D2D7;
   --hairline: rgba(255,255,255,.16);
+  --side: #161617; --side-hover: #272729;
   --pill: rgba(51,51,54,.72);
-  --ok: #5BD27A; --ok-bg: rgba(91,210,122,.12);
-  --warn: #FFB65C; --warn-bg: rgba(255,182,92,.12);
-  --bar: rgba(0,0,0,.82);
+  --bar: rgba(22,22,23,.8);
   color-scheme: dark;
 }
-
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 72px; -webkit-text-size-adjust: 100%; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 body {
   margin: 0; background: var(--bg); color: var(--ink);
-  font: 400 17px/1.65 var(--font); -webkit-font-smoothing: antialiased;
-  word-break: keep-all; overflow-wrap: anywhere;
+  font: 400 17px/1.47059 var(--font); letter-spacing: 0;
+  -webkit-font-smoothing: antialiased; word-break: keep-all; overflow-wrap: anywhere;
+  transition: background .3s;
 }
-a { color: var(--link); }
-.wrap { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+a { color: var(--link); text-decoration: none; }
+a:hover { text-decoration: underline; }
+b { font-weight: 600; }
 
-/* 머리 */
-header { padding: 40px 0 24px; }
-.eyebrow { font-size: 14px; font-weight: 600; color: var(--soft); margin: 0 0 8px; }
-h1 { font-size: clamp(30px, 8vw, 44px); line-height: 1.2; letter-spacing: -.02em; margin: 0 0 12px; }
-.lead { font-size: 18px; color: var(--muted); margin: 0 0 24px; }
-.download {
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-  min-height: 60px; padding: 14px 20px; border-radius: 16px;
-  background: var(--accent); color: var(--accent-ink); text-decoration: none;
-  font-size: 19px; font-weight: 700;
+/* 목차 사이드바: Apple localnav처럼 작고 조용하게 */
+#side {
+  position: fixed; top: 0; left: 0; bottom: 0; width: var(--side-w);
+  background: var(--side); border-right: 1px solid var(--hairline);
+  display: flex; flex-direction: column; padding: 20px 12px; z-index: 30;
+  transition: transform .3s ease, background .3s;
 }
-.download small { display: block; font-weight: 400; font-size: 14px; opacity: .85; }
-.note {
-  margin: 16px 0 0; padding: 12px 16px; border-radius: 12px;
-  background: var(--warn-bg); color: var(--ink); font-size: 15px;
+.side-head { display: flex; align-items: center; justify-content: space-between; padding: 0 8px 16px; min-height: 48px; }
+.side-head b { font-size: 12px; font-weight: 600; color: var(--soft); letter-spacing: .02em; }
+#toc { list-style: none; margin: 0; padding: 0; flex: 1; overflow-y: auto; }
+#toc a {
+  display: flex; gap: 12px; align-items: baseline; padding: 11px 12px; border-radius: 10px;
+  font-size: 15px; line-height: 1.35; color: var(--muted); text-decoration: none;
 }
+#toc a:hover { background: var(--side-hover); }
+#toc .n { font-size: 12px; color: var(--soft); width: 18px; flex: none; }
+#toc a.on { color: var(--ink); font-weight: 600; }
+#toc a.on .n { color: var(--accent); }
+#toc a.done::after { content: "✓"; margin-left: auto; color: var(--accent); font-size: 13px; }
+.icon-btn {
+  width: 32px; height: 32px; border: 0; border-radius: 999px; background: var(--pill);
+  color: var(--ink); cursor: pointer; font-size: 15px; line-height: 1; display: grid; place-items: center;
+}
+#theme { margin: 12px 8px 4px; display: flex; background: var(--pill); border-radius: 999px; padding: 3px; }
+#theme button { flex: 1; border: 0; border-radius: 999px; padding: 8px 0; background: none; cursor: pointer; font: 400 13px/1 var(--font); color: var(--muted); }
+#theme button.on { background: var(--bg-alt); color: var(--ink); font-weight: 600; }
 
-/* 목차 칩 */
-nav.toc {
-  position: sticky; top: 0; z-index: 10;
-  background: var(--bar); -webkit-backdrop-filter: saturate(180%) blur(16px); backdrop-filter: saturate(180%) blur(16px);
+/* 모바일 위 막대 (사이드바가 숨을 때만) */
+#bar {
+  display: none; position: sticky; top: 0; z-index: 20; height: 48px;
+  align-items: center; gap: 12px; padding: 0 16px;
+  background: var(--bar); -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px);
   border-bottom: 1px solid var(--hairline);
 }
-.toc-row { display: flex; align-items: center; gap: 8px; max-width: 760px; margin: 0 auto; padding: 10px 16px; }
-.chips { display: flex; gap: 8px; overflow-x: auto; flex: 1; min-width: 0; scrollbar-width: none; }
-.chips::-webkit-scrollbar { display: none; }
-.chips a {
-  flex: none; padding: 9px 14px; border-radius: 999px; background: var(--chip); color: var(--chip-ink);
-  text-decoration: none; font-size: 15px; font-weight: 600; white-space: nowrap;
-}
-.chips a.done::after { content: " ✓"; color: var(--ok); }
-#theme-btn {
-  flex: none; width: 44px; height: 44px; border: 0; border-radius: 999px; background: var(--pill);
-  color: var(--ink); font-size: 19px; cursor: pointer;
-}
+#bar span { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#scrim { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.32); z-index: 25; }
 
-/* 섹션 */
-section { padding: 36px 0 8px; }
-h2 { font-size: 27px; line-height: 1.3; letter-spacing: -.01em; margin: 0 0 6px; }
-.tag { display: inline-block; font-size: 13px; font-weight: 700; padding: 3px 10px; border-radius: 999px; background: var(--chip); color: var(--chip-ink); vertical-align: middle; margin-left: 6px; }
-.tag.do { background: var(--accent); color: var(--accent-ink); }
-h3 { font-size: 18px; margin: 24px 0 8px; }
-h3 .n { color: var(--accent); margin-right: 6px; }
-.card { background: var(--tile); border-radius: 18px; padding: 20px; margin: 16px 0; }
-.situation { color: var(--muted); }
-ol, ul { padding-left: 22px; margin: 8px 0; }
-li { margin: 6px 0; }
+main { margin-left: var(--side-w); }
+
+/* 섹션: 가운데 정렬 머리 + 980px 내용 */
+section { padding: 96px 24px 32px; max-width: 1028px; margin: 0 auto; }
+.head { text-align: center; margin: 0 auto 56px; max-width: 820px; }
+.eyebrow { font-size: 21px; font-weight: 600; color: var(--muted); margin: 0 0 8px; }
+.display { font-size: 56px; font-weight: 600; line-height: 1.07143; letter-spacing: -0.022em; margin: 0; }
+.headline { font-size: 48px; font-weight: 600; line-height: 1.08349; letter-spacing: -0.022em; margin: 0; }
+.subhead { font-size: 21px; font-weight: 400; line-height: 1.381; letter-spacing: .011em; color: var(--muted); margin: 16px 0 0; }
+.accent { color: var(--accent); }
+.badge { display: inline-block; margin-top: 20px; font-size: 14px; font-weight: 600; padding: 6px 14px; border-radius: 980px; background: var(--chip); color: var(--chip-ink); }
+.badge.blue { background: var(--blue); color: #fff; }
+
+/* 표지 */
+.hero { min-height: 92vh; display: grid; place-items: center; text-align: center; padding-top: 64px; }
+.hero .display { font-size: 72px; line-height: 1.05; }
+.cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin-top: 36px; }
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 44px; padding: 11px 21px; border: 0; border-radius: 980px;
+  background: var(--blue); color: #fff; font: 400 17px/1.17648 var(--font); cursor: pointer;
+  text-decoration: none; transition: background .2s;
+}
+.btn:hover { background: #0077ED; text-decoration: none; }
+.btn.big { min-height: 56px; padding: 16px 32px; font-size: 19px; }
+.btn.gray { background: var(--chip); color: var(--chip-ink); }
+.link-chev::after { content: " ›"; }
+.note { margin: 28px auto 0; max-width: 560px; font-size: 14px; color: var(--soft); }
+
+/* 타일 */
+.tile { background: var(--tile); border-radius: 18px; padding: 40px; transition: background .3s; }
+.tile + .tile, .tile + .grid2, .grid2 + .tile { margin-top: 24px; }
+.tile h3 { font-size: 28px; font-weight: 600; line-height: 1.14; letter-spacing: -0.016em; margin: 0 0 8px; }
+.tile .cap { font-size: 17px; color: var(--muted); margin: 0 0 24px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+/* 오늘의 흐름 */
+.grid6 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.step { background: var(--tile); border-radius: 18px; padding: 28px 24px 24px; display: flex; flex-direction: column; min-height: 220px; color: var(--ink); text-decoration: none; transition: background .3s; }
+.step:hover { text-decoration: none; }
+.step .no { font-size: 14px; font-weight: 600; color: var(--accent); }
+.step .icon { font-size: 44px; margin: 20px 0 auto; filter: drop-shadow(3px 5px 30px rgba(0,0,0,.22)); }
+.step h4 { font-size: 24px; font-weight: 600; letter-spacing: -0.016em; margin: 20px 0 2px; }
+.step p { font-size: 15px; color: var(--muted); margin: 0; }
+.step.must { outline: 2px solid var(--accent); outline-offset: -2px; }
+
+/* 챗봇 vs 에이전트 */
+.flow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.chip { font-size: 15px; padding: 8px 14px; border-radius: 980px; background: var(--chip); color: var(--chip-ink); white-space: nowrap; }
+.chip.blue { background: var(--blue); color: #fff; }
+.arrow { color: var(--soft); }
+
+/* 준비 단계 */
+.steps { list-style: none; margin: 0; padding: 0; counter-reset: s; }
+.steps > li { counter-increment: s; display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 0 16px; padding: 28px 0; border-top: 1px solid var(--hairline); }
+.steps > li:first-child { border-top: 0; padding-top: 0; }
+.steps > li::before { content: counter(s); grid-row: span 2; width: 32px; height: 32px; border-radius: 999px; background: var(--chip); color: var(--chip-ink); display: grid; place-items: center; font-size: 15px; font-weight: 600; }
+.steps h4 { font-size: 21px; font-weight: 600; margin: 2px 0 6px; }
+.steps p { margin: 0 0 8px; color: var(--muted); }
+.steps p b { color: var(--ink); }
+
+/* 파일 줄 */
+.file { display: flex; align-items: center; gap: 20px; padding: 18px 0; border-top: 1px solid var(--hairline); color: var(--ink); }
+.file:hover { text-decoration: none; }
+.file:first-of-type { border-top: 0; padding-top: 0; }
+.file .ext { width: 52px; height: 52px; border-radius: 12px; background: #1F7A45; color: #fff; display: grid; place-items: center; font-size: 13px; font-weight: 600; flex: none; }
+.file .ext.md { background: var(--chip); color: var(--chip-ink); }
+.file .name { font-size: 17px; font-weight: 600; }
+.file .sub { font-size: 14px; color: var(--muted); }
 
 /* 프롬프트 */
-.prompt { position: relative; margin: 12px 0; border: 1px solid var(--hairline); border-radius: 14px; background: var(--tile-alt); overflow: hidden; }
-.prompt-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 8px 0 14px; }
-.prompt-head b { font-size: 14px; color: var(--accent); }
-.prompt pre {
-  margin: 0; padding: 8px 14px 14px; white-space: pre-wrap; word-break: keep-all; overflow-wrap: anywhere;
-  font: 500 17px/1.6 var(--font); color: var(--ink);
+.prompts { display: grid; gap: 20px; }
+.prompt-card { background: var(--tile); border-radius: 18px; padding: 28px 32px; }
+.prompt-card .label { display: flex; align-items: baseline; gap: 10px; margin: 0 0 14px; }
+.prompt-card .label .no { font-size: 14px; font-weight: 600; color: var(--accent); }
+.prompt-card .label b { font-size: 19px; }
+.prompt-card .label .tag { margin-left: auto; font-size: 12px; font-weight: 600; padding: 4px 10px; border-radius: 980px; background: var(--chip); color: var(--chip-ink); }
+.prompt {
+  font: 400 19px/1.55 var(--font); background: var(--tile-alt); color: var(--ink);
+  border-radius: 14px; padding: 22px 24px; margin: 0 0 18px; white-space: pre-wrap; overflow-wrap: anywhere;
 }
-.copy {
-  min-width: 84px; min-height: 40px; border: 0; border-radius: 999px; background: var(--accent); color: var(--accent-ink);
-  font: 700 15px/1 var(--font); cursor: pointer; padding: 0 14px;
-}
-.copy.ok { background: var(--ok); color: #fff; }
+.copied { font-size: 15px; color: #03A10E; margin-left: 12px; opacity: 0; transition: opacity .3s; }
+.copied.show { opacity: 1; }
 
-/* 성공·막히면 */
-.box { border-radius: 14px; padding: 14px 16px; margin: 12px 0; }
-.box > b:first-child { display: block; margin-bottom: 4px; }
-.box.ok { background: var(--ok-bg); }
-.box.ok > b:first-child { color: var(--ok); }
-.box.stuck { background: var(--warn-bg); }
-.box.stuck > b:first-child { color: var(--warn); }
-.answer { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 10px 0 4px; }
-.answer div { background: var(--tile); border-radius: 12px; padding: 10px 8px; text-align: center; }
-.answer span { display: block; font-size: 13px; color: var(--muted); }
-.answer strong { display: block; font-size: clamp(15px, 4.4vw, 21px); font-variant-numeric: tabular-nums; }
+/* 성공 · 막히면 */
+.result { text-align: center; }
+.result .cap { margin-bottom: 8px; }
+.nums { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 24px 0 8px; }
+.nums span { display: block; font-size: 15px; color: var(--muted); }
+.nums strong { display: block; font-size: 40px; font-weight: 600; letter-spacing: -0.022em; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.nums strong small { font-size: 21px; font-weight: 600; margin-left: 2px; }
+.result p { color: var(--muted); margin: 16px auto 0; max-width: 620px; }
+.result p b { color: var(--ink); }
+.stuck h3 { font-size: 21px; margin-bottom: 16px; }
+.stuck ul { list-style: none; margin: 0; padding: 0; }
+.stuck li { padding: 14px 0; border-top: 1px solid var(--hairline); color: var(--muted); }
+.stuck li:first-child { border-top: 0; padding-top: 0; }
+.stuck li b { color: var(--ink); display: block; }
 
-/* 표 */
-table { width: 100%; border-collapse: collapse; font-size: 15px; table-layout: fixed; }
-th, td { text-align: left; padding: 10px 8px; border-bottom: 1px solid var(--hairline); vertical-align: top; }
-th { font-size: 14px; color: var(--muted); font-weight: 600; }
-th:first-child, td:first-child { width: 32%; }
-
-/* 캡처 */
-figure.shot { margin: 16px 0; }
-figure.shot img { display: block; width: 100%; height: auto; border-radius: 14px; border: 1px solid var(--hairline); }
-figure.shot figcaption { font-size: 14px; color: var(--soft); margin-top: 6px; }
+/* 캡처: 제품 사진처럼 그림자 */
+figure.shot { margin: 24px 0 0; min-width: 0; }
+figure.shot img { display: block; width: 100%; height: auto; border-radius: 12px; filter: drop-shadow(3px 5px 30px rgba(0,0,0,.22)); }
+figure.shot figcaption { font-size: 14px; color: var(--soft); margin-top: 12px; text-align: center; }
 figure.shot.missing img { display: none; }
 figure.shot.missing::before {
   content: "여기에 " attr(data-label) " 화면 캡처";
   display: flex; align-items: center; justify-content: center; text-align: center;
-  min-height: 160px; padding: 16px; border: 2px dashed var(--hairline); border-radius: 14px;
-  color: var(--soft); font-size: 15px;
+  min-height: 200px; padding: 16px; border: 1.5px dashed var(--hairline); border-radius: 12px;
+  background: var(--tile-alt); color: var(--soft); font-size: 15px;
 }
+.shots2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
 
 /* 미니 비서 구조 */
-.tree { display: grid; gap: 10px; margin: 16px 0; }
-.node { background: var(--tile-alt); border: 1px solid var(--hairline); border-radius: 14px; padding: 12px 14px; }
-.node code { font: 700 16px var(--mono); color: var(--accent); }
-.node p { margin: 4px 0 0; font-size: 15px; color: var(--muted); }
-.arrow { text-align: center; color: var(--soft); font-size: 20px; line-height: 1; }
-.subcards { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-.subcards span { background: var(--chip); color: var(--chip-ink); border-radius: 8px; padding: 4px 10px; font-size: 14px; }
+.tree { display: flex; align-items: stretch; gap: 12px; }
+.node { flex: 1; min-width: 0; background: var(--tile-alt); border-radius: 14px; padding: 20px; }
+.node code { font: 600 19px var(--font); color: var(--accent); }
+.node p { margin: 6px 0 0; font-size: 15px; color: var(--muted); }
+.tree .arrow { align-self: center; font-size: 21px; }
+.subcards { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+
+/* 표 */
+.def { width: 100%; border-collapse: collapse; }
+.def td { padding: 16px 0; border-top: 1px solid var(--hairline); vertical-align: top; }
+.def tr:first-child td { border-top: 0; }
+.def td:first-child { width: 34%; font-weight: 600; padding-right: 16px; }
+.def td:last-child { color: var(--muted); }
 
 /* 진행 체크 */
-.check { display: flex; align-items: center; gap: 12px; min-height: 52px; margin: 20px 0 0; padding: 8px 16px; border-radius: 14px; background: var(--tile); cursor: pointer; font-weight: 600; }
-.check input { width: 24px; height: 24px; accent-color: var(--ok); margin: 0; }
+.check { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; margin: 32px auto 0; cursor: pointer; color: var(--muted); font-size: 15px; }
+.check input { width: 20px; height: 20px; accent-color: var(--blue); margin: 0; }
 
-footer { padding: 40px 0 56px; color: var(--soft); font-size: 14px; }
-code { font-family: inherit; font-weight: 600; background: var(--chip); color: var(--chip-ink); border-radius: 6px; padding: 1px 6px; white-space: nowrap; }
-.node code { background: none; padding: 0; }
-.card > h3:first-child { margin-top: 0; }
-@media (max-width: 480px) {
-  .answer { grid-template-columns: 1fr; }
-  .answer div { display: flex; justify-content: space-between; align-items: baseline; padding: 10px 14px; text-align: left; }
-  .answer strong { font-size: 20px; }
+.end { text-align: center; padding: 120px 24px 96px; }
+.end .display { font-size: 64px; }
+footer { margin-left: var(--side-w); padding: 24px; text-align: center; font-size: 12px; color: var(--soft); border-top: 1px solid var(--hairline); }
+
+/* 태블릿 */
+@media (max-width: 1068px) {
+  .grid6 { grid-template-columns: repeat(2, 1fr); }
+  .hero .display { font-size: 56px; }
 }
+/* 모바일: 사이드바는 서랍으로 */
+@media (max-width: 734px) {
+  #side { transform: translateX(-100%); }
+  body.open #side { transform: none; }
+  body.open #scrim { display: block; }
+  #bar { display: flex; }
+  main, footer { margin-left: 0; }
+  section { padding: 64px 16px 24px; }
+  .head { margin-bottom: 36px; }
+  .eyebrow { font-size: 17px; }
+  .display, .end .display { font-size: 40px; }
+  .hero { min-height: auto; padding: 72px 16px 48px; }
+  .hero .display { font-size: 44px; }
+  .headline { font-size: 32px; line-height: 1.125; }
+  .subhead { font-size: 19px; }
+  .tile { padding: 24px 20px; }
+  .tile h3 { font-size: 24px; }
+  .grid2, .shots2 { grid-template-columns: minmax(0, 1fr); }
+  .grid6 { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .step { min-height: 170px; padding: 20px 16px; }
+  .step .icon { font-size: 34px; }
+  .step h4 { font-size: 19px; }
+  .prompt-card { padding: 20px; }
+  .prompt { font-size: 17px; padding: 18px; }
+  .nums { grid-template-columns: 1fr; gap: 12px; }
+  .nums div { display: flex; justify-content: space-between; align-items: baseline; }
+  .nums strong { font-size: 30px; }
+  .steps > li { grid-template-columns: 32px minmax(0, 1fr); gap: 0 12px; }
+  .tree { flex-direction: column; }
+  .tree .arrow { transform: rotate(90deg); }
+}
+@media (min-width: 735px) { #close-side { display: none; } }
 </style>
 </head>
 <body>
 
-<header class="wrap">
-  <p class="eyebrow">ACE 연구회 AI TED · 2026. 10. 16. Zoom · 강사 양상경 (인천효성남초)</p>
-  <h1>나만의 AI Agent<br>업무 비서 만들기</h1>
-  <p class="lead">대답만 하는 챗봇 말고, 내 컴퓨터의 파일을 열고 만들고 고치는 AI에게 진짜 업무를 맡겨 봅니다.</p>
-  <a class="download" href="실습폴더.zip" download>⬇ 실습 폴더 내려받기<small>실습폴더.zip</small></a>
-  <p class="note">무료 계정은 사용 한도가 있어 중간에 멈출 수 있어요. 막히면 잠시 기다리거나 강사 화면을 보며 따라 보세요.</p>
-</header>
-
-<nav class="toc" aria-label="단계 목차">
-  <div class="toc-row">
-    <div class="chips">
-      <a href="#s0">준비</a>
-      <a href="#s1">① 챗봇 vs Agent</a>
-      <a href="#s2">② 친목회 결산</a>
-      <a href="#s3">③ MCP</a>
-      <a href="#s4">④ 가격 채우기</a>
-      <a href="#s5">⑤ 미니 비서</a>
-      <a href="#s6">⑥ 마무리</a>
-    </div>
-    <button id="theme-btn" type="button" aria-label="낮/다크 모드 바꾸기">◐</button>
+<aside id="side" aria-label="목차">
+  <div class="side-head">
+    <b>목차</b>
+    <button class="icon-btn" id="close-side" type="button" aria-label="목차 닫기">‹</button>
   </div>
-</nav>
+  <ol id="toc">
+    <li><a href="#top"><span class="n">0</span><span>표지</span></a></li>
+    <li><a href="#flow"><span class="n">·</span><span>오늘의 흐름</span></a></li>
+    <li><a href="#s0"><span class="n">1</span><span>준비</span></a></li>
+    <li><a href="#s1"><span class="n">2</span><span>챗봇과 에이전트</span></a></li>
+    <li><a href="#s2"><span class="n">3</span><span>친목회 결산</span></a></li>
+    <li><a href="#s3"><span class="n">4</span><span>MCP</span></a></li>
+    <li><a href="#s4"><span class="n">5</span><span>가격 채우기</span></a></li>
+    <li><a href="#s5"><span class="n">6</span><span>미니 비서</span></a></li>
+    <li><a href="#s6"><span class="n">7</span><span>마무리</span></a></li>
+  </ol>
+  <div id="theme">
+    <button type="button" data-theme="light">☀ 낮</button>
+    <button type="button" data-theme="dark">☾ 다크</button>
+  </div>
+</aside>
+<div id="scrim"></div>
 
-<main class="wrap">
+<div id="bar">
+  <button class="icon-btn" id="open-side" type="button" aria-label="목차 열기">☰</button>
+  <span>나만의 AI Agent 업무 비서</span>
+</div>
+
+<main>
+
+<!-- 표지 -->
+<section class="hero" id="top">
+  <div>
+    <p class="eyebrow">ACE AI TED · 10월 16일</p>
+    <h1 class="display">나만의<br><span class="accent">AI Agent</span> 업무 비서<br>만들기</h1>
+    <p class="subhead">대답만 하는 AI 말고, 일을 끝내는 AI.<br>인천효성남초 양상경</p>
+    <div class="cta">
+      <a class="btn big" href="실습폴더.zip" download>실습 폴더 내려받기 ↓</a>
+      <a class="btn big gray" href="#s0">시작하기</a>
+    </div>
+    <p class="note">무료 계정은 사용 한도가 있어 중간에 멈출 수 있어요. 막히면 잠시 기다리거나 강사 화면을 보며 따라 보세요.</p>
+  </div>
+</section>
+
+<!-- 오늘의 흐름 -->
+<section id="flow">
+  <div class="head">
+    <p class="eyebrow">오늘의 흐름</p>
+    <h2 class="headline">여섯 걸음.</h2>
+  </div>
+  <div class="grid6">
+    <a class="step" href="#s1"><span class="no">01</span><span class="icon">💬</span><h4>챗봇과 에이전트</h4><p>무엇이 다른가</p></a>
+    <a class="step must" href="#s2"><span class="no">02 · 모두 함께</span><span class="icon">📊</span><h4>친목회 결산</h4><p>파일을 읽고 보고서로</p></a>
+    <a class="step" href="#s3"><span class="no">03 · 시연</span><span class="icon">🔌</span><h4>MCP</h4><p>한글 문서 만들기</p></a>
+    <a class="step" href="#s4"><span class="no">04 · 도전</span><span class="icon">🌐</span><h4>가격 채우기</h4><p>브라우저로 검색</p></a>
+    <a class="step" href="#s5"><span class="no">05 · 도전</span><span class="icon">🗂️</span><h4>미니 비서</h4><p>파일로 기억하기</p></a>
+    <a class="step" href="#s6"><span class="no">06</span><span class="icon">✨</span><h4>마무리</h4><p>프롬프트 · 주의할 점</p></a>
+  </div>
+</section>
 
 <!-- 준비 -->
 <section id="s0">
-  <h2>준비</h2>
-  <div class="card">
-    <h3><span class="n">1</span>Codex 앱 받기</h3>
-    <p><a id="codex-link" href="https://openai.com/ko-KR/codex/" target="_blank" rel="noopener">Codex 다운로드 페이지 열기 ↗</a> → 「Windows 버전 다운로드」를 눌러 설치합니다 (Microsoft Store로 열려요).</p>
-    <figure class="shot" data-label="Codex 다운로드 페이지">
-      <img src="captures/web-codex-download.png" alt="Codex 다운로드 페이지" onerror="this.parentNode.classList.add('missing')">
-    </figure>
-
-    <h3><span class="n">2</span>ChatGPT 계정으로 로그인</h3>
-    <p>무료 ChatGPT 계정으로 로그인하면 됩니다.</p>
-    <figure class="shot" data-label="Codex 앱 로그인">
-      <img src="captures/app-01-login.png" alt="Codex 앱 로그인 화면" onerror="this.parentNode.classList.add('missing')">
-    </figure>
-
-    <h3><span class="n">3</span>실습 폴더 받아 압축 풀기</h3>
-    <p>위의 <b>실습 폴더 내려받기</b>를 누르고, 받은 <code>실습폴더.zip</code>을 <b>바탕화면</b>에 압축 풉니다.</p>
-
-    <h3><span class="n">4</span>앱에서 '실습폴더' 열기</h3>
-    <p>Codex 앱에서 바탕화면의 <b>실습폴더</b>를 엽니다. AI에게 "여기가 네 작업 공간이야" 하고 정해 주는 단계예요. AI는 이 폴더 안의 파일만 다룹니다.</p>
-    <figure class="shot" data-label="폴더 열기">
-      <img src="captures/app-02-open-folder.png" alt="Codex 앱에서 폴더 여는 화면" onerror="this.parentNode.classList.add('missing')">
-    </figure>
-    <figure class="shot" data-label="첫 프롬프트 입력">
-      <img src="captures/app-03-first-prompt.png" alt="첫 프롬프트를 입력하는 화면" onerror="this.parentNode.classList.add('missing')">
-    </figure>
+  <div class="head">
+    <p class="eyebrow">준비</p>
+    <h2 class="headline">설치하고, 받고, 열기.</h2>
+  </div>
+  <div class="tile">
+    <ol class="steps">
+      <li>
+        <div>
+          <h4>Codex 앱 받기</h4>
+          <p><a id="codex-link" class="link-chev" href="https://openai.com/ko-KR/codex/" target="_blank" rel="noopener">Codex 다운로드 페이지 열기</a><br>「Windows 버전 다운로드」를 눌러 설치합니다. Microsoft Store로 열려요.</p>
+        </div>
+        <figure class="shot" data-label="Codex 다운로드 페이지">
+          <img src="captures/web-codex-download.png" alt="Codex 다운로드 페이지" onerror="this.parentNode.classList.add('missing')">
+        </figure>
+      </li>
+      <li>
+        <div>
+          <h4>ChatGPT 계정으로 로그인</h4>
+          <p>무료 ChatGPT 계정으로 로그인하면 됩니다.</p>
+        </div>
+        <figure class="shot" data-label="Codex 앱 로그인">
+          <img src="captures/app-01-login.png" alt="Codex 앱 로그인 화면" onerror="this.parentNode.classList.add('missing')">
+        </figure>
+      </li>
+      <li>
+        <div>
+          <h4>실습 폴더 받아 압축 풀기</h4>
+          <p>받은 <b>실습폴더.zip</b>을 <b>바탕화면</b>에 압축 풉니다.</p>
+          <p><a class="btn" href="실습폴더.zip" download>실습 폴더 내려받기 ↓</a></p>
+        </div>
+      </li>
+      <li>
+        <div>
+          <h4>앱에서 '실습폴더' 열기</h4>
+          <p>AI에게 <b>"여기가 네 작업 공간이야"</b> 하고 정해 주는 단계예요. AI는 이 폴더 안의 파일만 다룹니다.</p>
+        </div>
+        <div class="shots2">
+          <figure class="shot" data-label="폴더 열기">
+            <img src="captures/app-02-open-folder.png" alt="Codex 앱에서 폴더 여는 화면" onerror="this.parentNode.classList.add('missing')">
+          </figure>
+          <figure class="shot" data-label="첫 프롬프트 입력">
+            <img src="captures/app-03-first-prompt.png" alt="첫 프롬프트를 입력하는 화면" onerror="this.parentNode.classList.add('missing')">
+          </figure>
+        </div>
+      </li>
+    </ol>
+  </div>
+  <div class="tile">
+    <p class="cap" style="margin-bottom:16px">실습폴더 안에 있는 것</p>
+    <a class="file" href="실습폴더.zip" download><span class="ext">XLSX</span><span><span class="name">가온초 친목회</span><br><span class="sub">3~10월 친목회 통장 내역</span></span></a>
+    <a class="file" href="실습폴더.zip" download><span class="ext md">MD</span><span><span class="name">친목회 상황 메모</span><br><span class="sub">결산 보고를 하게 된 사정</span></span></a>
+    <a class="file" href="실습폴더.zip" download><span class="ext">XLSX</span><span><span class="name">학습준비물 빈 양식</span><br><span class="sub">품목·수량만 있고 가격은 빈칸</span></span></a>
+    <a class="file" href="실습폴더.zip" download><span class="ext md">DIR</span><span><span class="name">미니 비서</span><br><span class="sub">AGENTS.md · HOME.md · 카드 3장</span></span></a>
   </div>
   <label class="check"><input type="checkbox" data-step="s0"> 준비 끝</label>
 </section>
 
 <!-- ① -->
 <section id="s1">
-  <h2>① 챗봇 vs Agent</h2>
-  <p>챗봇은 <b>대답만</b> 합니다. Agent는 내 컴퓨터의 파일을 열고, 만들고, 고치고, 브라우저를 눌러 가며 <b>일을 끝까지</b> 합니다.</p>
-  <div class="card">
-    <table>
-      <thead><tr><th></th><th>챗봇</th><th>Agent</th></tr></thead>
-      <tbody>
-        <tr><td>하는 일</td><td>질문에 답하기</td><td>일을 맡아 끝내기</td></tr>
-        <tr><td>파일</td><td>내가 붙여 넣어야 봄</td><td>폴더에서 직접 열고 저장</td></tr>
-        <tr><td>결과</td><td>답변 글</td><td>완성된 파일</td></tr>
-        <tr><td>웹</td><td>아는 것만 말함</td><td>브라우저로 찾아봄</td></tr>
-      </tbody>
-    </table>
+  <div class="head">
+    <p class="eyebrow">챗봇과 에이전트</p>
+    <h2 class="headline">묻고 답하는 AI에서<br>일을 이어서 하는 AI로.</h2>
+  </div>
+  <div class="grid2">
+    <div class="tile">
+      <h3>챗봇</h3>
+      <p class="cap">답을 준다. 나머지는 내가 한다.</p>
+      <div class="flow"><span class="chip">질문</span><span class="arrow">→</span><span class="chip">답</span></div>
+    </div>
+    <div class="tile">
+      <h3>AI Agent</h3>
+      <p class="cap">직접 찾고, 만들고, 이어서 한다.</p>
+      <div class="flow">
+        <span class="chip">부탁</span><span class="arrow">→</span>
+        <span class="chip blue">파일 읽기</span><span class="arrow">→</span>
+        <span class="chip blue">새 파일 만들기</span><span class="arrow">→</span>
+        <span class="chip blue">검산</span>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- ② -->
 <section id="s2">
-  <h2>② 친목회 결산 <span class="tag do">모두 함께</span></h2>
-  <p class="situation">상황: 나는 가온초 친목회 총무. 10월 협의회에서 중간 결산을 보고해야 한다.</p>
-
-  <h3>할 일</h3>
-  <p>'실습폴더'를 연 상태에서 아래 프롬프트를 <b>하나씩 차례로</b> 붙여 넣습니다. 앞 단계 답이 끝난 뒤 다음 걸 넣으세요.</p>
-
-  <div class="prompt"><div class="prompt-head"><b>P2-1 · 살펴보기</b><button class="copy" type="button">복사</button></div><pre>이 폴더에 어떤 파일이 있는지 살펴보고, 각 파일이 무엇인지 한 줄씩 알려 줘. 아직 아무것도 고치지 마.</pre></div>
-  <div class="prompt"><div class="prompt-head"><b>P2-2 · 보고서 만들기</b><button class="copy" type="button">복사</button></div><pre>'가온초 친목회.xlsx'와 '친목회 상황 메모.md'를 읽고 10월 협의회에서 보고할 친목회 중간 결산 보고서를 만들어 줘. 수입·지출·잔액 합계, 지출을 항목별(경조사, 식대, 다과, 선물, 기타)로 묶은 표, 눈에 띄는 점 2~3줄을 넣어서 '친목회 결산 보고서.md'로 저장해 줘.</pre></div>
-  <div class="prompt"><div class="prompt-head"><b>P2-3 · 검산</b><button class="copy" type="button">복사</button></div><pre>보고서의 숫자가 엑셀 원본과 맞는지 직접 다시 계산해서 검산해 줘. 틀린 곳이 있으면 고쳐 줘.</pre></div>
-  <div class="prompt"><div class="prompt-head"><b>P2-4 · 도전: 엑셀에 결산 시트</b><button class="copy" type="button">복사</button></div><pre>같은 내용을 '가온초 친목회.xlsx'에 '결산'이라는 새 시트로 추가해 줘. 원래 시트는 건드리지 마.</pre></div>
-
-  <div class="box ok">
-    <b>이렇게 나오면 성공</b>
-    <div class="answer">
-      <div><span>수입</span><strong>3,860,000원</strong></div>
-      <div><span>지출</span><strong>1,516,000원</strong></div>
-      <div><span>잔액</span><strong>2,344,000원</strong></div>
-    </div>
-    <p>폴더에 <code>친목회 결산 보고서.md</code>가 새로 생깁니다. 앱 화면에서 Agent가 <b>파일을 읽고 → 계산하고 → 새 파일을 만드는</b> 과정을 직접 지켜보세요.</p>
+  <div class="head">
+    <p class="eyebrow">실습 1 · 친목회 결산</p>
+    <h2 class="headline">엑셀을 주면,<br>보고서가 나온다.</h2>
+    <p class="subhead">나는 가온초 친목회 총무. 10월 협의회에서 중간 결산을 보고해야 한다.</p>
+    <span class="badge blue">모두 함께</span>
   </div>
-  <figure class="shot" data-label="결산 보고서 결과">
-    <img src="captures/app-04-report.png" alt="Codex 앱에서 결산 보고서를 만든 화면" onerror="this.parentNode.classList.add('missing')">
-  </figure>
-  <div class="box stuck">
-    <b>막히면</b>
+
+  <div class="prompts">
+    <div class="prompt-card">
+      <p class="label"><span class="no">P2-1</span><b>살펴보기</b></p>
+      <pre class="prompt" id="p21">이 폴더에 어떤 파일이 있는지 살펴보고, 각 파일이 무엇인지 한 줄씩 알려 줘. 아직 아무것도 고치지 마.</pre>
+      <button class="btn" type="button" data-copy="p21">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
+    </div>
+    <div class="prompt-card">
+      <p class="label"><span class="no">P2-2</span><b>보고서 만들기</b></p>
+      <pre class="prompt" id="p22">'가온초 친목회.xlsx'와 '친목회 상황 메모.md'를 읽고 10월 협의회에서 보고할 친목회 중간 결산 보고서를 만들어 줘. 수입·지출·잔액 합계, 지출을 항목별(경조사, 식대, 다과, 선물, 기타)로 묶은 표, 눈에 띄는 점 2~3줄을 넣어서 '친목회 결산 보고서.md'로 저장해 줘.</pre>
+      <button class="btn" type="button" data-copy="p22">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
+    </div>
+    <div class="prompt-card">
+      <p class="label"><span class="no">P2-3</span><b>검산</b></p>
+      <pre class="prompt" id="p23">보고서의 숫자가 엑셀 원본과 맞는지 직접 다시 계산해서 검산해 줘. 틀린 곳이 있으면 고쳐 줘.</pre>
+      <button class="btn" type="button" data-copy="p23">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
+    </div>
+    <div class="prompt-card">
+      <p class="label"><span class="no">P2-4</span><b>엑셀에 결산 시트</b><span class="tag">도전</span></p>
+      <pre class="prompt" id="p24">같은 내용을 '가온초 친목회.xlsx'에 '결산'이라는 새 시트로 추가해 줘. 원래 시트는 건드리지 마.</pre>
+      <button class="btn" type="button" data-copy="p24">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
+    </div>
+  </div>
+
+  <div class="tile result" style="margin-top:24px">
+    <p class="cap">이렇게 나오면 성공</p>
+    <div class="nums">
+      <div><span>수입</span><strong>3,860,000<small>원</small></strong></div>
+      <div><span>지출</span><strong>1,516,000<small>원</small></strong></div>
+      <div><span>잔액</span><strong class="accent">2,344,000<small>원</small></strong></div>
+    </div>
+    <p>폴더에 <b>친목회 결산 보고서.md</b>가 새로 생깁니다. Agent가 파일을 읽고 → 계산하고 → 새 파일을 만드는 과정을 앱에서 지켜보세요.</p>
+    <figure class="shot" data-label="결산 보고서 결과">
+      <img src="captures/app-04-report.png" alt="Codex 앱에서 결산 보고서를 만든 화면" onerror="this.parentNode.classList.add('missing')">
+    </figure>
+  </div>
+  <div class="tile stuck">
+    <h3>막히면</h3>
     <ul>
-      <li><b>파일을 못 찾는다</b> → 앱에서 연 폴더가 '실습폴더'인지 확인하세요.</li>
-      <li><b>승인(허용) 창이 뜬다</b> → 무엇을 하려는지 읽어 보고 허용을 누르세요.</li>
+      <li><b>파일을 못 찾는다</b>앱에서 연 폴더가 '실습폴더'인지 확인하세요.</li>
+      <li><b>승인(허용) 창이 뜬다</b>무엇을 하려는지 읽어 보고 허용을 누르세요.</li>
     </ul>
   </div>
   <label class="check"><input type="checkbox" data-step="s2"> 친목회 결산 끝</label>
@@ -289,36 +462,61 @@ code { font-family: inherit; font-weight: 600; background: var(--chip); color: v
 
 <!-- ③ -->
 <section id="s3">
-  <h2>③ MCP <span class="tag">시연</span></h2>
-  <p><b>MCP</b>는 AI에게 도구를 꽂아 주는 <b>플러그</b>입니다. 플러그를 꽂으면 AI가 원래 못 하던 일을 할 수 있게 돼요.</p>
-  <p>강사가 한글(HWP) 파일을 만드는 도구(KorDoc)를 꽂아 시연합니다. <b>따라 하지 않아도 됩니다.</b> 화면만 보세요.</p>
+  <div class="head">
+    <p class="eyebrow">MCP</p>
+    <h2 class="headline">도구를 꽂으면,<br>할 수 있는 일이 는다.</h2>
+    <p class="subhead">MCP는 AI에게 도구를 꽂아 주는 플러그입니다.</p>
+    <span class="badge">시연</span>
+  </div>
+  <div class="tile" style="text-align:center">
+    <div class="flow" style="justify-content:center">
+      <span class="chip">AI Agent</span><span class="arrow">+</span><span class="chip blue">KorDoc 플러그</span><span class="arrow">→</span><span class="chip">한글(HWP) 문서</span>
+    </div>
+    <p class="cap" style="margin:20px 0 0">강사가 한글 파일 만들기를 시연합니다. 따라 하지 않아도 돼요.</p>
+  </div>
 </section>
 
 <!-- ④ -->
 <section id="s4">
-  <h2>④ 아이스크림몰 가격 채우기 <span class="tag">도전</span></h2>
-  <p class="situation">상황: 학습준비물 구입 양식의 단가·링크·금액 칸을 채워야 한다.</p>
-
-  <h3>할 일</h3>
-  <p>'실습폴더'를 연 상태에서 차례로 붙여 넣습니다. Agent가 브라우저를 직접 열어 검색하는 걸 볼 수 있어요.</p>
-  <div class="prompt"><div class="prompt-head"><b>P4-1 · 3개만 찾아 채우기</b><button class="copy" type="button">복사</button></div><pre>'학습준비물 빈 양식.xlsx'의 처음 3개 품목만 아이스크림몰에서 찾아 줘. 브라우저로 직접 검색해서 규격이 가장 비슷한 상품의 단가와 상품 링크를 칸에 넣고, 금액 칸에는 수량×단가 수식을 넣어 줘. 검색은 https://i-screammall.co.kr/search?searchWord=검색어 주소로 하면 돼. 가격이 '선생님 혜택가'로 가려진 상품은 건너뛰고 가격이 보이는 상품을 골라 줘. 장바구니에는 담지 마.</pre></div>
-  <div class="prompt"><div class="prompt-head"><b>P4-2 · 규격 확인</b><button class="copy" type="button">복사</button></div><pre>찾은 상품 중 규격이 양식과 다른 게 있으면 표시하고 이유를 알려 줘.</pre></div>
-
-  <div class="box ok">
-    <b>이렇게 나오면 성공</b>
-    <p>양식의 처음 3줄에 단가·상품 링크·금액(수식)이 채워집니다.</p>
+  <div class="head">
+    <p class="eyebrow">실습 2 · 가격 채우기</p>
+    <h2 class="headline">빈칸은 AI가<br>찾아서 채운다.</h2>
+    <p class="subhead">학습준비물 양식의 단가·링크·금액 칸이 비어 있다. Agent가 아이스크림몰을 직접 열어 검색한다.</p>
+    <span class="badge">도전</span>
   </div>
-  <figure class="shot" data-label="아이스크림몰 검색 결과">
-    <img src="captures/web-mall-search.png" alt="아이스크림몰 검색 결과 화면" onerror="this.parentNode.classList.add('missing')">
-  </figure>
-  <figure class="shot" data-label="아이스크림몰 상품 상세">
-    <img src="captures/web-mall-product.png" alt="아이스크림몰 상품 상세 화면" onerror="this.parentNode.classList.add('missing')">
-  </figure>
-  <div class="box stuck">
-    <b>막히면</b>
+
+  <div class="prompts">
+    <div class="prompt-card">
+      <p class="label"><span class="no">P4-1</span><b>3개만 찾아 채우기</b></p>
+      <pre class="prompt" id="p41">'학습준비물 빈 양식.xlsx'의 처음 3개 품목만 아이스크림몰에서 찾아 줘. 브라우저로 직접 검색해서 규격이 가장 비슷한 상품의 단가와 상품 링크를 칸에 넣고, 금액 칸에는 수량×단가 수식을 넣어 줘. 검색은 https://i-screammall.co.kr/search?searchWord=검색어 주소로 하면 돼. 가격이 '선생님 혜택가'로 가려진 상품은 건너뛰고 가격이 보이는 상품을 골라 줘. 장바구니에는 담지 마.</pre>
+      <button class="btn" type="button" data-copy="p41">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
+    </div>
+    <div class="prompt-card">
+      <p class="label"><span class="no">P4-2</span><b>규격 확인</b></p>
+      <pre class="prompt" id="p42">찾은 상품 중 규격이 양식과 다른 게 있으면 표시하고 이유를 알려 줘.</pre>
+      <button class="btn" type="button" data-copy="p42">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
+    </div>
+  </div>
+
+  <div class="tile result" style="margin-top:24px">
+    <p class="cap">이렇게 나오면 성공</p>
+    <p style="margin-top:0">양식의 처음 3줄에 <b>단가 · 상품 링크 · 금액(수식)</b>이 채워집니다.</p>
+    <div class="shots2">
+      <figure class="shot" data-label="아이스크림몰 검색 결과">
+        <img src="captures/web-mall-search.png" alt="아이스크림몰 검색 결과 화면" onerror="this.parentNode.classList.add('missing')">
+        <figcaption>검색 결과 — 대부분 가격이 보여요</figcaption>
+      </figure>
+      <figure class="shot" data-label="아이스크림몰 상품 상세">
+        <img src="captures/web-mall-product.png" alt="아이스크림몰 상품 상세 화면" onerror="this.parentNode.classList.add('missing')">
+        <figcaption>일부 상품은 「선생님 혜택가」로 가려져 있어요</figcaption>
+      </figure>
+    </div>
+  </div>
+  <div class="tile stuck">
+    <h3>막히면</h3>
     <ul>
-      <li><b>브라우저를 못 연다</b> → 프롬프트의 "브라우저로 직접 검색해서"를 <b>"웹 검색으로 찾아 줘"</b>로 바꿔 보세요.</li>
-      <li><b>가격 대신 「선생님 혜택가」가 보인다</b> → 로그인해야 보이는 상품이에요(아래 상세 화면처럼). 로그인하지 말고 다른 상품을 고르라고 하세요.</li>
+      <li><b>브라우저를 못 연다</b>프롬프트의 "브라우저로 직접 검색해서"를 "웹 검색으로 찾아 줘"로 바꿔 보세요.</li>
+      <li><b>가격 대신 「선생님 혜택가」가 보인다</b>로그인해야 보이는 상품이에요. 로그인하지 말고 다른 상품을 고르라고 하세요.</li>
     </ul>
   </div>
   <label class="check"><input type="checkbox" data-step="s4"> 가격 채우기 끝</label>
@@ -326,37 +524,56 @@ code { font-family: inherit; font-weight: 600; background: var(--chip); color: v
 
 <!-- ⑤ -->
 <section id="s5">
-  <h2>⑤ 미니 비서 <span class="tag">도전</span></h2>
-  <h3>할 일</h3>
-  <p>Codex 앱에서 '실습폴더' 안의 <b>'미니 비서'</b> 폴더를 <b>새로</b> 엽니다. 이 폴더는 이렇게 생겼어요.</p>
+  <div class="head">
+    <p class="eyebrow">실습 3 · 미니 비서</p>
+    <h2 class="headline">대화는 잊어도,<br>파일은 기억한다.</h2>
+    <p class="subhead">Codex 앱에서 실습폴더 안의 <b>'미니 비서'</b> 폴더를 새로 엽니다.</p>
+    <span class="badge">도전</span>
+  </div>
 
-  <div class="tree" aria-label="미니 비서 폴더 구조">
-    <div class="node"><code>AGENTS.md</code><p>앱이 폴더를 열면 자동으로 읽는 규칙 파일. "HOME.md부터 읽어라"</p></div>
-    <div class="arrow" aria-hidden="true">↓</div>
-    <div class="node"><code>HOME.md</code><p>오늘 할 일 · 카드 목록</p></div>
-    <div class="arrow" aria-hidden="true">↓</div>
-    <div class="node"><code>카드/</code><p>일마다 한 장씩</p>
-      <div class="subcards"><span>친목회 결산</span><span>학습준비물 구입</span><span>학부모 상담 주간</span></div>
+  <div class="tile">
+    <p class="cap" style="margin-bottom:16px">미니 비서 폴더는 이렇게 생겼어요</p>
+    <div class="tree">
+      <div class="node"><code>AGENTS.md</code><p>폴더를 열면 앱이 자동으로 읽는 규칙. "HOME.md부터 읽어라"</p></div>
+      <span class="arrow">→</span>
+      <div class="node"><code>HOME.md</code><p>내 소개 · 카드 목록</p></div>
+      <span class="arrow">→</span>
+      <div class="node"><code>카드/</code><p>일마다 한 장씩</p>
+        <div class="subcards"><span class="chip">친목회 결산</span><span class="chip">학습준비물 구입</span><span class="chip">학부모 상담 주간</span></div>
+      </div>
     </div>
   </div>
 
-  <div class="prompt"><div class="prompt-head"><b>P5-1 · 브리핑</b><button class="copy" type="button">복사</button></div><pre>오늘 뭐 해?</pre></div>
-  <div class="prompt"><div class="prompt-head"><b>P5-2 · 끝난 일 반영</b><button class="copy" type="button">복사</button></div><pre>친목회 결산 보고서 다 만들었어. 카드 고쳐 줘.</pre></div>
-  <div class="prompt"><div class="prompt-head"><b>P5-3 · 할 일 추가</b><button class="copy" type="button">복사</button></div><pre>다음 주 화요일까지 학부모 상담 시간표를 만들어야 해. 카드에 할 일로 추가해 줘.</pre></div>
-
-  <div class="box ok">
-    <b>이렇게 나오면 성공</b>
-    <p>"오늘 뭐 해?"에 카드를 읽고 할 일을 정리해 답하고, P5-2·P5-3 뒤에는 카드 파일 내용이 실제로 바뀝니다.</p>
-    <p><b>포인트</b>: 대화창은 닫으면 잊지만, 파일에 적어 두면 다음에도 기억합니다. 대신 가끔 정리해 줘야 해요.</p>
+  <div class="prompts" style="margin-top:24px">
+    <div class="prompt-card">
+      <p class="label"><span class="no">P5-1</span><b>브리핑</b></p>
+      <pre class="prompt" id="p51">오늘 뭐 해?</pre>
+      <button class="btn" type="button" data-copy="p51">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
+    </div>
+    <div class="prompt-card">
+      <p class="label"><span class="no">P5-2</span><b>끝난 일 반영</b></p>
+      <pre class="prompt" id="p52">친목회 결산 보고서 다 만들었어. 카드 고쳐 줘.</pre>
+      <button class="btn" type="button" data-copy="p52">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
+    </div>
+    <div class="prompt-card">
+      <p class="label"><span class="no">P5-3</span><b>할 일 추가</b></p>
+      <pre class="prompt" id="p53">다음 주 화요일까지 학부모 상담 시간표를 만들어야 해. 카드에 할 일로 추가해 줘.</pre>
+      <button class="btn" type="button" data-copy="p53">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
+    </div>
   </div>
-  <figure class="shot" data-label="미니 비서 대화">
-    <img src="captures/app-05-assistant.png" alt="미니 비서 폴더에서 대화하는 화면" onerror="this.parentNode.classList.add('missing')">
-  </figure>
-  <div class="box stuck">
-    <b>막히면</b>
+
+  <div class="tile result" style="margin-top:24px">
+    <p class="cap">이렇게 나오면 성공</p>
+    <p style="margin-top:0">"오늘 뭐 해?"에 카드를 읽고 할 일을 정리해 답하고, P5-2·P5-3 뒤에는 <b>카드 파일 내용이 실제로 바뀝니다.</b></p>
+    <figure class="shot" data-label="미니 비서 대화">
+      <img src="captures/app-05-assistant.png" alt="미니 비서 폴더에서 대화하는 화면" onerror="this.parentNode.classList.add('missing')">
+    </figure>
+  </div>
+  <div class="tile stuck">
+    <h3>막히면</h3>
     <ul>
-      <li><b>카드를 모른다고 한다</b> → 앱에서 연 폴더가 '실습폴더'가 아니라 <b>'미니 비서'</b>인지 확인하세요.</li>
-      <li>캘린더 연결은 <b>강사 시연</b>만 합니다.</li>
+      <li><b>카드를 모른다고 한다</b>앱에서 연 폴더가 '실습폴더'가 아니라 '미니 비서'인지 확인하세요.</li>
+      <li><b>캘린더 연결은?</b>강사 시연만 합니다.</li>
     </ul>
   </div>
   <label class="check"><input type="checkbox" data-step="s5"> 미니 비서 끝</label>
@@ -364,88 +581,86 @@ code { font-family: inherit; font-weight: 600; background: var(--chip); color: v
 
 <!-- ⑥ -->
 <section id="s6">
-  <h2>⑥ 마무리</h2>
-  <div class="card">
-    <h3>프롬프트 요령</h3>
-    <ul>
-      <li><b>무엇을</b> 할지</li>
-      <li><b>어떤 파일</b>로 (읽을 파일 이름)</li>
-      <li><b>어디에 저장</b>할지 (만들 파일 이름)</li>
-      <li><b>검산까지</b> 시키기</li>
-    </ul>
-    <h3>일이 바뀌면 새 대화</h3>
-    <p>다른 일을 시킬 때는 새 대화로 시작해 앞의 맥락을 끊어 주세요.</p>
+  <div class="head">
+    <p class="eyebrow">마무리</p>
+    <h2 class="headline">잘 맡기는 법.</h2>
+  </div>
+  <div class="grid2">
+    <div class="tile">
+      <h3>프롬프트 요령</h3>
+      <p class="cap">네 가지만 넣으면 됩니다.</p>
+      <div class="flow"><span class="chip">무엇을</span><span class="chip">어떤 파일로</span><span class="chip">어디에 저장</span><span class="chip blue">검산까지</span></div>
+    </div>
+    <div class="tile">
+      <h3>일이 바뀌면 새 대화</h3>
+      <p class="cap" style="margin:0">다른 일을 시킬 때는 새 대화로 시작해 앞의 맥락을 끊어 주세요.</p>
+    </div>
+  </div>
+  <div class="tile">
     <h3>헷갈리는 세 가지</h3>
-    <table>
-      <tbody>
-        <tr><td><code>AGENTS.md</code></td><td>폴더를 열면 자동으로 읽는 <b>규칙</b></td></tr>
-        <tr><td>Skills</td><td>필요할 때 꺼내 쓰는 <b>작업 설명서</b></td></tr>
-        <tr><td>MCP</td><td>AI에게 꽂아 주는 <b>도구 플러그</b></td></tr>
-      </tbody>
+    <table class="def">
+      <tr><td>AGENTS.md</td><td>폴더를 열면 자동으로 읽는 <b>규칙</b></td></tr>
+      <tr><td>Skills</td><td>필요할 때 꺼내 쓰는 <b>작업 설명서</b></td></tr>
+      <tr><td>MCP</td><td>AI에게 꽂아 주는 <b>도구 플러그</b></td></tr>
+      <tr><td>개인정보</td><td>학생 이름·연락처는 AI에게 넣지 않기</td></tr>
     </table>
   </div>
-  <div class="box stuck">
-    <b>개인정보 주의</b>
-    <p>학생 이름·연락처 같은 개인정보는 AI에게 넣지 마세요.</p>
-  </div>
+</section>
+
+<section class="end">
+  <h2 class="display">이제,<br><span class="accent">맡겨 보세요.</span></h2>
+  <p class="subhead">질문은 언제든 채팅창에.</p>
 </section>
 
 </main>
 
-<footer class="wrap">ACE 연구회 AI TED · 나만의 AI Agent 업무 비서 만들기 · 양상경</footer>
+<footer>ACE 연구회 AI TED · 나만의 AI Agent 업무 비서 만들기 · 인천효성남초 양상경</footer>
 
 <script>
-(function () {
-  function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
-  function set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
-  var root = document.documentElement;
+// 저장소는 편의용: 막혀 있어도 기본값으로 동작
+function save(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+function load(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
 
-  // 테마: 저장된 값 > 시스템 설정
-  var saved = get('ace-theme');
-  if (saved === 'light' || saved === 'dark') root.setAttribute('data-theme', saved);
-  document.getElementById('theme-btn').addEventListener('click', function () {
-    var cur = root.getAttribute('data-theme') ||
-      (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    var next = cur === 'dark' ? 'light' : 'dark';
-    root.setAttribute('data-theme', next);
-    set('ace-theme', next);
-  });
+function setTheme(t) {
+  document.documentElement.dataset.theme = t;
+  document.querySelectorAll('#theme button').forEach(b => b.classList.toggle('on', b.dataset.theme === t));
+  save('ace-theme', t);
+}
+document.querySelectorAll('#theme button').forEach(b => b.onclick = () => setTheme(b.dataset.theme));
+setTheme(load('ace-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
 
-  // 복사
-  function selectText(el) {
-    var r = document.createRange(); r.selectNodeContents(el);
-    var s = getSelection(); s.removeAllRanges(); s.addRange(r);
-  }
-  document.querySelectorAll('.copy').forEach(function (btn) {
-    btn.addEventListener('click', function () {
-      var pre = btn.closest('.prompt').querySelector('pre');
-      var text = pre.textContent;
-      function done(msg) {
-        btn.textContent = msg; btn.classList.add('ok');
-        setTimeout(function () { btn.textContent = '복사'; btn.classList.remove('ok'); }, 1500);
-      }
-      function fallback() {
-        selectText(pre);
-        var ok = false;
-        try { ok = document.execCommand('copy'); } catch (e) {}
-        done(ok ? '복사됨' : '길게 눌러 복사');
-      }
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(function () { done('복사됨'); }, fallback);
-      } else fallback();
-    });
-  });
+// 모바일 서랍
+const open = v => document.body.classList.toggle('open', v);
+document.getElementById('open-side').onclick = () => open(true);
+document.getElementById('close-side').onclick = () => open(false);
+document.getElementById('scrim').onclick = () => open(false);
+document.querySelectorAll('#toc a').forEach(a => a.addEventListener('click', () => open(false)));
 
-  // 진행 체크
-  document.querySelectorAll('.check input').forEach(function (cb) {
-    var step = cb.getAttribute('data-step');
-    var chip = document.querySelector('.chips a[href="#' + step + '"]');
-    function paint() { if (chip) chip.classList.toggle('done', cb.checked); }
-    cb.checked = get('ace-step-' + step) === '1';
-    paint();
-    cb.addEventListener('change', function () { set('ace-step-' + step, cb.checked ? '1' : '0'); paint(); });
-  });
-})();
+// 지금 보는 섹션 표시
+const links = [...document.querySelectorAll('#toc a')];
+const io = new IntersectionObserver(es => es.forEach(e => {
+  if (e.isIntersecting) links.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id));
+}), { rootMargin: '-45% 0px -50% 0px' });
+links.forEach(a => { const s = document.querySelector(a.getAttribute('href')); if (s) io.observe(s); });
+
+// 복사
+document.querySelectorAll('[data-copy]').forEach(btn => {
+  btn.onclick = async () => {
+    const text = document.getElementById(btn.dataset.copy).innerText;
+    try { await navigator.clipboard.writeText(text); }
+    catch (e) { const t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); }
+    const c = btn.nextElementSibling;
+    c.classList.add('show'); setTimeout(() => c.classList.remove('show'), 1500);
+  };
+});
+
+// 진행 체크
+document.querySelectorAll('[data-step]').forEach(cb => {
+  const k = 'ace-done-' + cb.dataset.step;
+  const mark = () => { const a = document.querySelector('#toc a[href="#' + cb.dataset.step + '"]'); if (a) a.classList.toggle('done', cb.checked); };
+  cb.checked = load(k) === '1'; mark();
+  cb.onchange = () => { save(k, cb.checked ? '1' : '0'); mark(); };
+});
 </script>
 </body>
 </html>
