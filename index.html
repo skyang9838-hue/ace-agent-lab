@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko" data-theme="light">
+<html lang="ko" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -627,7 +627,7 @@ function setTheme(t) {
   save('ace-theme', t);
 }
 document.querySelectorAll('#theme button').forEach(b => b.onclick = () => setTheme(b.dataset.theme));
-setTheme(load('ace-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+setTheme(load('ace-theme') || 'dark');
 
 // 모바일 서랍
 const open = v => document.body.classList.toggle('open', v);
