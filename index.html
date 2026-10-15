@@ -884,7 +884,7 @@ figure.shot.missing::before {
     <div class="grid3" style="margin-top:20px">
       <div class="tile"><h4>📅 캘린더 · 🎨 캔바</h4><p class="muted">공문 일정 넣기, 안내 포스터 초안</p></div>
       <div class="tile"><h4>📄 한글 문서</h4><p class="muted">HWP 양식을 읽고 채운다</p></div>
-      <div class="tile"><h4>⚖️ 법령 검색</h4><p class="muted">업무의 법적 근거를 찾는다</p></div>
+      <div class="tile"><h4>🌐 웹 브라우저</h4><p class="muted">사이트를 열어 찾고 고른다</p></div>
     </div>
   </div>
 </section>
@@ -906,24 +906,28 @@ figure.shot.missing::before {
   </div>
 </section>
 
-<section class="slide" data-sec="s3" data-title="Korean Law MCP · 법률 조사">
+<section class="slide" data-sec="s3" data-title="먼저: Node.js 설치">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">MCP 도구 ②</p><h2 class="headline">Korean Law MCP.<br>법률 조사 비서.</h2>
-      <p class="subhead">법제처 자료에서 업무의 <b>실제 법적 근거</b>를 찾아 줍니다.</p></div>
-    <div class="grid3">
-      <div class="tile"><h4>📚 법령</h4><p class="muted">법률·시행령·시행규칙·조례 조문</p></div>
-      <div class="tile"><h4>⚖️ 판례·해석례</h4><p class="muted">판례, 헌재 결정, 법령 해석례</p></div>
-      <div class="tile"><h4>🔎 인용 확인</h4><p class="muted">AI가 든 조문이 원문과 맞는지 대조</p></div>
-    </div>
-    <div class="grid2" style="margin-top:20px">
-      <div class="tile">
-        <p class="label-sm">준비물</p>
-        <p class="muted">법제처 <b>Open API 인증키</b> (무료). 가입 후 'Open API 사용 신청'을 하면 받아요.</p>
-        <p><a class="btn gray" href="https://open.law.go.kr" target="_blank" rel="noopener">인증키 신청 ↗</a> <a class="btn" href="https://github.com/chrisryugj/korean-law-mcp" target="_blank" rel="noopener">GitHub ↗</a></p>
+    <div class="head"><p class="eyebrow">MCP 연결 준비</p><h2 class="headline">먼저 Node.js를<br>한 번 깐다.</h2>
+      <p class="subhead">MCP 도구를 돌리는 엔진이에요. 컴퓨터마다 <b>한 번만</b> 깔면 됩니다.</p></div>
+    <div class="grid2">
+      <div class="tile bigstep">
+        <span class="num">A</span>
+        <div>
+          <h3>받기</h3>
+          <p>Node.js 홈페이지에서 <b>LTS</b>(초록 버튼)를 받아요.</p>
+          <p><a class="btn" href="https://nodejs.org/ko" target="_blank" rel="noopener">Node.js 받기 ↗</a></p>
+          <p class="small">Mac이면 같은 페이지에서 Mac용을 받으세요.</p>
+        </div>
       </div>
-      <div class="tile">
-        <p class="label-sm">주의</p>
-        <p class="muted"><b>결론은 사람이</b> 내립니다. 찾아 준 법령·판례는 <b>원문</b>과 <b>지금 시행 중인지</b> 꼭 확인하세요.</p>
+      <div class="tile bigstep">
+        <span class="num">B</span>
+        <div>
+          <h3>설치하고 다시 시작</h3>
+          <p>받은 파일을 열고 <b>기본 설정 그대로 '다음'</b>만 눌러요.</p>
+          <p>설치가 끝나면 <b>Codex를 껐다 켜요.</b></p>
+          <p class="small">이미 깔려 있으면 건너뛰어도 돼요.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -932,25 +936,17 @@ figure.shot.missing::before {
 <section class="slide" data-sec="s3" data-title="연결하는 법">
   <div class="wrap">
     <div class="head"><p class="eyebrow">MCP 연결</p><h2 class="headline">주소만 주면,<br>Agent가 연결한다.</h2></div>
-    <div class="grid2">
-      <div class="prompt-card">
+    <div class="prompt-card">
         <p class="label"><span class="no">1</span><b>KorDoc 주소 복사</b></p>
         <pre class="prompt" id="mcp-kordoc">https://github.com/chrisryugj/kordoc</pre>
         <button class="btn" type="button" data-copy="mcp-kordoc">주소 복사</button><span class="copied">복사됨 ✓</span>
-      </div>
-      <div class="prompt-card">
-        <p class="label"><span class="no">1</span><b>법령 MCP 주소 복사</b></p>
-        <pre class="prompt" id="mcp-law">https://github.com/chrisryugj/korean-law-mcp</pre>
-        <button class="btn" type="button" data-copy="mcp-law">주소 복사</button><span class="copied">복사됨 ✓</span>
-      </div>
     </div>
-    <div class="grid2">
+    <div class="grid2" style="margin-top:20px">
       <div class="tile bigstep">
         <span class="num">2</span>
         <div>
           <h3>붙여 넣고 부탁</h3>
           <p>Codex에 주소를 붙여 넣고 <b>"이거 MCP로 연결해 줘"</b>.</p>
-          <p class="small">법령 MCP는 인증키를 물어보면 넣어 주세요.</p>
         </div>
       </div>
       <div class="tile bigstep">
@@ -958,7 +954,7 @@ figure.shot.missing::before {
         <div>
           <h3>앱 다시 시작</h3>
           <p>연결이 끝나면 Codex를 <b>껐다 켜야</b> 도구가 보여요.</p>
-          <p class="small">Node.js가 필요해요. 없으면 Codex가 알려 줍니다.</p>
+          <p class="small">Node.js는 앞 장에서 먼저 깔아 두세요.</p>
         </div>
       </div>
     </div>
@@ -967,15 +963,15 @@ figure.shot.missing::before {
 
 <section class="slide" data-sec="s3" data-title="시연: 민원 답변서">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">MCP · 시연</p><h2 class="headline">조사부터 문서까지,<br>말 한 번으로.</h2>
+    <div class="head"><p class="eyebrow">MCP · 시연</p><h2 class="headline">민원 읽기부터 답변서까지,<br>말 한 번으로.</h2>
       <span class="badge">시연 · 따라 하지 않아도 돼요</span></div>
     <div class="tile">
       <p class="label-sm">상황 · 에이스초등학교</p>
-      <p class="muted">"주간학습안내에 예고된 수업이 진행되지 않았다"는 <b>학부모 민원</b>이 들어왔다. 관련 법적 근거를 확인하고 <b>학교 양식</b>에 맞춰 답변서 초안을 써야 한다.</p>
+      <p class="muted">"주간학습안내에 예고된 수업이 진행되지 않았다"는 <b>학부모 민원</b>이 들어왔다. 민원 내용과 학교 쪽 사실을 정리해 <b>학교 양식</b>에 맞춘 답변서 초안을 써야 한다.</p>
     </div>
     <div class="tile" style="text-align:center;margin-top:20px">
       <div class="flow" style="justify-content:center">
-        <span class="chip">말로 지시</span><span class="arrow">→</span><span class="chip blue">⚖️ 법령 MCP로 근거 조사</span><span class="arrow">→</span><span class="chip blue">📄 KorDoc으로 양식에 작성</span><span class="arrow">→</span><span class="chip">파일 열어 확인</span>
+        <span class="chip">말로 지시</span><span class="arrow">→</span><span class="chip blue">📄 KorDoc으로 양식 읽기</span><span class="arrow">→</span><span class="chip blue">📄 양식 칸에 답변 채우기</span><span class="arrow">→</span><span class="chip">파일 열어 확인</span>
       </div>
     </div>
     <p class="note" style="text-align:center">시연용 가상 학교·가상 민원입니다.</p>
@@ -987,10 +983,10 @@ figure.shot.missing::before {
     <div class="head"><p class="eyebrow">MCP · 결과</p><h2 class="headline">끝나면 사람이 확인한다.</h2></div>
     <div class="grid3">
       <div class="tile"><h4>📄 파일 열기</h4><p class="muted">만들어진 답변서 <b>.hwpx</b>를 한글에서 연다</p></div>
-      <div class="tile"><h4>🔗 근거 확인</h4><p class="muted">조문 이름과 <b>원문 링크</b>가 있는지, 지금 시행 중인지</p></div>
-      <div class="tile"><h4>🧑‍🏫 판단은 사람이</h4><p class="muted">사실관계·법적 결론·표현은 교사가 고친다</p></div>
+      <div class="tile"><h4>🔎 내용 확인</h4><p class="muted">민원 내용·학교 사실과 <b>맞게</b> 썼는지</p></div>
+      <div class="tile"><h4>🧑‍🏫 판단은 사람이</h4><p class="muted">사실관계·표현·보낼지 여부는 교사가 정한다</p></div>
     </div>
-    <p class="note" style="font-size:18px;text-align:center">말로 부탁했는데, <b>법령 조사부터 문서 작성까지</b> 이어서 했다.</p>
+    <p class="note" style="font-size:18px;text-align:center">말로 부탁했는데, <b>민원 읽기부터 한글 문서 작성까지</b> 이어서 했다.</p>
   </div>
 </section>
 
