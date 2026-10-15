@@ -1184,31 +1184,11 @@ figure.shot img { cursor: zoom-in; }
 
 
 <!-- ============ 미니 비서 만들기 ============ -->
-<section class="slide" data-sec="s5" data-title="왜 파일로 기억할까">
+<section class="slide" data-sec="s5" data-title="파일 세 개면 비서">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">미니 비서 · 미니 비서</p><h2 class="headline">대화는 잊어도,<br>파일은 기억한다.</h2>
-      <span class="badge">도전</span></div>
-    <div class="grid2">
-      <div class="tile">
-        <h3>대화에만 두면</h3>
-        <p class="cap">새 대화를 열면 처음부터 다시 설명해야 한다.</p>
-        <div class="flow"><span class="chip">어제 대화</span><span class="arrow">✕</span><span class="chip">오늘 대화</span></div>
-      </div>
-      <div class="tile">
-        <h3>파일에 두면</h3>
-        <p class="cap">언제 열어도 폴더의 파일을 읽고 이어서 한다.</p>
-        <div class="flow"><span class="chip">오늘 대화</span><span class="arrow">→</span><span class="chip blue">HOME.md · 카드</span><span class="arrow">→</span><span class="chip">이어서</span></div>
-      </div>
-    </div>
-    <div class="tile" style="margin-top:20px">
-      <p class="muted">Codex 앱에서 실습폴더 안의 <b style="color:var(--ink)">'4 미니 비서'</b> 폴더를 <b style="color:var(--ink)">새로 엽니다</b>. 이 폴더가 오늘 만드는 비서예요.</p>
-    </div>
-  </div>
-</section>
-
-<section class="slide" data-sec="s5" data-title="폴더 구조">
-  <div class="wrap">
-    <div class="head"><p class="eyebrow">미니 비서 · 구조</p><h2 class="headline">파일 세 겹이면 비서가 된다.</h2></div>
+    <div class="head"><p class="eyebrow">미니 비서</p><h2 class="headline">대화는 잊어도,<br>파일은 기억한다.</h2>
+      <span class="badge">도전</span>
+      <p class="subhead">새 대화를 열어도 폴더의 파일을 읽고 이어서 해요. 파일 세 겹이면 비서가 됩니다.</p></div>
     <div class="tile">
       <div class="tree">
         <div class="node"><code>AGENTS.md</code><p>폴더를 열면 앱이 자동으로 읽는 규칙. "HOME.md부터 읽어라"</p></div>
@@ -1220,144 +1200,145 @@ figure.shot img { cursor: zoom-in; }
         </div>
       </div>
     </div>
+    <p class="small muted" style="text-align:center;margin-top:16px">파일 내용은 앱에서 직접 열어 봅니다.</p>
   </div>
 </section>
 
-<section class="slide" data-sec="s5" data-title="AGENTS.md 들여다보기">
+<section class="slide" data-sec="s5" data-title="미니 비서 폴더 열기">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">미니 비서 · 규칙 파일</p><h2 class="headline">AGENTS.md는 비서의 업무 지침.</h2>
-      <p class="subhead">사람에게 인수인계하듯 평범한 말로 적으면 됩니다.</p></div>
-    <div class="mdfile">
-      <div class="fname">미니 비서/AGENTS.md</div>
-      <pre># 미니 비서 규칙
-
-너는 에이스초 6학년 담임 양테드 선생님의 업무 비서다.
-
-1. 대화를 시작하면 먼저 `HOME.md`를 읽는다.
-2. "오늘 뭐 해?"라고 물으면 `카드/` 폴더의 카드들을 읽고,
-   마감이 가까운 순서로 할 일 3개를 알려 준다.
-3. 일이 끝났다고 하면 해당 카드의 할 일에 체크하고
-   `기록`에 날짜와 한 줄을 적는다.
-4. 새 일을 말하면 맞는 카드에 할 일로 추가한다.
-   맞는 카드가 없으면 새 카드를 만든다.
-5. 카드를 고친 뒤에는 `HOME.md`의 카드 목록도 맞게 고친다.
-6. 학생 이름·연락처 같은 개인정보는 적지 않는다.</pre>
-    </div>
-  </div>
-</section>
-
-<section class="slide" data-sec="s5" data-title="HOME.md와 카드">
-  <div class="wrap">
-    <div class="head"><p class="eyebrow">미니 비서 · 대시보드와 카드</p><h2 class="headline">HOME은 목록, 카드는 일 한 건.</h2></div>
+    <div class="head"><p class="eyebrow">미니 비서 · 준비</p><h2 class="headline">'4 미니 비서'를 새로 연다.</h2></div>
     <div class="grid2">
-      <div class="mdfile">
-        <div class="fname">미니 비서/HOME.md</div>
-        <pre># HOME
-
-양테드 선생님 (에이스초 6학년 담임, 연구회 총무)
-
-## 카드 목록
-| 카드             | 마감  | 상태   |
-|------------------|-------|--------|
-| 연구회 결산      | 10/20 | 진행 중 |
-| 학습준비물 구입  | 10/23 | 진행 중 |
-| 학부모 상담 주간 | 10/27 | 준비 전 |</pre>
-      </div>
-      <div class="mdfile">
-        <div class="fname">미니 비서/카드/연구회 결산.md</div>
-        <pre># 연구회 결산
-- 마감: 10/20 (10월 교직원 협의회)
-
-## 할 일
-- [ ] 연구회 엑셀로 중간 결산 보고서 만들기
-- [ ] 교감선생님께 보고서 미리 보여 드리기
-- [ ] 협의회에서 보고하기
-
-## 기록
-- 10/12 통장 내역을 엑셀에 다 옮김</pre>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="slide" data-sec="s5" data-title="P5-1 브리핑">
-  <div class="wrap">
-    <div class="head"><p class="eyebrow">미니 비서 · 첫 번째 부탁</p><h2 class="headline">"오늘 뭐 해?"</h2>
-      <p class="subhead">짧게 물어도 규칙(AGENTS.md 2번)대로 카드를 읽고 답해요.</p></div>
-    <div class="grid2">
-      <div class="prompt-card">
-        <p class="label"><span class="no">P5-1</span><b>브리핑</b></p>
-        <pre class="prompt" id="p51">오늘 뭐 해?</pre>
-        <button class="btn" type="button" data-copy="p51">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
-      </div>
-      <div class="say">
-        <span class="who">이런 식으로 답해요 (예시)</span>
-        마감이 가까운 순서로 할 일 3개예요.
-        <ol>
-          <li>연구회 엑셀로 중간 결산 보고서 만들기 — 10/20</li>
-          <li>아이스크림몰에서 행사 키트·소모품 가격 찾기 — 10/23</li>
-          <li>상담 신청 안내장 보내기 — 10/27</li>
+      <div class="tile">
+        <ol class="olist">
+          <li>왼쪽 위 <b>파일 → 폴더 열기</b></li>
+          <li>실습폴더 안의 <b>4 미니 비서</b>를 고르고 <b>폴더 선택</b></li>
+          <li>"이 폴더를 신뢰할까요?"가 뜨면 <b>신뢰</b></li>
+          <li>"4 미니 비서에서 무엇을 작업할까요?"가 보이면 준비 끝</li>
         </ol>
+        <p class="small muted" style="margin-top:14px">이번에는 실습폴더 자체가 아니라 <b style="color:var(--ink)">4 미니 비서 폴더만</b> 열어요.</p>
       </div>
+      <div class="gallery"><div class="g-track">
+          <figure class="shot" data-label="파일 → 폴더 열기">
+            <img src="captures/mini-02-file-menu.png" alt="파일 메뉴의 폴더 열기" onerror="this.parentNode.classList.add('missing')"><figcaption>파일 → 폴더 열기</figcaption>
+          </figure>
+          <figure class="shot" data-label="4 미니 비서 선택">
+            <img src="captures/mini-03-folder-pick.png" alt="폴더 선택 창에서 4 미니 비서 고르기" onerror="this.parentNode.classList.add('missing')"><figcaption>4 미니 비서 → 폴더 선택</figcaption>
+          </figure>
+          <figure class="shot" data-label="폴더 신뢰">
+            <img src="captures/mini-04-trust.png" alt="이 폴더를 신뢰할까요 창" onerror="this.parentNode.classList.add('missing')"><figcaption>신뢰</figcaption>
+          </figure>
+          <figure class="shot" data-label="시작 화면">
+            <img src="captures/mini-05-start.png" alt="4 미니 비서에서 무엇을 작업할까요 화면" onerror="this.parentNode.classList.add('missing')"><figcaption>준비 끝</figcaption>
+          </figure>
+        </div></div>
     </div>
   </div>
 </section>
 
-<section class="slide" data-sec="s5" data-title="P5-2 끝난 일 반영">
+<section class="slide" data-sec="s5" data-title="P5-1 구글 캘린더 연결">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">미니 비서 · 두 번째 부탁</p><h2 class="headline">끝났다고 말하면,<br>카드가 바뀐다.</h2></div>
+    <div class="head"><p class="eyebrow">미니 비서 · 첫 번째</p><h2 class="headline">구글 캘린더부터 꽂는다.</h2>
+      <p class="subhead">비서가 내 일정을 보고, 일정도 넣을 수 있게 돼요.</p></div>
+    <div class="grid2">
+      <div class="tile">
+        <ol class="olist">
+          <li>왼쪽 아래 <b>맞춤 설정 → 플러그인</b></li>
+          <li>목록에서 <b>Google Calendar</b>를 찾아 <b>+</b></li>
+          <li>구글 계정으로 <b>로그인</b>하고 허용</li>
+          <li>왼쪽 '설치됨'에 Google Calendar가 보이면 끝</li>
+        </ol>
+        <p class="small muted" style="margin-top:14px">채팅으로 "구글 캘린더 연결해 줘"라고 해도, Codex가 <b style="color:var(--ink)">플러그인 화면에서 추가하라</b>고 안내해요.</p>
+      </div>
+      <div class="gallery"><div class="g-track">
+          <figure class="shot" data-label="채팅으로 부탁하면">
+            <img src="captures/mini-06-cal-ask.png" alt="구글 캘린더 연결을 부탁하는 화면" onerror="this.parentNode.classList.add('missing')"><figcaption>채팅으로 부탁하면 플러그인 화면을 알려 준다</figcaption>
+          </figure>
+          <figure class="shot" data-label="플러그인 화면">
+            <img src="captures/mini-08-plugins.png" alt="맞춤 설정의 플러그인 화면" onerror="this.parentNode.classList.add('missing')"><figcaption>맞춤 설정 → 플러그인</figcaption>
+          </figure>
+          <figure class="shot" data-label="Google Calendar">
+            <img src="captures/mini-09-gcal.png" alt="플러그인 목록의 Google Calendar" onerror="this.parentNode.classList.add('missing')"><figcaption>Google Calendar → + → 로그인</figcaption>
+          </figure>
+        </div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="s5" data-title="P5-2 일정 잡기">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">미니 비서 · 두 번째</p><h2 class="headline">"그날 나 괜찮아?"</h2>
+      <p class="subhead">내 캘린더를 보고 답하고, 비어 있으면 일정까지 넣어 줘요.</p></div>
     <div class="grid2">
       <div class="prompt-card">
-        <p class="label"><span class="no">P5-2</span><b>끝난 일 반영</b></p>
-        <pre class="prompt" id="p52">연구회 결산 보고서 다 만들었어. 카드 고쳐 줘.</pre>
+        <p class="label"><span class="no">P5-2</span><b>일정 잡기</b></p>
+        <pre class="prompt" id="p52">11월 7일에 친구들이 놀자고 하는데, 이때 일정 나 괜찮아? 비어 있으면 캘린더에 넣어 줘.</pre>
         <button class="btn" type="button" data-copy="p52">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
+        <p class="small muted" style="margin-top:12px">시간을 묻는 <b style="color:var(--ink)">질문 창</b>이 뜨면 하나 고르고 보내기.</p>
       </div>
-      <div class="mdfile">
-        <div class="fname">카드/연구회 결산.md — 바뀐 뒤 (예시)</div>
-        <pre>## 할 일
-<span class="chg">- [x] 연구회 엑셀로 중간 결산 보고서 만들기</span>
-- [ ] 교감선생님께 보고서 미리 보여 드리기
-- [ ] 협의회에서 보고하기
-
-## 기록
-- 10/12 통장 내역을 엑셀에 다 옮김
-<span class="add">- 10/16 중간 결산 보고서 완성</span></pre>
-      </div>
+      <div class="gallery"><div class="g-track">
+          <figure class="shot" data-label="일정 확인">
+            <img src="captures/mini-13-cal-check.png" alt="11월 7일 일정 확인 답" onerror="this.parentNode.classList.add('missing')"><figcaption>그날 일정을 보고 답한다</figcaption>
+          </figure>
+          <figure class="shot" data-label="일정 추가">
+            <img src="captures/mini-14-cal-add.png" alt="일정 추가 전 시간을 묻는 질문 창" onerror="this.parentNode.classList.add('missing')"><figcaption>시간을 골라 주면 캘린더에 넣는다</figcaption>
+          </figure>
+        </div></div>
     </div>
   </div>
 </section>
 
-<section class="slide" data-sec="s5" data-title="P5-3 할 일 추가">
+<section class="slide" data-sec="s5" data-title="P5-3 브리핑">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">미니 비서 · 세 번째 부탁</p><h2 class="headline">새 일은 맞는 카드로.</h2></div>
+    <div class="head"><p class="eyebrow">미니 비서 · 세 번째</p><h2 class="headline">"오늘 뭐 해?"</h2>
+      <p class="subhead">짧게 물어도 규칙(AGENTS.md)대로 카드를 읽고, 캘린더 일정도 같이 봐요.</p></div>
     <div class="grid2">
       <div class="prompt-card">
-        <p class="label"><span class="no">P5-3</span><b>할 일 추가</b></p>
-        <pre class="prompt" id="p53">다음 주 화요일까지 학부모 상담 시간표를 만들어야 해. 카드에 할 일로 추가해 줘.</pre>
+        <p class="label"><span class="no">P5-3</span><b>브리핑</b></p>
+        <pre class="prompt" id="p53">오늘 뭐 해?</pre>
         <button class="btn" type="button" data-copy="p53">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
       </div>
-      <div class="mdfile">
-        <div class="fname">카드/학부모 상담 주간.md — 바뀐 뒤 (예시)</div>
-        <pre>## 할 일
-- [ ] 상담 신청 안내장 보내기
-<span class="add">- [ ] 학부모 상담 시간표 만들기 (다음 주 화요일까지)</span></pre>
-      </div>
+      <figure class="shot" data-label="오늘 뭐 해 답">
+        <img src="captures/mini-10-today.png" alt="오늘 뭐 해에 카드를 읽고 답한 화면" onerror="this.parentNode.classList.add('missing')">
+      </figure>
     </div>
-    <p class="small muted" style="text-align:center;margin-top:16px">"다음 주 화요일"을 실제 날짜로 바꿔 적었는지도 보세요.</p>
   </div>
 </section>
 
-<section class="slide" data-sec="s5" data-title="이렇게 나오면 성공">
+<section class="slide" data-sec="s5" data-title="P5-4 끝난 일 반영">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">미니 비서 · 확인</p><h2 class="headline">이렇게 나오면 성공.</h2></div>
+    <div class="head"><p class="eyebrow">미니 비서 · 네 번째</p><h2 class="headline">끝났다고 말하면,<br>카드가 바뀐다.</h2></div>
     <div class="grid2">
-      <div class="tile result">
-          <p style="margin-top:0">"오늘 뭐 해?"에 카드를 읽고 할 일을 정리해 답하고, P5-2·P5-3 뒤에는 <b>카드 파일 내용이 실제로 바뀝니다.</b></p>
-        <p class="small muted">MCP로 <b style="color:var(--ink)">구글 캘린더</b>를 꽂으면 카드 마감을 일정으로 넣을 수도 있어요 (강사 시연).</p>
-        </div>
-      <figure class="shot" data-label="미니 비서 대화">
-          <img src="captures/app-05-assistant.png" alt="미니 비서 폴더에서 대화하는 화면" onerror="this.parentNode.classList.add('missing')">
-        </figure>
+      <div class="prompt-card">
+        <p class="label"><span class="no">P5-4</span><b>끝난 일 반영</b></p>
+        <pre class="prompt" id="p54">나 1번 2번 했어. 체크해 줘.</pre>
+        <button class="btn" type="button" data-copy="p54">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
+        <p class="small muted" style="margin-top:12px">답만 보지 말고 <b style="color:var(--ink)">카드·HOME.md를 열어</b> 실제로 바뀌었는지 보세요.</p>
+      </div>
+      <div class="gallery"><div class="g-track">
+          <figure class="shot" data-label="바뀐 내용">
+            <img src="captures/mini-11-diff.png" alt="카드 변경 내용 표시" onerror="this.parentNode.classList.add('missing')"><figcaption>체크 + 기록 한 줄</figcaption>
+          </figure>
+          <figure class="shot" data-label="HOME.md">
+            <img src="captures/mini-12-home.png" alt="HOME.md 미리보기" onerror="this.parentNode.classList.add('missing')"><figcaption>"홈 보여 줘" — HOME 목록도 바뀐다</figcaption>
+          </figure>
+        </div></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="s5" data-title="P5-5 교감 선생님 메시지">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">미니 비서 · 다섯 번째</p><h2 class="headline">카드에 있는 일,<br>바로 시킨다.</h2>
+      <p class="subhead">카드 '연구회 결산'의 다음 할 일: 교감 선생님께 보고서 미리 보여 드리기.</p></div>
+    <div class="grid2">
+      <div class="prompt-card">
+        <p class="label"><span class="no">P5-5</span><b>교감 선생님 메시지</b></p>
+        <pre class="prompt" id="p55">교감 선생님께 결산 보고서를 미리 보여 드리는 메시지를 써 줘. 공손하고 짧게.</pre>
+        <button class="btn" type="button" data-copy="p55">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
+      </div>
+      <figure class="shot" data-label="교감 선생님 메시지">
+        <img src="captures/mini-15-vice-msg.png" alt="교감 선생님 메시지를 부탁하는 화면" onerror="this.parentNode.classList.add('missing')">
+      </figure>
     </div>
     <label class="check"><input type="checkbox" data-step="s5"> 미니 비서 끝</label>
   </div>
