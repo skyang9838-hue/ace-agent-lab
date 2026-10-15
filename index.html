@@ -810,7 +810,7 @@ figure.shot img { cursor: zoom-in; }
         <div>
           <h3><code>/status</code> 입력</h3>
           <p>입력창에 <b>/status</b>를 치면 지금 모델, <b>사용량</b>, 상태가 보여요.</p>
-          <p class="small">"왜 멈췄지?" 싶을 때 먼저 확인해 보세요.</p>
+          <p class="small"><b>남은 사용량</b>(예: 29% 남음)도 보여요. 무료는 금방 줄어요.</p>
         </div>
       </div>
     </div>
@@ -820,6 +820,9 @@ figure.shot img { cursor: zoom-in; }
           </figure>
           <figure class="shot" data-label="추론 Light">
             <img src="captures/app-effort.png" alt="추론 수준 Light 선택" onerror="this.parentNode.classList.add('missing')">
+          </figure>
+          <figure class="shot" data-label="/status 남은 사용량">
+            <img src="captures/app-status.png" alt="/status 결과의 남은 사용량" onerror="this.parentNode.classList.add('missing')">
           </figure>
         </div></div>
   </div>
@@ -861,6 +864,37 @@ figure.shot img { cursor: zoom-in; }
   </div>
 </section>
 
+<section class="slide" data-sec="s2" data-title="Claude 앱으로 하려면">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">앱 사용법 · Claude</p><h2 class="headline">Claude 앱도 똑같아요.</h2>
+      <p class="subhead">Claude 앱(Claude Code)으로 하는 분은 이것만 다르고 나머지는 같아요.</p></div>
+    <div class="grid2">
+      <div class="tile">
+        <ol class="olist">
+          <li><b>파일 → 폴더 열기</b> → 바탕화면 <b>실습폴더</b></li>
+          <li>입력창 아래 모드에서 <b>자동</b></li>
+          <li>모델은 유료면 <b>Opus 5.5 + 노력 중간</b>. 더 좋은 모델도 괜찮아요</li>
+          <li>나머지는 Codex와 같아요</li>
+        </ol>
+      </div>
+      <div class="gallery"><div class="g-track">
+          <figure class="shot" data-label="메뉴 → 파일">
+            <img src="captures/claude-file-menu.png" alt="Claude 앱 메뉴의 파일" onerror="this.parentNode.classList.add('missing')">
+          </figure>
+          <figure class="shot" data-label="실습폴더 선택">
+            <img src="captures/claude-folder-pick.png" alt="Claude 앱 폴더 선택 창" onerror="this.parentNode.classList.add('missing')">
+          </figure>
+          <figure class="shot" data-label="모드: 자동">
+            <img src="captures/claude-mode.png" alt="Claude 앱 모드 메뉴에서 자동" onerror="this.parentNode.classList.add('missing')">
+          </figure>
+          <figure class="shot" data-label="모델: Opus 5.5 · 중간">
+            <img src="captures/claude-model.png" alt="Claude 앱 모델 메뉴 Opus 5.5 노력 중간" onerror="this.parentNode.classList.add('missing')">
+          </figure>
+        </div></div>
+    </div>
+  </div>
+</section>
+
 <!-- ============ 2 로컬 기반 작업하기 · 연구회 회계 ============ -->
 <section class="slide" data-sec="s2" data-title="연구회 · 상황">
   <div class="wrap">
@@ -879,9 +913,10 @@ figure.shot img { cursor: zoom-in; }
       <div class="tile">
         <p class="label-sm">이렇게 해요</p>
         <ol class="olist">
-          <li>앱에서 <b>실습폴더</b> 열기 (파일은 안의 '1 로컬 작업' 폴더에)</li>
-          <li>엑셀은 <b>닫아 둔 채</b> 한 번에 부탁: <b>빠진 수입·지출 반영 + 다시 결산</b></li>
-          <li>끝나면 <b>엑셀을 열어</b> 확인하기</li>
+          <li>앱에서 <b>실습폴더</b> 열기</li>
+          <li>'1 로컬 작업' 안의 <b>회계.xlsx를 눌러 오른쪽 칸에 띄워 두기</b></li>
+          <li>한 번에 부탁: <b>빠진 수입·지출 반영 + 다시 결산</b></li>
+          <li>오른쪽 칸에서 <b>숫자가 바뀌는지</b> 보기</li>
         </ol>
       </div>
     </div>
@@ -946,7 +981,7 @@ figure.shot img { cursor: zoom-in; }
       <pre class="prompt" id="p21">10월 6일에 50만 원이 추가 입금됐는데 깜빡했다. 10월 15일에는 떡값으로 10만 원을 지출했다. 회계 파일에 반영하고, 맨 위 결산도 다시 계산해 줘.</pre>
       <button class="btn" type="button" data-copy="p21">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
     </div>
-    <p class="small muted" style="text-align:center;margin-top:12px">1~2분 걸릴 수 있어요.</p>
+    <p class="small muted" style="text-align:center;margin-top:12px">엑셀을 오른쪽 칸에 띄워 두면 바뀌는 게 보여요. 생각보다 오래 걸려요(몇 분).</p>
   </div>
 </section>
 
@@ -959,8 +994,13 @@ figure.shot img { cursor: zoom-in; }
         <div><span>지출 (+100,000)</span><strong>570,000<small>원</small></strong></div>
         <div><span>잔액 (+400,000)</span><strong class="accent">920,000<small>원</small></strong></div>
       </div>
-      <p>원래 적힌 <b>4줄은 그대로</b>, 새 줄 <b>2개</b>가 더해져야 해요. 엑셀을 <b>닫았다 다시 열어</b> 맨 위 결산 숫자까지 확인하세요.</p>
+      <p>원래 적힌 <b>4줄은 그대로</b>, 새 줄 <b>2개</b>가 더해져야 해요. 오른쪽 칸에서 맨 위 결산 숫자까지 확인하세요.</p>
     </div>
+    <div class="gallery" style="margin:20px auto 0;max-width:560px"><div class="g-track">
+          <figure class="shot" data-label="오른쪽 칸의 엑셀 결과">
+            <img src="captures/app-excel-result.png" alt="Codex 오른쪽 칸에 띄운 회계 엑셀 결과" onerror="this.parentNode.classList.add('missing')">
+          </figure>
+        </div></div>
     <p class="note" style="font-size:18px;text-align:center">중요한 건 속도가 아니라, <b>맡겨 놓고 나는 다른 일을 할 수 있다</b>는 것.</p>
     <label class="check"><input type="checkbox" data-step="s2"> 로컬 작업 끝</label>
   </div>
@@ -991,15 +1031,41 @@ figure.shot img { cursor: zoom-in; }
 
 <section class="slide" data-sec="s3" data-title="KorDoc 설치">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">MCP 시연 · 설치</p><h2 class="headline">설치는<br>주소만 주면 된다.</h2>
-      <p class="subhead"><b>KorDoc</b>은 한글(hwp·hwpx) 문서를 읽고 채우는 MCP예요. 앱에 GitHub 주소를 붙여 넣고 설치해 달라고 하면 AI가 알아서 연결합니다.</p>
-      <span class="badge">시연 · 선택</span></div>
-    <div class="prompt-card">
-      <p class="label"><span class="no">설치</span><b>KorDoc MCP 설치해 줘</b></p>
-      <pre class="prompt" id="p3k">https://github.com/chrisryugj/kordoc 이 MCP를 설치해서 연결해 줘.</pre>
-      <button class="btn" type="button" data-copy="p3k">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
+    <div class="head"><p class="eyebrow">MCP 시연 · 설치</p><h2 class="headline">설치는 이렇게.<br>보기만 하세요.</h2>
+      <p class="subhead"><b>KorDoc</b>은 한글(hwp·hwpx) 문서를 읽고 채우는 MCP예요. 주소만 주면 AI가 알아서 깝니다.</p>
+      <span class="badge">강사 시연 · 보기만</span></div>
+    <div class="grid2">
+      <div class="tile">
+        <ol class="olist">
+          <li>구글에서 <b>kordoc</b> 검색 → GitHub 페이지</li>
+          <li>주소를 복사해 앱에 붙이고 <b>"이거 MCP로 설치해 줘"</b></li>
+          <li>Node.js 설치 창이 뜨면 기다리기</li>
+          <li>등록 승인 창 → <b>한 번만 허용</b></li>
+          <li>설치 완료 (약 3분)</li>
+        </ol>
+        <p class="small muted" style="margin-top:12px">github.com/chrisryugj/kordoc</p>
+      </div>
+      <div class="gallery"><div class="g-track">
+          <figure class="shot" data-label="구글 검색">
+            <img src="captures/mcp-1-google.png" alt="구글에서 kordoc 검색" onerror="this.parentNode.classList.add('missing')">
+          </figure>
+          <figure class="shot" data-label="GitHub 페이지">
+            <img src="captures/mcp-2-github.png" alt="KorDoc GitHub 페이지" onerror="this.parentNode.classList.add('missing')">
+          </figure>
+          <figure class="shot" data-label="설치 부탁">
+            <img src="captures/mcp-3-ask.png" alt="Codex에 주소 붙여 설치 부탁" onerror="this.parentNode.classList.add('missing')">
+          </figure>
+          <figure class="shot" data-label="Node.js 설치">
+            <img src="captures/mcp-4-node.png" alt="Node.js 설치 창" onerror="this.parentNode.classList.add('missing')">
+          </figure>
+          <figure class="shot" data-label="등록 승인">
+            <img src="captures/mcp-5-approve.png" alt="MCP 등록 승인 요청" onerror="this.parentNode.classList.add('missing')">
+          </figure>
+          <figure class="shot" data-label="설치 완료">
+            <img src="captures/mcp-6-done.png" alt="설치 완료 메시지" onerror="this.parentNode.classList.add('missing')">
+          </figure>
+        </div></div>
     </div>
-    <p class="small muted" style="text-align:center;margin-top:12px">설치가 끝나면 앱을 다시 시작해야 할 수 있어요.</p>
   </div>
 </section>
 
@@ -1020,13 +1086,14 @@ figure.shot img { cursor: zoom-in; }
       </div>
       <div class="tile">
         <p class="label-sm">이렇게 해요</p>
-        <p>프롬프트를 복사하지 말고 <b>직접 쳐 보세요.</b> 내 일에 쓸 때도 결국 내가 써야 하니까요.</p>
+        <p><b>새 채팅</b>을 열고, 프롬프트를 복사하지 말고 <b>직접 쳐 보세요.</b> 내 일에 쓸 때도 결국 내가 써야 하니까요.</p>
+        <p class="small muted">계획 모드를 켜도 좋아요. 강사 시연은 빠르게 6.1 Sol이나 Astra로 합니다.</p>
         <p class="small muted">들어갈 것: 어떤 파일을 · 무슨 내용으로 · 없는 건 지어내지 말 것</p>
       </div>
     </div>
     <div class="prompt-card" style="margin-top:20px">
       <p class="label"><span class="no">힌트</span><b>이렇게 써도 돼요</b></p>
-      <pre class="prompt" id="p3a">'가정통신문 양식.hwpx'를 디지털 새싹 프로그램 안내문으로 채워 줘. 기간은 1월 2일부터 5일까지, 시간은 9시부터 12시까지, 경비는 무료야. 내가 주지 않은 내용은 지어내지 말고 빈칸으로 둬.</pre>
+      <pre class="prompt" id="p3a">kordoc으로 '가정통신문 양식.hwpx'를 디지털 새싹 프로그램 안내문으로 채워 줘. 기간은 1월 2일부터 5일까지, 시간은 9시부터 12시까지, 경비는 무료야. 내가 주지 않은 내용은 지어내지 말고 빈칸으로 둬.</pre>
       <button class="btn" type="button" data-copy="p3a">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
     </div>
   </div>
@@ -1036,7 +1103,7 @@ figure.shot img { cursor: zoom-in; }
   <div class="wrap">
     <div class="head"><p class="eyebrow">MCP 시연 · 결과</p><h2 class="headline">내가 준 내용과 대조한다.</h2></div>
     <div class="grid3">
-      <div class="tile"><h4>📄 파일 열기</h4><p class="muted">채워진 <b>가정통신문</b>을 한글로 열어 본다</p></div>
+      <div class="tile"><h4>📄 파일 열기</h4><p class="muted">앱 미리보기는 hwpx를 아직 못 보여 줘요. <b>한글로 직접 열어</b> 본다</p></div>
       <div class="tile"><h4>🔎 내용 대조</h4><p class="muted">날짜·시간·경비가 <b>내가 준 그대로</b>인지</p></div>
       <div class="tile"><h4>🧑‍🏫 판단은 사람이</h4><p class="muted">빈칸·고칠 것·보낼지 여부는 교사가 정한다</p></div>
     </div>
@@ -1080,10 +1147,11 @@ figure.shot img { cursor: zoom-in; }
 
 <section class="slide" data-sec="s4" data-title="P4-1 예산 안에서 채우기">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">웹 작업 · 첫 번째 부탁</p><h2 class="headline">상황만 주고 맡긴다.</h2></div>
+    <div class="head"><p class="eyebrow">웹 작업 · 첫 번째 부탁</p><h2 class="headline">상황만 주고 맡긴다.</h2>
+      <p class="subhead"><b>새 채팅</b>에서 시작하세요.</p></div>
     <div class="prompt-card">
       <p class="label"><span class="no">P4-1</span><b>예산 안에서 찾아 채우기</b></p>
-      <pre class="prompt" id="p41">6학년 1반 24명이 쓸 학습준비물을 아이스크림몰에서 사려고 해. 독도의날·한글날·크리스마스 만들기 키트는 24명분씩, 물티슈와 각티슈는 한 묶음씩 사야 해. 전체 금액은 20만 원 안으로 맞춰 줘. 고른 상품의 단가·금액·링크를 '학습준비물 빈 양식.xlsx'에 채워 줘. 장바구니에 담거나 사지는 마.</pre>
+      <pre class="prompt" id="p41">학습준비물 엑셀에 물티슈·각티슈·독도·한글날·크리스마스 키트, 학생 수(24명)에 맞춰 아이스크림몰에서 찾아서 링크랑 엑셀에 넣어 놔. 전체 20만 원 안으로.</pre>
       <button class="btn" type="button" data-copy="p41">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
     </div>
   </div>
@@ -1093,6 +1161,15 @@ figure.shot img { cursor: zoom-in; }
   <div class="wrap">
     <div class="head"><p class="eyebrow">웹 작업 · Agent가 보는 화면</p><h2 class="headline">사람처럼 검색하고, 고른다.</h2></div>
     <div class="gallery" style="margin:0 auto;max-width:620px"><div class="g-track">
+          <figure class="shot" data-label="부탁 입력">
+            <img src="captures/web-1-ask.png" alt="아이스크림몰 부탁 입력" onerror="this.parentNode.classList.add('missing')"><figcaption>새 채팅에서 부탁한다</figcaption>
+          </figure>
+          <figure class="shot" data-label="브라우저 권한">
+            <img src="captures/web-2-permission.png" alt="브라우저에서 가져오기 권한 창" onerror="this.parentNode.classList.add('missing')"><figcaption>"브라우저에서 가져오기" 창이 뜨면 허용</figcaption>
+          </figure>
+          <figure class="shot" data-label="Codex 안 브라우저">
+            <img src="captures/web-3-browser.png" alt="Codex 안에서 연 아이스크림몰" onerror="this.parentNode.classList.add('missing')"><figcaption>앱 안에서 직접 사이트를 연다</figcaption>
+          </figure>
           <figure class="shot" data-label="아이스크림몰 검색 결과">
             <img src="captures/web-mall-search.png" alt="아이스크림몰 검색 결과 화면" onerror="this.parentNode.classList.add('missing')"><figcaption>검색 결과 — 후보를 여러 개 비교한다</figcaption>
           </figure>
@@ -1276,6 +1353,7 @@ figure.shot img { cursor: zoom-in; }
     <div class="grid2">
       <div class="tile result">
           <p style="margin-top:0">"오늘 뭐 해?"에 카드를 읽고 할 일을 정리해 답하고, P5-2·P5-3 뒤에는 <b>카드 파일 내용이 실제로 바뀝니다.</b></p>
+        <p class="small muted">MCP로 <b style="color:var(--ink)">구글 캘린더</b>를 꽂으면 카드 마감을 일정으로 넣을 수도 있어요 (강사 시연).</p>
         </div>
       <figure class="shot" data-label="미니 비서 대화">
           <img src="captures/app-05-assistant.png" alt="미니 비서 폴더에서 대화하는 화면" onerror="this.parentNode.classList.add('missing')">
@@ -1308,6 +1386,15 @@ figure.shot img { cursor: zoom-in; }
       <div class="tile"><h4>새 대화로 끊기</h4><p class="muted">연구회 결산이 끝났으면 가격 채우기는 새 대화에서. 앞의 맥락을 끊어 주세요.</p></div>
       <div class="tile"><h4>기억할 건 파일로</h4><p class="muted">계속 알아야 할 것은 대화가 아니라 AGENTS.md나 카드에 적어 두세요. 새 대화도 그 파일을 읽어요.</p></div>
     </div>
+    <p class="note" style="text-align:center">추천: 이것저것 만들기(바이브 코딩)보다 <b>내 비서 하나</b>를 만들어 많이 써 보세요.</p>
+  </div>
+</section>
+
+<section class="slide" data-sec="s6" data-title="강사는 터미널로">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">공부법</p><h2 class="headline">강사는<br>터미널로 써요.</h2>
+      <p class="subhead">같은 Claude Code·Codex를 앱 대신 <b>VS Code</b>나 <b>터미널</b>에서 쓸 수도 있어요. 훨씬 가볍고 빨라요.</p></div>
+    <p class="note" style="text-align:center">기회가 되면 따로 알려 드릴게요.</p>
   </div>
 </section>
 
@@ -1445,7 +1532,7 @@ document.querySelectorAll('.gallery').forEach(g => {
   let k = 0;
   const nav = document.createElement('div'); nav.className = 'g-nav';
   nav.innerHTML = '<button type="button" aria-label="이전 사진">‹</button><span class="g-dots">' + '<i></i>'.repeat(n) + '</span><button type="button" aria-label="다음 사진">›</button>';
-  g.appendChild(nav);
+  if (n > 1) g.appendChild(nav);
   const dots = nav.querySelectorAll('i');
   g.show = i => { k = (i + n) % n; tr.style.transform = 'translateX(' + (-100 * k) + '%)'; dots.forEach((d, j) => d.classList.toggle('on', j === k)); };
   g.idx = () => k;
