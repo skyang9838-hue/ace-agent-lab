@@ -870,38 +870,127 @@ figure.shot.missing::before {
 <!-- ============ MCP ============ -->
 <section class="slide" data-sec="s3" data-title="MCP란">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">MCP</p><h2 class="headline">도구를 꽂으면,<br>할 수 있는 일이 는다.</h2>
-      <p class="subhead">MCP는 AI에게 도구를 꽂아 주는 플러그입니다.</p></div>
+    <div class="head"><p class="eyebrow">MCP</p><h2 class="headline">MCP를 연결하면,<br>할 수 있는 일이 폭발적으로 는다.</h2>
+      <p class="subhead">MCP는 <b>AI Agent의 크롬 확장 프로그램</b> 같은 것입니다.</p></div>
     <div class="tile" style="text-align:center">
       <div class="flow" style="justify-content:center">
-        <span class="chip">AI Agent</span><span class="arrow">+</span><span class="chip blue">플러그(MCP)</span><span class="arrow">→</span><span class="chip">새로 할 수 있는 일</span>
+        <span class="chip">크롬</span><span class="arrow">+</span><span class="chip">확장 프로그램</span><span class="arrow">→</span><span class="chip">기능이 는다</span>
       </div>
+      <div class="flow" style="justify-content:center;margin-top:12px">
+        <span class="chip">AI Agent</span><span class="arrow">+</span><span class="chip blue">MCP</span><span class="arrow">→</span><span class="chip">할 수 있는 일이 는다</span>
+      </div>
+      <p class="small muted" style="margin-top:14px">정확히는 AI와 바깥 도구를 잇는 <b>공통 규격</b>이에요. 규격이 같아서 한 번 만든 도구를 여러 AI 앱이 같이 씁니다.</p>
     </div>
     <div class="grid3" style="margin-top:20px">
-      <div class="tile"><h4>📄 KorDoc</h4><p class="muted">한글(HWP) 문서를 읽고 만든다</p></div>
-      <div class="tile"><h4>🌐 브라우저</h4><p class="muted">웹페이지를 열고 검색한다</p></div>
-      <div class="tile"><h4>📅 캘린더</h4><p class="muted">일정을 읽고 넣는다</p></div>
+      <div class="tile"><h4>📅 캘린더 · 🎨 캔바</h4><p class="muted">공문 일정 넣기, 안내 포스터 초안</p></div>
+      <div class="tile"><h4>📄 한글 문서</h4><p class="muted">HWP 양식을 읽고 채운다</p></div>
+      <div class="tile"><h4>⚖️ 법령 검색</h4><p class="muted">업무의 법적 근거를 찾는다</p></div>
     </div>
   </div>
 </section>
 
-<section class="slide" data-sec="s3" data-title="시연: 한글 문서">
+<section class="slide" data-sec="s3" data-title="KorDoc · 한글 문서">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">MCP · 시연</p><h2 class="headline">한글 파일도 만든다.</h2>
-      <span class="badge">시연 · 따라 하지 않아도 돼요</span></div>
-    <div class="tile" style="text-align:center">
-      <div class="flow" style="justify-content:center">
-        <span class="chip">AI Agent</span><span class="arrow">+</span><span class="chip blue">KorDoc 플러그</span><span class="arrow">→</span><span class="chip">한글(HWP) 문서</span>
-      </div>
+    <div class="head"><p class="eyebrow">MCP 도구 ①</p><h2 class="headline">KorDoc.<br>한글 문서 담당.</h2>
+      <p class="subhead">학교 공문서·한글(HWP) 파일을 AI Agent가 직접 다루게 해 줍니다.</p></div>
+    <div class="grid2">
+      <div class="tile"><h4>📖 읽기</h4><p class="muted">.hwp·.hwpx 내용을 읽고 표·쪽 구조를 파악한다</p></div>
+      <div class="tile"><h4>📝 양식 채우기</h4><p class="muted">기존 학교 양식의 빈칸·누름틀을 채운다</p></div>
+      <div class="tile"><h4>✏️ 서식 유지 수정</h4><p class="muted">모양은 그대로 두고 글자만 고친다</p></div>
+      <div class="tile"><h4>🆕 새 문서</h4><p class="muted">공문 모양의 새 문서를 <b>.hwpx</b>로 만든다</p></div>
     </div>
     <div class="tile" style="margin-top:20px">
-      <p class="label-sm">강사 화면에서 볼 것</p>
-      <ul class="dots">
-        <li>Agent가 <b>"이 일엔 KorDoc을 써야겠다"</b>고 스스로 고르는 장면</li>
-        <li>만들어진 <b>.hwp 파일</b>을 한글에서 열어 보기</li>
-        <li>학교 문서 대부분이 한글이라, 플러그 하나로 <b>업무 범위가 크게 넓어진다</b>는 것</li>
-      </ul>
+      <p class="small muted">새 파일은 <b>.hwpx</b>로 만들어요. 기존 <b>.hwp</b>는 읽고 고치기만 됩니다. 고치지 못한 곳은 이유와 함께 알려 줘요.</p>
+      <p><a class="btn" href="https://github.com/chrisryugj/kordoc" target="_blank" rel="noopener">KorDoc GitHub ↗</a></p>
     </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="s3" data-title="Korean Law MCP · 법률 조사">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">MCP 도구 ②</p><h2 class="headline">Korean Law MCP.<br>법률 조사 비서.</h2>
+      <p class="subhead">법제처 자료에서 업무의 <b>실제 법적 근거</b>를 찾아 줍니다.</p></div>
+    <div class="grid3">
+      <div class="tile"><h4>📚 법령</h4><p class="muted">법률·시행령·시행규칙·조례 조문</p></div>
+      <div class="tile"><h4>⚖️ 판례·해석례</h4><p class="muted">판례, 헌재 결정, 법령 해석례</p></div>
+      <div class="tile"><h4>🔎 인용 확인</h4><p class="muted">AI가 든 조문이 원문과 맞는지 대조</p></div>
+    </div>
+    <div class="grid2" style="margin-top:20px">
+      <div class="tile">
+        <p class="label-sm">준비물</p>
+        <p class="muted">법제처 <b>Open API 인증키</b> (무료). 가입 후 'Open API 사용 신청'을 하면 받아요.</p>
+        <p><a class="btn gray" href="https://open.law.go.kr" target="_blank" rel="noopener">인증키 신청 ↗</a> <a class="btn" href="https://github.com/chrisryugj/korean-law-mcp" target="_blank" rel="noopener">GitHub ↗</a></p>
+      </div>
+      <div class="tile">
+        <p class="label-sm">주의</p>
+        <p class="muted"><b>결론은 사람이</b> 내립니다. 찾아 준 법령·판례는 <b>원문</b>과 <b>지금 시행 중인지</b> 꼭 확인하세요.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="s3" data-title="연결하는 법">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">MCP 연결</p><h2 class="headline">주소만 주면,<br>Agent가 연결한다.</h2></div>
+    <div class="grid2">
+      <div class="prompt-card">
+        <p class="label"><span class="no">1</span><b>KorDoc 주소 복사</b></p>
+        <pre class="prompt" id="mcp-kordoc">https://github.com/chrisryugj/kordoc</pre>
+        <button class="btn" type="button" data-copy="mcp-kordoc">주소 복사</button><span class="copied">복사됨 ✓</span>
+      </div>
+      <div class="prompt-card">
+        <p class="label"><span class="no">1</span><b>법령 MCP 주소 복사</b></p>
+        <pre class="prompt" id="mcp-law">https://github.com/chrisryugj/korean-law-mcp</pre>
+        <button class="btn" type="button" data-copy="mcp-law">주소 복사</button><span class="copied">복사됨 ✓</span>
+      </div>
+    </div>
+    <div class="grid2">
+      <div class="tile bigstep">
+        <span class="num">2</span>
+        <div>
+          <h3>붙여 넣고 부탁</h3>
+          <p>Codex에 주소를 붙여 넣고 <b>"이거 MCP로 연결해 줘"</b>.</p>
+          <p class="small">법령 MCP는 인증키를 물어보면 넣어 주세요.</p>
+        </div>
+      </div>
+      <div class="tile bigstep">
+        <span class="num">3</span>
+        <div>
+          <h3>앱 다시 시작</h3>
+          <p>연결이 끝나면 Codex를 <b>껐다 켜야</b> 도구가 보여요.</p>
+          <p class="small">Node.js가 필요해요. 없으면 Codex가 알려 줍니다.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="s3" data-title="시연: 민원 답변서">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">MCP · 시연</p><h2 class="headline">조사부터 문서까지,<br>말 한 번으로.</h2>
+      <span class="badge">시연 · 따라 하지 않아도 돼요</span></div>
+    <div class="tile">
+      <p class="label-sm">상황 · 에이스초등학교</p>
+      <p class="muted">"주간학습안내에 예고된 수업이 진행되지 않았다"는 <b>학부모 민원</b>이 들어왔다. 관련 법적 근거를 확인하고 <b>학교 양식</b>에 맞춰 답변서 초안을 써야 한다.</p>
+    </div>
+    <div class="tile" style="text-align:center;margin-top:20px">
+      <div class="flow" style="justify-content:center">
+        <span class="chip">말로 지시</span><span class="arrow">→</span><span class="chip blue">⚖️ 법령 MCP로 근거 조사</span><span class="arrow">→</span><span class="chip blue">📄 KorDoc으로 양식에 작성</span><span class="arrow">→</span><span class="chip">파일 열어 확인</span>
+      </div>
+    </div>
+    <p class="note" style="text-align:center">시연용 가상 학교·가상 민원입니다.</p>
+  </div>
+</section>
+
+<section class="slide" data-sec="s3" data-title="결과 확인">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">MCP · 결과</p><h2 class="headline">끝나면 사람이 확인한다.</h2></div>
+    <div class="grid3">
+      <div class="tile"><h4>📄 파일 열기</h4><p class="muted">만들어진 답변서 <b>.hwpx</b>를 한글에서 연다</p></div>
+      <div class="tile"><h4>🔗 근거 확인</h4><p class="muted">조문 이름과 <b>원문 링크</b>가 있는지, 지금 시행 중인지</p></div>
+      <div class="tile"><h4>🧑‍🏫 판단은 사람이</h4><p class="muted">사실관계·법적 결론·표현은 교사가 고친다</p></div>
+    </div>
+    <p class="note" style="font-size:18px;text-align:center">말로 부탁했는데, <b>법령 조사부터 문서 작성까지</b> 이어서 했다.</p>
   </div>
 </section>
 
