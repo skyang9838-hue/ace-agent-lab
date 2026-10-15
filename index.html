@@ -246,7 +246,7 @@ main { position: fixed; top: 0; right: 0; bottom: 0; left: var(--side-w); overfl
 .copied { font-size: 15px; color: var(--good); margin-left: 12px; opacity: 0; transition: opacity .3s; }
 .copied.show { opacity: 1; }
 
-/* 성공 · 막히면 */
+/* 성공 */
 .result { text-align: center; }
 .result .cap { margin-bottom: 8px; }
 .nums { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 20px 0 8px; }
@@ -255,10 +255,6 @@ main { position: fixed; top: 0; right: 0; bottom: 0; left: var(--side-w); overfl
 .nums strong small { font-size: 21px; font-weight: 600; margin-left: 2px; }
 .result p { color: var(--muted); margin: 16px auto 0; max-width: 620px; }
 .result p b { color: var(--ink); }
-.stuck ul { list-style: none; margin: 0; padding: 0; }
-.stuck li { padding: 14px 0; border-top: 1px solid var(--hairline); color: var(--muted); }
-.stuck li:first-child { border-top: 0; padding-top: 0; }
-.stuck li b { color: var(--ink); display: block; }
 
 /* 캡처 */
 figure.shot { margin: 0; min-width: 0; }
@@ -271,6 +267,19 @@ figure.shot.missing::before {
   min-height: 220px; padding: 16px; border: 1.5px dashed var(--hairline); border-radius: 12px;
   background: var(--tile-alt); color: var(--soft); font-size: 15px;
 }
+/* 사진 넘기기 · 크게 보기 */
+.gallery { position: relative; min-width: 0; overflow: hidden; }
+.g-track { display: flex; transition: transform .35s ease; }
+.g-track > figure.shot { flex: 0 0 100%; }
+.g-nav { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 12px; }
+.g-nav button { width: 36px; height: 36px; border-radius: 50%; border: 0; background: var(--hairline); color: var(--ink); font-size: 18px; cursor: pointer; }
+.g-dots { display: flex; gap: 8px; }
+.g-dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--soft); opacity: .4; }
+.g-dots i.on { opacity: 1; background: var(--ink); }
+figure.shot img { cursor: zoom-in; }
+#zoom { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,.92); display: none; align-items: center; justify-content: center; cursor: zoom-out; }
+#zoom.on { display: flex; }
+#zoom img { max-width: 96vw; max-height: 94vh; border-radius: 8px; }
 .shots2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; }
 
 /* 미니 비서 구조 */
@@ -729,14 +738,14 @@ figure.shot.missing::before {
         <p style="margin-top:14px">번호 폴더가 아니라 <b>실습폴더 자체</b>를 열어요. 그 안의 파일을 AI가 다 볼 수 있어요.</p>
         <p class="small muted">연 폴더가 곧 <b>프로젝트</b>예요. 다음에 같은 폴더를 다시 열면 <b>이어서</b> 작업합니다.</p>
       </div>
-      <div>
-        <figure class="shot" data-label="파일 → 폴더 열기">
-          <img src="captures/app-open-folder.png" alt="Codex 앱 파일 메뉴의 폴더 열기" onerror="this.parentNode.classList.add('missing')">
-        </figure>
-        <figure class="shot" data-label="실습폴더 선택" style="margin-top:12px">
-          <img src="captures/app-folder-pick.png" alt="폴더 선택 창에서 실습폴더 고르기" onerror="this.parentNode.classList.add('missing')">
-        </figure>
-      </div>
+      <div class="gallery"><div class="g-track">
+          <figure class="shot" data-label="파일 → 폴더 열기">
+            <img src="captures/app-open-folder.png" alt="Codex 앱 파일 메뉴의 폴더 열기" onerror="this.parentNode.classList.add('missing')">
+          </figure>
+          <figure class="shot" data-label="실습폴더 선택">
+            <img src="captures/app-folder-pick.png" alt="폴더 선택 창에서 실습폴더 고르기" onerror="this.parentNode.classList.add('missing')">
+          </figure>
+        </div></div>
     </div>
   </div>
 </section>
@@ -760,20 +769,25 @@ figure.shot.missing::before {
 <section class="slide" data-sec="s2" data-title="권한과 승인">
   <div class="wrap">
     <div class="head"><p class="eyebrow">앱 사용법 · 4 / 7</p><h2 class="headline">얼마나 맡길지 정한다.</h2>
-      <p class="subhead">입력창 아래 손 모양 메뉴. 오늘은 <b>승인 요청</b>으로 합니다.</p></div>
+      <p class="subhead">입력창 아래 손 모양 메뉴. 오늘은 화끈하게 <b>전체 권한</b>으로 갑니다.</p></div>
     <div class="grid3">
-      <div class="tile"><h4>승인 요청 <span class="badge blue">오늘</span></h4><p class="muted">외부 파일 수정 및 인터넷 사용 시 <b>항상 확인</b>합니다</p></div>
-      <div class="tile"><h4>나 대신 승인</h4><p class="muted">AI 검사관이 대신 보고, <b>위험해 보이는 작업에만</b> 나에게 물어요</p></div>
-      <div class="tile"><h4>전체 권한</h4><p class="muted">인터넷과 컴퓨터의 모든 파일에 <b>제한 없이</b>. 익숙해지면 쓰지만 오늘은 쓰지 않아요</p></div>
+      <div class="tile"><h4>승인 요청</h4><p class="muted">외부 파일 수정 및 인터넷 사용 시 <b>항상 확인</b>합니다</p></div>
+      <div class="tile"><h4>나 대신 승인 <span class="badge">불안하면</span></h4><p class="muted">AI 검사관이 대신 보고, <b>위험해 보이는 작업에만</b> 나에게 물어요</p></div>
+      <div class="tile"><h4>전체 권한 <span class="badge blue">오늘</span></h4><p class="muted">인터넷과 컴퓨터의 모든 파일에 <b>제한 없이</b>. 묻지 않고 바로 해요</p></div>
     </div>
-    <p class="note" style="text-align:center">"허용할까요?" 창이 뜨면 AI가 무엇을 하려는지 <b>한 번 읽어 보고</b> <b>한 번만 허용</b>을 누르세요.</p>
-    <div class="grid2" style="margin-top:12px">
-      <figure class="shot" data-label="권한 메뉴">
-        <img src="captures/app-permission.png" alt="승인 요청 · 나 대신 승인 · 전체 권한 메뉴" onerror="this.parentNode.classList.add('missing')">
-      </figure>
-      <figure class="shot" data-label="명령 승인 창">
-        <img src="captures/app-approve.png" alt="명령 실행을 허용할지 묻는 창" onerror="this.parentNode.classList.add('missing')">
-      </figure>
+    <div class="grid2" style="margin-top:20px">
+      <div class="tile">
+        <h4>불안하면 나 대신 승인</h4>
+        <p class="muted">"허용할까요?" 창이 뜨면 AI가 무엇을 하려는지 <b style="color:var(--ink)">한 번 읽어 보고</b> <b style="color:var(--ink)">한 번만 허용</b>을 누르세요.</p>
+      </div>
+      <div class="gallery"><div class="g-track">
+          <figure class="shot" data-label="권한 메뉴">
+            <img src="captures/app-permission.png" alt="승인 요청 · 나 대신 승인 · 전체 권한 메뉴" onerror="this.parentNode.classList.add('missing')">
+          </figure>
+          <figure class="shot" data-label="명령 승인 창">
+            <img src="captures/app-approve.png" alt="명령 실행을 허용할지 묻는 창" onerror="this.parentNode.classList.add('missing')">
+          </figure>
+        </div></div>
     </div>
   </div>
 </section>
@@ -800,14 +814,14 @@ figure.shot.missing::before {
         </div>
       </div>
     </div>
-    <div class="grid2" style="margin-top:20px">
-      <figure class="shot" data-label="모델 선택">
-        <img src="captures/app-model.png" alt="모델 목록에서 5.6 Terra 선택" onerror="this.parentNode.classList.add('missing')">
-      </figure>
-      <figure class="shot" data-label="추론 Light">
-        <img src="captures/app-effort.png" alt="추론 수준 Light 선택" onerror="this.parentNode.classList.add('missing')">
-      </figure>
-    </div>
+    <div class="gallery" style="margin:20px auto 0;max-width:760px"><div class="g-track">
+          <figure class="shot" data-label="모델 선택">
+            <img src="captures/app-model.png" alt="모델 목록에서 5.6 Terra 선택" onerror="this.parentNode.classList.add('missing')">
+          </figure>
+          <figure class="shot" data-label="추론 Light">
+            <img src="captures/app-effort.png" alt="추론 수준 Light 선택" onerror="this.parentNode.classList.add('missing')">
+          </figure>
+        </div></div>
   </div>
 </section>
 
@@ -917,7 +931,6 @@ figure.shot.missing::before {
       <p class="label-sm">볼 것</p>
       <ul class="dots">
         <li>AI가 <b>엑셀을 직접 열어</b> 내용을 파악하는 장면</li>
-        <li><b>"허용할까요?"</b> 창이 뜨는 순간</li>
         <li>새 줄이 들어가고 <b>결산 숫자가 바뀌는</b> 순간</li>
       </ul>
     </div>
@@ -933,7 +946,7 @@ figure.shot.missing::before {
       <pre class="prompt" id="p21">10월 6일에 50만 원이 추가 입금됐는데 깜빡했다. 10월 15일에는 떡값으로 10만 원을 지출했다. 회계 파일에 반영하고, 맨 위 결산도 다시 계산해 줘.</pre>
       <button class="btn" type="button" data-copy="p21">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
     </div>
-    <p class="small muted" style="text-align:center;margin-top:12px">"허용할까요?" 창이 뜨면 <b>한 번만 허용</b>. 1~2분 걸릴 수 있어요.</p>
+    <p class="small muted" style="text-align:center;margin-top:12px">1~2분 걸릴 수 있어요.</p>
   </div>
 </section>
 
@@ -949,30 +962,10 @@ figure.shot.missing::before {
       <p>원래 적힌 <b>4줄은 그대로</b>, 새 줄 <b>2개</b>가 더해져야 해요. 엑셀을 <b>닫았다 다시 열어</b> 맨 위 결산 숫자까지 확인하세요.</p>
     </div>
     <p class="note" style="font-size:18px;text-align:center">중요한 건 속도가 아니라, <b>맡겨 놓고 나는 다른 일을 할 수 있다</b>는 것.</p>
-  </div>
-</section>
-
-<section class="slide" data-sec="s2" data-title="연구회 · 막히면 + 힌트">
-  <div class="wrap">
-    <div class="head"><p class="eyebrow">로컬 작업 · 연구회 회계</p><h2 class="headline">막히면 이렇게.</h2></div>
-    <div class="tile stuck">
-      <ul>
-        <li><b>파일을 못 찾는다</b>앱에서 연 폴더가 '실습폴더'인지 확인하세요.</li>
-        <li><b>허용 창이 뜬다</b>무엇을 하려는지 읽어 보고 한 번만 허용을 누르세요.</li>
-        <li><b>저장이 안 된다</b>엑셀을 열어 둔 채면 저장이 안 돼요. 닫고 다시 시키세요.</li>
-        <li><b>결산 숫자가 그대로다</b>"맨 위 결산도 다시 계산해 줘"라고 한 번 더 부탁하세요.</li>
-        <li><b>엑셀이 '제한된 보기'로 열린다</b>노란 줄의 <b>편집 사용</b>을 누르세요. Microsoft 로그인 창이 뜨면 닫아도 돼요.</li>
-        <li><b>멈췄다 (한도)</b>잠시 기다리거나 강사 화면을 보며 따라 보세요.</li>
-      </ul>
-    </div>
-    <div class="prompt-card" style="margin-top:20px">
-      <p class="label"><span class="no">힌트</span><b>그래도 어렵다면</b></p>
-      <pre class="prompt" id="p2h">'에이스초 연구회 회계.xlsx'에 10월 6일 입금 500,000원과 10월 15일 떡값 지출 100,000원을 추가하고, 맨 위 수입·지출·잔액을 다시 계산해 줘. 원래 있던 기록은 건드리지 마.</pre>
-      <button class="btn" type="button" data-copy="p2h">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
-    </div>
     <label class="check"><input type="checkbox" data-step="s2"> 로컬 작업 끝</label>
   </div>
 </section>
+
 
 <!-- ============ 3 MCP 시연 (선택) ============ -->
 <section class="slide" data-sec="s3" data-title="MCP란">
@@ -1060,19 +1053,7 @@ figure.shot.missing::before {
         <span class="chip">말로 질문</span><span class="arrow">→</span><span class="chip blue">⚖️ Korean Law MCP로 법령 검색</span><span class="arrow">→</span><span class="chip">조문 원문과 함께 답</span>
       </div>
     </div>
-    <p class="note" style="text-align:center">기억으로 답하지 않고 <b>법제처 원문</b>을 찾아 보여 줘요. 오늘은 <b>강사가 직접 시연</b>합니다.</p>
-    <div class="grid2" style="margin-top:20px">
-      <div class="prompt-card">
-        <p class="label"><span class="no">1</span><b>설치 — 주소를 앱에 붙여 넣기</b></p>
-        <pre class="prompt" id="p3l">https://github.com/chrisryugj/korean-law-mcp 이 MCP를 설치해서 연결해 줘.</pre>
-        <button class="btn" type="button" data-copy="p3l">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
-      </div>
-      <div class="prompt-card">
-        <p class="label"><span class="no">2</span><b>인증키 받기 (무료)</b></p>
-        <p class="muted">법제처 Open API에서 신청하면 인증키를 줘요. 설치할 때 AI가 키를 물으면 붙여 넣으세요.</p>
-        <p><a class="btn" href="https://open.law.go.kr" target="_blank" rel="noopener">법제처 Open API ↗</a></p>
-      </div>
-    </div>
+    <p class="note" style="text-align:center">기억으로 답하지 않고 <b>법제처 원문</b>을 찾아 보여 줘요. 강사가 <b>채팅으로 물어보는 모습만</b> 봅니다.</p>
   </div>
 </section>
 
@@ -1099,10 +1080,10 @@ figure.shot.missing::before {
 
 <section class="slide" data-sec="s4" data-title="P4-1 예산 안에서 채우기">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">웹 작업 · 첫 번째 부탁</p><h2 class="headline">브라우저로 직접 찾게.</h2></div>
+    <div class="head"><p class="eyebrow">웹 작업 · 첫 번째 부탁</p><h2 class="headline">상황만 주고 맡긴다.</h2></div>
     <div class="prompt-card">
       <p class="label"><span class="no">P4-1</span><b>예산 안에서 찾아 채우기</b></p>
-      <pre class="prompt" id="p41">'학습준비물 빈 양식.xlsx'의 5개 품목을 아이스크림몰에서 찾아 줘. 키트 3종은 우리 반 24명이 하나씩 쓸 거야. 브라우저로 직접 검색해서 품목마다 후보 2~3개를 비교하고, 전체 합계가 20만 원을 넘지 않게 골라 줘. 고른 상품의 단가와 상품 링크를 칸에 넣고, 금액 칸에는 수량×단가 수식을 넣어 줘. 비교한 후보들은 '비교표' 시트에 정리해 줘. 검색은 https://i-screammall.co.kr/search?searchWord=검색어 주소로 하면 돼. 가격이 '선생님 혜택가'로 가려진 상품은 건너뛰어 줘. 장바구니에 담거나 구매하지는 마.</pre>
+      <pre class="prompt" id="p41">6학년 1반 24명이 쓸 학습준비물을 아이스크림몰에서 사려고 해. 독도의날·한글날·크리스마스 만들기 키트는 24명분씩, 물티슈와 각티슈는 한 묶음씩 사야 해. 전체 금액은 20만 원 안으로 맞춰 줘. 고른 상품의 단가·금액·링크를 '학습준비물 빈 양식.xlsx'에 채워 줘. 장바구니에 담거나 사지는 마.</pre>
       <button class="btn" type="button" data-copy="p41">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
     </div>
   </div>
@@ -1111,54 +1092,19 @@ figure.shot.missing::before {
 <section class="slide" data-sec="s4" data-title="Agent가 보는 화면">
   <div class="wrap">
     <div class="head"><p class="eyebrow">웹 작업 · Agent가 보는 화면</p><h2 class="headline">사람처럼 검색하고, 고른다.</h2></div>
-    <div class="shots2">
-      <figure class="shot" data-label="아이스크림몰 검색 결과">
-        <img src="captures/web-mall-search.png" alt="아이스크림몰 검색 결과 화면" onerror="this.parentNode.classList.add('missing')">
-        <figcaption>검색 결과 — 후보를 여러 개 비교한다</figcaption>
-      </figure>
-      <figure class="shot" data-label="아이스크림몰 상품 상세">
-        <img src="captures/web-mall-product.png" alt="아이스크림몰 상품 상세 화면" onerror="this.parentNode.classList.add('missing')">
-        <figcaption>상품 상세 — 1개 값인지 묶음 값인지 확인한다</figcaption>
-      </figure>
-    </div>
-  </div>
-</section>
-
-<section class="slide" data-sec="s4" data-title="P4-2 규격 확인">
-  <div class="wrap">
-    <div class="head"><p class="eyebrow">웹 작업 · 두 번째 부탁</p><h2 class="headline">비슷한 것과 같은 것은 다르다.</h2>
-      <p class="subhead">1개 값인지 4개 묶음 값인지, 24명분이 맞는지 다시 봐요.</p></div>
-    <div class="prompt-card">
-      <p class="label"><span class="no">P4-2</span><b>규격 확인</b></p>
-      <pre class="prompt" id="p42">고른 상품이 1개 가격인지 묶음 가격인지 확인하고, 24명분 수량과 금액이 맞는지 다시 검산해 줘. 다른 게 있으면 표시하고 이유를 알려 줘.</pre>
-      <button class="btn" type="button" data-copy="p42">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
-    </div>
-  </div>
-</section>
-
-<section class="slide" data-sec="s4" data-title="이렇게 나오면 성공">
-  <div class="wrap">
-    <div class="head"><p class="eyebrow">웹 작업 · 확인</p><h2 class="headline">이렇게 나오면 성공.</h2></div>
-    <div class="grid2">
-      <div class="tile result">
-        <p class="cap">양식의 5줄 모두에 (합계 20만 원 이하)</p>
-        <div class="flow" style="justify-content:center"><span class="chip blue">단가</span><span class="chip blue">금액(수식)</span><span class="chip blue">상품 링크</span></div>
-        <p>가 채워지고 <b>비교표 시트</b>가 생깁니다. 링크를 눌러 <b>실제 상품 페이지</b>가 열리는지, 금액 칸이 <b>=수량×단가 수식</b>인지 확인하세요.</p>
-      </div>
-      <div class="tile stuck">
-        <h3>막히면</h3>
-        <ul>
-          <li><b>파일을 못 찾는다</b>앱에서 연 폴더가 '실습폴더'인지 확인하세요.</li>
-          <li><b>브라우저를 못 연다</b>프롬프트의 "브라우저로 직접 검색해서"를 "웹 검색으로 찾아 줘"로 바꿔 보세요.</li>
-          <li><b>합계가 20만 원을 넘는다</b>"예산 안으로 다시 골라 줘"라고 한 번 더 부탁하세요.</li>
-          <li><b>가격 대신 「선생님 혜택가」가 보인다</b>로그인해야 보이는 상품이에요. 로그인하지 말고 다른 상품을 고르라고 하세요.</li>
-          <li><b>엑셀이 저장되지 않는다</b>엑셀 창을 닫고 다시 시키세요.</li>
-        </ul>
-      </div>
-    </div>
+    <div class="gallery" style="margin:0 auto;max-width:620px"><div class="g-track">
+          <figure class="shot" data-label="아이스크림몰 검색 결과">
+            <img src="captures/web-mall-search.png" alt="아이스크림몰 검색 결과 화면" onerror="this.parentNode.classList.add('missing')"><figcaption>검색 결과 — 후보를 여러 개 비교한다</figcaption>
+          </figure>
+          <figure class="shot" data-label="아이스크림몰 상품 상세">
+            <img src="captures/web-mall-product.png" alt="아이스크림몰 상품 상세 화면" onerror="this.parentNode.classList.add('missing')"><figcaption>상품 상세 — 1개 값인지 묶음 값인지 확인한다</figcaption>
+          </figure>
+        </div></div>
     <label class="check"><input type="checkbox" data-step="s4"> 가격 채우기 끝</label>
   </div>
 </section>
+
+
 
 <!-- ============ 미니 비서 만들기 ============ -->
 <section class="slide" data-sec="s5" data-title="왜 파일로 기억할까">
@@ -1328,22 +1274,12 @@ figure.shot.missing::before {
   <div class="wrap">
     <div class="head"><p class="eyebrow">미니 비서 · 확인</p><h2 class="headline">이렇게 나오면 성공.</h2></div>
     <div class="grid2">
-      <div>
-        <div class="tile result">
+      <div class="tile result">
           <p style="margin-top:0">"오늘 뭐 해?"에 카드를 읽고 할 일을 정리해 답하고, P5-2·P5-3 뒤에는 <b>카드 파일 내용이 실제로 바뀝니다.</b></p>
         </div>
-        <figure class="shot" data-label="미니 비서 대화" style="margin-top:20px">
+      <figure class="shot" data-label="미니 비서 대화">
           <img src="captures/app-05-assistant.png" alt="미니 비서 폴더에서 대화하는 화면" onerror="this.parentNode.classList.add('missing')">
         </figure>
-      </div>
-      <div class="tile stuck">
-        <h3>막히면</h3>
-        <ul>
-          <li><b>카드를 모른다고 한다</b>앱에서 연 폴더가 '실습폴더'가 아니라 '4 미니 비서'인지 확인하세요.</li>
-          <li><b>HOME.md는 그대로다</b>"HOME.md 카드 목록도 고쳐 줘"라고 한 번 더 말하세요.</li>
-          <li><b>캘린더 연결은?</b>강사 시연만 합니다. MCP로 캘린더를 꽂으면 카드 마감을 일정으로 넣을 수 있어요.</li>
-        </ul>
-      </div>
     </div>
     <label class="check"><input type="checkbox" data-step="s5"> 미니 비서 끝</label>
   </div>
@@ -1502,6 +1438,46 @@ document.addEventListener('click', e => {
   if (i < 0) return;
   e.preventDefault(); open(false); go(i);
 });
+
+// 사진 넘기기
+document.querySelectorAll('.gallery').forEach(g => {
+  const tr = g.querySelector('.g-track'), n = tr.children.length;
+  let k = 0;
+  const nav = document.createElement('div'); nav.className = 'g-nav';
+  nav.innerHTML = '<button type="button" aria-label="이전 사진">‹</button><span class="g-dots">' + '<i></i>'.repeat(n) + '</span><button type="button" aria-label="다음 사진">›</button>';
+  g.appendChild(nav);
+  const dots = nav.querySelectorAll('i');
+  g.show = i => { k = (i + n) % n; tr.style.transform = 'translateX(' + (-100 * k) + '%)'; dots.forEach((d, j) => d.classList.toggle('on', j === k)); };
+  g.idx = () => k;
+  nav.firstChild.onclick = () => g.show(k - 1);
+  nav.lastChild.onclick = () => g.show(k + 1);
+  let sx = 0;
+  g.addEventListener('touchstart', e => { sx = e.touches[0].clientX; e.stopPropagation(); }, { passive: true });
+  g.addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - sx; e.stopPropagation(); if (Math.abs(dx) > 40) g.show(k + (dx < 0 ? 1 : -1)); });
+  g.addEventListener('wheel', e => e.stopPropagation(), { passive: true });
+  g.show(0);
+});
+
+// 사진 크게 보기: 클릭하면 화면 가득, 바깥 클릭·Esc로 닫기, ←/→로 같은 묶음 넘기기
+const zoom = document.createElement('div'); zoom.id = 'zoom'; zoom.innerHTML = '<img alt="">';
+document.body.appendChild(zoom);
+let zg = null;
+const zset = img => { zoom.firstChild.src = img.src; zoom.firstChild.alt = img.alt; };
+document.addEventListener('click', e => {
+  const img = e.target.closest('figure.shot img');
+  if (!img) return;
+  zg = img.closest('.gallery'); zset(img); zoom.classList.add('on');
+});
+zoom.onclick = () => zoom.classList.remove('on');
+document.addEventListener('keydown', e => {
+  if (!zoom.classList.contains('on')) return;
+  e.stopImmediatePropagation(); e.preventDefault();
+  if (e.key === 'Escape') zoom.classList.remove('on');
+  else if (zg && (e.key === 'ArrowRight' || e.key === 'ArrowLeft')) {
+    zg.show(zg.idx() + (e.key === 'ArrowRight' ? 1 : -1));
+    zset(zg.querySelectorAll('.g-track img')[zg.idx()]);
+  }
+}, true);
 
 // 키보드: Enter/→ 다음, Shift+Enter/← 이전, F 전체화면, T 목차
 document.addEventListener('keydown', e => {
