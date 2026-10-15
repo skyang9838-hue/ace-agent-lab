@@ -412,7 +412,7 @@ figure.shot.missing::before {
     <div class="grid6">
       <a class="step" href="#s1"><span class="no">01</span><span class="icon">💬</span><h4>챗봇과 AI Agent</h4><p>무엇이 다른가</p></a>
       <a class="step must" href="#s2"><span class="no">02 · 모두 함께</span><span class="icon">📊</span><h4>로컬 기반 작업하기</h4><p>내 폴더의 엑셀 다루기</p></a>
-      <a class="step" href="#s3"><span class="no">03 · 시연 (선택)</span><span class="icon">🔌</span><h4>MCP 시연</h4><p>MCP란 · 가정통신문 신청서 · 법령</p></a>
+      <a class="step" href="#s3"><span class="no">03 · 시연 (선택)</span><span class="icon">🔌</span><h4>MCP 시연</h4><p>MCP란 · 가정통신문 양식 · 법령</p></a>
       <a class="step" href="#s4"><span class="no">04 · 도전</span><span class="icon">🌐</span><h4>웹 기반 작업하기</h4><p>브라우저로 가격 찾기</p></a>
       <a class="step" href="#s5"><span class="no">05 · 도전</span><span class="icon">🗂️</span><h4>미니 비서 만들기</h4><p>파일로 기억하기</p></a>
       <a class="step" href="#s6"><span class="no">06</span><span class="icon">✨</span><h4>공부법</h4><p>잘 맡기는 법 · 주의할 점</p></a>
@@ -513,10 +513,10 @@ figure.shot.missing::before {
       <div class="tile">
         <p class="label-sm">실습폴더 안에 있는 것</p>
         <a class="file" href="실습폴더.zip" download><span class="ext md">1</span><span><span class="name">1 로컬 작업 - 연구회 회계</span><br><span class="sub">에이스초 연구회 회계.xlsx · 연구회 상황 메모.md</span></span></a>
-        <a class="file" href="실습폴더.zip" download><span class="ext md">2</span><span><span class="name">2 MCP 시연 (선택) - 가정통신문</span><br><span class="sub">두근두근 마을 나들이 가정통신문.hwpx</span></span></a>
+        <a class="file" href="실습폴더.zip" download><span class="ext md">2</span><span><span class="name">2 MCP 시연 (선택) - 가정통신문</span><br><span class="sub">가정통신문 양식.hwpx (내용은 빈칸)</span></span></a>
         <a class="file" href="실습폴더.zip" download><span class="ext md">3</span><span><span class="name">3 웹 작업 - 학습준비물</span><br><span class="sub">학습준비물 빈 양식.xlsx (가격은 빈칸)</span></span></a>
         <a class="file" href="실습폴더.zip" download><span class="ext md">4</span><span><span class="name">4 미니 비서</span><br><span class="sub">AGENTS.md · HOME.md · 카드 3장</span></span></a>
-        <p class="small muted" style="margin-top:12px">실습마다 <b>그 번호 폴더</b>를 앱에서 엽니다.</p>
+        <p class="small muted" style="margin-top:12px">앱에서는 <b>실습폴더 자체</b>를 엽니다. 미니 비서만 '4 미니 비서' 폴더를 따로 열어요.</p>
       </div>
     </div>
     <label class="check"><input type="checkbox" data-step="s0"> 준비 끝</label>
@@ -562,16 +562,58 @@ figure.shot.missing::before {
   </div>
 </section>
 
-<section class="slide" data-sec="s1" data-title="내 컴퓨터에서 일한다">
+<section class="slide" data-sec="s1" data-title="내 컴퓨터를 조작한다">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">Codex · Claude Code</p><h2 class="headline">내 컴퓨터에서<br>직접 일한다.</h2>
-      <p class="subhead">Agent가 꼭 터미널 프로그램인 건 아니에요. 다만 이 둘은 컴퓨터의 <b>명령어(터미널)</b>와 도구를 써서 직접 작업합니다.</p></div>
+    <div class="head"><p class="eyebrow">Codex · Claude Code</p><h2 class="headline">내 컴퓨터를<br>직접 조작한다.</h2>
+      <p class="subhead">챗봇은 답을 <b>주기만</b> 해요. Agent는 <b>터미널(명령어)</b>과 도구로 일하면서 내 컴퓨터를 <b>직접 조작</b>합니다.</p></div>
     <div class="tree">
       <div class="node"><code>터미널 명령</code><p>파일 열기, 계산, 프로그램 실행</p></div>
       <span class="arrow">+</span>
       <div class="node"><code>도구</code><p>엑셀 읽고 쓰기, 브라우저, 문서</p></div>
       <span class="arrow">→</span>
       <div class="node"><code>내 컴퓨터</code><p>사람이 하던 클릭과 입력을 대신</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="s1" data-title="채팅 앱 · 일하는 앱 · 모델">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">이름 정리</p><h2 class="headline">채팅 앱, 일하는 앱,<br>그리고 모델.</h2>
+      <p class="subhead">모델은 <b>두뇌</b>, 앱은 그 두뇌를 쓰는 <b>몸</b>이에요. 같은 두뇌를 채팅 앱으로도, 일하는 앱으로도 씁니다.</p></div>
+    <div class="tile">
+      <table class="def">
+        <tr><th></th><th>OpenAI</th><th>Anthropic</th><th>Google</th></tr>
+        <tr><td>채팅 앱 <span class="muted">(묻고 답한다)</span></td><td>ChatGPT</td><td>Claude</td><td>Gemini</td></tr>
+        <tr><td>일하는 앱 <span class="muted">(Agent)</span></td><td><b>Codex</b> ← 오늘</td><td>Claude Code</td><td>Gemini CLI</td></tr>
+        <tr><td>모델 <span class="muted">(두뇌)</span></td><td>GPT</td><td>Claude</td><td>Gemini</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="s1" data-title="모델 서열">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">모델 서열</p><h2 class="headline">위로 갈수록 똑똑하고,<br>느리고, 비싸다.</h2>
+      <p class="subhead">앱 안에서 모델을 고를 수 있어요. 무료 계정은 고를 수 있는 모델이 적습니다.</p></div>
+    <div class="grid2">
+      <div class="tile">
+        <h3>GPT <span class="muted">(Codex · ChatGPT)</span></h3>
+        <ol class="olist">
+          <li><b>GPT-6 Astra</b> — 가장 똑똑함</li>
+          <li><b>GPT-6.1 Sol</b> — 최신 주력 <span class="badge">강사 시연</span></li>
+          <li>GPT-6 Sol · GPT-6 Luna</li>
+          <li class="muted">이전 세대: 5.6 Sol · <b style="color:var(--ink)">5.6 Terra</b> <span class="badge blue">오늘 실습</span> · 5.6 Luna</li>
+        </ol>
+      </div>
+      <div class="tile">
+        <h3>Claude <span class="muted">(Claude Code · Claude)</span></h3>
+        <ol class="olist">
+          <li><b>Fable 5.1</b> — 가장 똑똑함</li>
+          <li><b>Opus 5.5</b></li>
+          <li>Sonnet 5.5</li>
+          <li>Haiku 5.5 — 가장 빠름</li>
+        </ol>
+      </div>
     </div>
   </div>
 </section>
@@ -655,7 +697,7 @@ figure.shot.missing::before {
 <!-- ============ 2 로컬 기반 작업하기 · 앱 기본 사용법 ============ -->
 <section class="slide" data-sec="s2" data-title="앱 화면 구성">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">앱 사용법 · 1 / 6</p><h2 class="headline">앱 화면은 네 부분.</h2>
+    <div class="head"><p class="eyebrow">앱 사용법 · 1 / 7</p><h2 class="headline">앱 화면은 네 부분.</h2>
       <p class="subhead">앱 화면에 따라 이름이 조금 다를 수 있어요.</p></div>
     <div class="grid2">
       <figure class="shot" data-label="Codex 앱 화면 구성">
@@ -675,52 +717,78 @@ figure.shot.missing::before {
 
 <section class="slide" data-sec="s2" data-title="폴더 열기">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">앱 사용법 · 2 / 6</p><h2 class="headline">먼저 폴더를 연다.</h2>
+    <div class="head"><p class="eyebrow">앱 사용법 · 2 / 7</p><h2 class="headline">먼저 폴더를 연다.</h2>
       <p class="subhead">AI에게 <b>"여기가 네 작업 공간이야"</b> 하고 정해 주는 단계예요.</p></div>
     <div class="grid2">
-      <div class="tile bigstep">
-        <span class="num">1</span>
-        <div>
-          <h3>바탕화면 → 실습폴더 → 1 로컬 작업</h3>
-          <p>앱에서 <b>폴더 열기</b>를 누르고 <b>'1 로컬 작업 - 연구회 회계'</b> 폴더를 고릅니다.</p>
-          <p>연 폴더가 곧 <b>프로젝트</b>예요. 다음에 <b>같은 폴더를 다시 열면</b> 그 안의 파일을 읽고 <b>이어서</b> 작업합니다.</p>
-          <p class="small">AI는 연 폴더 안에서만 일해요. 폴더를 좁게 열수록 안전합니다.</p>
-        </div>
+      <div class="tile">
+        <ol class="olist">
+          <li>왼쪽 위 <b>파일 → 폴더 열기</b></li>
+          <li>바탕화면의 <b>실습폴더</b>를 고르고 <b>폴더 선택</b></li>
+          <li>"이 폴더를 신뢰할까요?"가 뜨면 <b>신뢰</b></li>
+        </ol>
+        <p style="margin-top:14px">번호 폴더가 아니라 <b>실습폴더 자체</b>를 열어요. 그 안의 파일을 AI가 다 볼 수 있어요.</p>
+        <p class="small muted">연 폴더가 곧 <b>프로젝트</b>예요. 다음에 같은 폴더를 다시 열면 <b>이어서</b> 작업합니다.</p>
       </div>
-      <figure class="shot" data-label="폴더 열기">
-        <img src="captures/app-basic-2.png" alt="Codex 앱에서 폴더 여는 화면" onerror="this.parentNode.classList.add('missing')">
+      <div>
+        <figure class="shot" data-label="파일 → 폴더 열기">
+          <img src="captures/app-open-folder.png" alt="Codex 앱 파일 메뉴의 폴더 열기" onerror="this.parentNode.classList.add('missing')">
+        </figure>
+        <figure class="shot" data-label="실습폴더 선택" style="margin-top:12px">
+          <img src="captures/app-folder-pick.png" alt="폴더 선택 창에서 실습폴더 고르기" onerror="this.parentNode.classList.add('missing')">
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="s2" data-title="+ 메뉴의 목표">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">앱 사용법 · 3 / 7</p><h2 class="headline">"목표"는 오늘 안 써요.</h2>
+      <p class="subhead">입력창 왼쪽 <b>+</b>를 누르면 <b>목표</b>가 있어요. 목표를 정해 주면 끝날 때까지 알아서 계속 돌리는 모드예요.</p></div>
+    <div class="grid2">
+      <div class="tile">
+        <p>오늘은 이 모드를 쓰지 않고, 입력창에 <b>바로 부탁</b>합니다.</p>
+        <p class="small muted">긴 일을 통째로 맡길 때 쓰는 기능이라는 것만 알아 두세요.</p>
+      </div>
+      <figure class="shot" data-label="+ 메뉴">
+        <img src="captures/app-plus-goal.png" alt="입력창 + 메뉴의 목표 항목" onerror="this.parentNode.classList.add('missing')">
       </figure>
     </div>
   </div>
 </section>
 
-<section class="slide" data-sec="s2" data-title="Auto 모드와 승인">
+<section class="slide" data-sec="s2" data-title="권한과 승인">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">앱 사용법 · 3 / 6</p><h2 class="headline">얼마나 맡길지 정한다.</h2>
-      <p class="subhead">오늘은 <b>Auto</b>로 합니다. 앱 화면에 따라 이름이 조금 다를 수 있어요.</p></div>
+    <div class="head"><p class="eyebrow">앱 사용법 · 4 / 7</p><h2 class="headline">얼마나 맡길지 정한다.</h2>
+      <p class="subhead">입력창 아래 손 모양 메뉴. 오늘은 <b>승인 요청</b>으로 합니다.</p></div>
     <div class="grid3">
-      <div class="tile"><h4>읽기 전용</h4><p class="muted">읽기만. 고치기 전에 <b>매번 물어요</b></p></div>
-      <div class="tile"><h4>Auto <span class="badge blue">오늘</span></h4><p class="muted">연 폴더 안에서는 읽고·고치고·실행을 <b>알아서</b>. 폴더 밖이나 인터넷이 필요하면 물어요</p></div>
-      <div class="tile"><h4>전체 권한</h4><p class="muted">아무것도 묻지 않아요. <b>위험</b> — 오늘은 쓰지 않아요</p></div>
+      <div class="tile"><h4>승인 요청 <span class="badge blue">오늘</span></h4><p class="muted">외부 파일 수정 및 인터넷 사용 시 <b>항상 확인</b>합니다</p></div>
+      <div class="tile"><h4>나 대신 승인</h4><p class="muted">AI 검사관이 대신 보고, <b>위험해 보이는 작업에만</b> 나에게 물어요</p></div>
+      <div class="tile"><h4>전체 권한</h4><p class="muted">인터넷과 컴퓨터의 모든 파일에 <b>제한 없이</b>. 익숙해지면 쓰지만 오늘은 쓰지 않아요</p></div>
     </div>
-    <div class="tile" style="margin-top:20px">
-      <h4>"허용할까요?" 창이 뜨면</h4>
-      <p class="muted">AI가 무엇을 하려는지 <b style="color:var(--ink)">한 번 읽어 보고</b> 괜찮으면 허용을 누르세요.</p>
+    <p class="note" style="text-align:center">"허용할까요?" 창이 뜨면 AI가 무엇을 하려는지 <b>한 번 읽어 보고</b> <b>한 번만 허용</b>을 누르세요.</p>
+    <div class="grid2" style="margin-top:12px">
+      <figure class="shot" data-label="권한 메뉴">
+        <img src="captures/app-permission.png" alt="승인 요청 · 나 대신 승인 · 전체 권한 메뉴" onerror="this.parentNode.classList.add('missing')">
+      </figure>
+      <figure class="shot" data-label="명령 승인 창">
+        <img src="captures/app-approve.png" alt="명령 실행을 허용할지 묻는 창" onerror="this.parentNode.classList.add('missing')">
+      </figure>
     </div>
   </div>
 </section>
 
 <section class="slide" data-sec="s2" data-title="모델과 상태 확인">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">앱 사용법 · 4 / 6</p><h2 class="headline">모델을 고르고,<br>상태를 본다.</h2>
+    <div class="head"><p class="eyebrow">앱 사용법 · 5 / 7</p><h2 class="headline">모델을 고르고,<br>상태를 본다.</h2>
       <p class="subhead">앱 화면에 따라 이름이 조금 다를 수 있어요.</p></div>
     <div class="grid2">
       <div class="tile bigstep">
         <span class="num">1</span>
         <div>
           <h3>모델 · 추론 정하기</h3>
-          <p>입력창 아래 모델 메뉴에서 <b>GPT-5.6 Terra</b>, 추론은 <b>Low</b>로 맞춥니다.</p>
-          <p class="small">오늘 실습은 Low로 충분해요. 사용량도 덜 씁니다.</p>
+          <p>입력창 오른쪽 아래 모델 메뉴에서 <b>5.6 Terra</b>, 추론은 <b>Light</b>로 맞춥니다.</p>
+          <p class="small">Luna가 아래, Terra가 위인데 차이가 크지 않아요. 빨리 하려고 Light로 갑니다.</p>
         </div>
       </div>
       <div class="tile bigstep">
@@ -732,18 +800,26 @@ figure.shot.missing::before {
         </div>
       </div>
     </div>
+    <div class="grid2" style="margin-top:20px">
+      <figure class="shot" data-label="모델 선택">
+        <img src="captures/app-model.png" alt="모델 목록에서 5.6 Terra 선택" onerror="this.parentNode.classList.add('missing')">
+      </figure>
+      <figure class="shot" data-label="추론 Light">
+        <img src="captures/app-effort.png" alt="추론 수준 Light 선택" onerror="this.parentNode.classList.add('missing')">
+      </figure>
+    </div>
   </div>
 </section>
 
 <section class="slide" data-sec="s2" data-title="말로 지시하기">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">앱 사용법 · 5 / 6</p><h2 class="headline">평소 말투로 부탁한다.</h2>
+    <div class="head"><p class="eyebrow">앱 사용법 · 6 / 7</p><h2 class="headline">평소 말투로 부탁한다.</h2>
       <p class="subhead">명령어는 몰라도 돼요. 사람에게 부탁하듯 적고 Enter.</p></div>
     <div class="grid2">
       <div class="say">
         <span class="who">예를 들면</span>
         <ul>
-          <li>이 폴더에 뭐가 있는지 알려 줘.</li>
+          <li>회계 파일에 빠진 입금 하나 넣어 줘.</li>
         </ul>
       </div>
       <figure class="shot" data-label="입력창에 부탁 적기">
@@ -755,7 +831,7 @@ figure.shot.missing::before {
 
 <section class="slide" data-sec="s2" data-title="결과 확인하기">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">앱 사용법 · 6 / 6</p><h2 class="headline">끝나면 내 눈으로 확인한다.</h2></div>
+    <div class="head"><p class="eyebrow">앱 사용법 · 7 / 7</p><h2 class="headline">끝나면 내 눈으로 확인한다.</h2></div>
     <div class="grid2">
       <div class="tile">
         <ol class="olist">
@@ -789,10 +865,9 @@ figure.shot.missing::before {
       <div class="tile">
         <p class="label-sm">이렇게 해요</p>
         <ol class="olist">
-          <li>앱에서 <b>'1 로컬 작업' 폴더</b> 열기</li>
-          <li>첫 번째 부탁: <b>빠진 수입·지출 반영</b></li>
-          <li>두 번째 부탁: <b>다시 결산</b></li>
-          <li><b>엑셀을 열어</b> 확인하기</li>
+          <li>앱에서 <b>실습폴더</b> 열기 (파일은 안의 '1 로컬 작업' 폴더에)</li>
+          <li>엑셀은 <b>닫아 둔 채</b> 한 번에 부탁: <b>빠진 수입·지출 반영 + 다시 결산</b></li>
+          <li>끝나면 <b>엑셀을 열어</b> 확인하기</li>
         </ol>
       </div>
     </div>
@@ -851,20 +926,14 @@ figure.shot.missing::before {
 
 <section class="slide" data-sec="s2" data-title="연구회 · 직접 해 보기">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">로컬 작업 · 연구회 회계</p><h2 class="headline">두 번에 나눠<br>부탁해 보세요.</h2>
+    <div class="head"><p class="eyebrow">로컬 작업 · 연구회 회계</p><h2 class="headline">한 번에<br>부탁해 보세요.</h2>
       <span class="badge blue">직접 해 보기</span></div>
-    <div class="grid2">
     <div class="prompt-card">
-      <p class="label"><span class="no">1</span><b>빠진 기록 반영</b></p>
-      <pre class="prompt" id="p21">10월 6일에 50만 원이 추가 입금됐는데 깜빡했다. 10월 15일에는 떡값으로 10만 원을 지출했다. 회계 파일에 반영해 줘.</pre>
+      <p class="label"><span class="no">1</span><b>빠진 기록 반영 + 다시 결산</b></p>
+      <pre class="prompt" id="p21">10월 6일에 50만 원이 추가 입금됐는데 깜빡했다. 10월 15일에는 떡값으로 10만 원을 지출했다. 회계 파일에 반영하고, 맨 위 결산도 다시 계산해 줘.</pre>
       <button class="btn" type="button" data-copy="p21">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
     </div>
-    <div class="prompt-card">
-      <p class="label"><span class="no">2</span><b>다시 결산</b></p>
-      <pre class="prompt" id="p22">방금 추가한 수입과 지출을 반영해서 다시 결산해 줘.</pre>
-      <button class="btn" type="button" data-copy="p22">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
-    </div>
-    </div>
+    <p class="small muted" style="text-align:center;margin-top:12px">"허용할까요?" 창이 뜨면 <b>한 번만 허용</b>. 1~2분 걸릴 수 있어요.</p>
   </div>
 </section>
 
@@ -888,10 +957,11 @@ figure.shot.missing::before {
     <div class="head"><p class="eyebrow">로컬 작업 · 연구회 회계</p><h2 class="headline">막히면 이렇게.</h2></div>
     <div class="tile stuck">
       <ul>
-        <li><b>파일을 못 찾는다</b>앱에서 연 폴더가 '1 로컬 작업 - 연구회 회계'인지 확인하세요.</li>
-        <li><b>허용 창이 뜬다</b>무엇을 하려는지 읽어 보고 허용을 누르세요.</li>
+        <li><b>파일을 못 찾는다</b>앱에서 연 폴더가 '실습폴더'인지 확인하세요.</li>
+        <li><b>허용 창이 뜬다</b>무엇을 하려는지 읽어 보고 한 번만 허용을 누르세요.</li>
         <li><b>저장이 안 된다</b>엑셀을 열어 둔 채면 저장이 안 돼요. 닫고 다시 시키세요.</li>
-        <li><b>결산 숫자가 그대로다</b>두 번째 부탁을 한 번 더 하세요.</li>
+        <li><b>결산 숫자가 그대로다</b>"맨 위 결산도 다시 계산해 줘"라고 한 번 더 부탁하세요.</li>
+        <li><b>엑셀이 '제한된 보기'로 열린다</b>노란 줄의 <b>편집 사용</b>을 누르세요. Microsoft 로그인 창이 뜨면 닫아도 돼요.</li>
         <li><b>멈췄다 (한도)</b>잠시 기다리거나 강사 화면을 보며 따라 보세요.</li>
       </ul>
     </div>
@@ -926,32 +996,58 @@ figure.shot.missing::before {
   </div>
 </section>
 
-<section class="slide" data-sec="s3" data-title="시연: 가정통신문 → 신청서">
+<section class="slide" data-sec="s3" data-title="KorDoc 설치">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">MCP 시연 · 가정통신문</p><h2 class="headline">가정통신문에서<br>신청서만 뽑아낸다.</h2>
+    <div class="head"><p class="eyebrow">MCP 시연 · 설치</p><h2 class="headline">설치는<br>주소만 주면 된다.</h2>
+      <p class="subhead"><b>KorDoc</b>은 한글(hwp·hwpx) 문서를 읽고 채우는 MCP예요. 앱에 GitHub 주소를 붙여 넣고 설치해 달라고 하면 AI가 알아서 연결합니다.</p>
       <span class="badge">시연 · 선택</span></div>
-    <div class="tile">
-      <p class="label-sm">상황 · 에이스초등학교</p>
-      <p class="muted">이미 만든 가정통신문 <b>「두근두근 마을 나들이」 안내</b>가 있다. 여기서 신청에 필요한 내용만 골라 학부모가 바로 적어 낼 <b>신청서 양식</b>을 따로 만들어야 한다.</p>
-      <p class="small muted" style="margin-top:12px">해 보고 싶은 분은 <b style="color:var(--ink)">'2 MCP 시연 (선택) - 가정통신문'</b> 폴더를 열고 따라 해 보세요. 안 해도 괜찮아요.</p>
+    <div class="prompt-card">
+      <p class="label"><span class="no">설치</span><b>KorDoc MCP 설치해 줘</b></p>
+      <pre class="prompt" id="p3k">https://github.com/chrisryugj/kordoc 이 MCP를 설치해서 연결해 줘.</pre>
+      <button class="btn" type="button" data-copy="p3k">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
+    </div>
+    <p class="small muted" style="text-align:center;margin-top:12px">설치가 끝나면 앱을 다시 시작해야 할 수 있어요.</p>
+  </div>
+</section>
+
+<section class="slide" data-sec="s3" data-title="시연: 가정통신문 양식 채우기">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">MCP 시연 · 가정통신문</p><h2 class="headline">빈 가정통신문 양식을<br>채운다.</h2>
+      <span class="badge">시연 · 선택</span></div>
+    <div class="grid2">
+      <div class="tile">
+        <p class="label-sm">상황 · 에이스초등학교</p>
+        <ul class="dots">
+          <li>사업: <b>디지털 새싹</b> 프로그램</li>
+          <li>날짜: <b>1월 2일 ~ 5일</b></li>
+          <li>시간: <b>9시 ~ 12시</b></li>
+          <li>경비: <b>무료</b></li>
+        </ul>
+        <p class="small muted" style="margin-top:12px">실습폴더 안 <b style="color:var(--ink)">'2 MCP 시연 (선택) - 가정통신문'</b>에 빈 양식이 있어요. 해 보고 싶은 분만 따라 하세요.</p>
+      </div>
+      <div class="tile">
+        <p class="label-sm">이렇게 해요</p>
+        <p>프롬프트를 복사하지 말고 <b>직접 쳐 보세요.</b> 내 일에 쓸 때도 결국 내가 써야 하니까요.</p>
+        <p class="small muted">들어갈 것: 어떤 파일을 · 무슨 내용으로 · 없는 건 지어내지 말 것</p>
+      </div>
     </div>
     <div class="prompt-card" style="margin-top:20px">
-      <p class="label"><span class="no">시연</span><b>신청서 양식 만들기</b></p>
-      <pre class="prompt" id="p3a">이 가정통신문에서 신청에 필요한 내용만 뽑아서 별도의 신청서 양식으로 만들어 줘. 신청 항목과 제출 안내를 정리하고, 학부모가 직접 작성할 수 있는 칸도 넣어 줘. 원본에 없는 신청 조건이나 제출 기한은 만들지 말고, 없으면 빈칸으로 둬.</pre>
+      <p class="label"><span class="no">힌트</span><b>이렇게 써도 돼요</b></p>
+      <pre class="prompt" id="p3a">'가정통신문 양식.hwpx'를 디지털 새싹 프로그램 안내문으로 채워 줘. 기간은 1월 2일부터 5일까지, 시간은 9시부터 12시까지, 경비는 무료야. 내가 주지 않은 내용은 지어내지 말고 빈칸으로 둬.</pre>
       <button class="btn" type="button" data-copy="p3a">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
     </div>
   </div>
 </section>
 
-<section class="slide" data-sec="s3" data-title="신청서 · 결과 확인">
+<section class="slide" data-sec="s3" data-title="가정통신문 · 결과 확인">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">MCP 시연 · 결과</p><h2 class="headline">원본과 나란히 놓고 본다.</h2></div>
+    <div class="head"><p class="eyebrow">MCP 시연 · 결과</p><h2 class="headline">내가 준 내용과 대조한다.</h2></div>
     <div class="grid3">
-      <div class="tile"><h4>📄 파일 열기</h4><p class="muted">만들어진 <b>신청서</b>를 열어 본다</p></div>
-      <div class="tile"><h4>🔎 원본과 대조</h4><p class="muted">조건·기한이 <b>가정통신문에 있는 그대로</b>인지</p></div>
-      <div class="tile"><h4>🧑‍🏫 판단은 사람이</h4><p class="muted">빠진 것·고칠 것·보낼지 여부는 교사가 정한다</p></div>
+      <div class="tile"><h4>📄 파일 열기</h4><p class="muted">채워진 <b>가정통신문</b>을 한글로 열어 본다</p></div>
+      <div class="tile"><h4>🔎 내용 대조</h4><p class="muted">날짜·시간·경비가 <b>내가 준 그대로</b>인지</p></div>
+      <div class="tile"><h4>🧑‍🏫 판단은 사람이</h4><p class="muted">빈칸·고칠 것·보낼지 여부는 교사가 정한다</p></div>
     </div>
-    <p class="note" style="font-size:18px;text-align:center">"원본에 없는 건 <b>만들지 마</b>" — 하지 말아야 할 일도 프롬프트에 적는다.</p>
+    <p class="note" style="font-size:18px;text-align:center">"내가 주지 않은 건 <b>지어내지 마</b>" — 하지 말아야 할 일도 프롬프트에 적는다.</p>
   </div>
 </section>
 
@@ -964,7 +1060,19 @@ figure.shot.missing::before {
         <span class="chip">말로 질문</span><span class="arrow">→</span><span class="chip blue">⚖️ Korean Law MCP로 법령 검색</span><span class="arrow">→</span><span class="chip">조문 원문과 함께 답</span>
       </div>
     </div>
-    <p class="note" style="text-align:center">기억으로 답하지 않고 <b>법제처 원문</b>을 찾아 보여 줘요. 강사 PC에 미리 연결해 둔 화면으로 봅니다.</p>
+    <p class="note" style="text-align:center">기억으로 답하지 않고 <b>법제처 원문</b>을 찾아 보여 줘요. 오늘은 <b>강사가 직접 시연</b>합니다.</p>
+    <div class="grid2" style="margin-top:20px">
+      <div class="prompt-card">
+        <p class="label"><span class="no">1</span><b>설치 — 주소를 앱에 붙여 넣기</b></p>
+        <pre class="prompt" id="p3l">https://github.com/chrisryugj/korean-law-mcp 이 MCP를 설치해서 연결해 줘.</pre>
+        <button class="btn" type="button" data-copy="p3l">프롬프트 복사</button><span class="copied">복사됨 ✓</span>
+      </div>
+      <div class="prompt-card">
+        <p class="label"><span class="no">2</span><b>인증키 받기 (무료)</b></p>
+        <p class="muted">법제처 Open API에서 신청하면 인증키를 줘요. 설치할 때 AI가 키를 물으면 붙여 넣으세요.</p>
+        <p><a class="btn" href="https://open.law.go.kr" target="_blank" rel="noopener">법제처 Open API ↗</a></p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -985,7 +1093,7 @@ figure.shot.missing::before {
         </tbody>
       </table>
     </div>
-    <p class="small muted" style="text-align:center;margin-top:12px">앱에서 <b>'3 웹 작업 - 학습준비물'</b> 폴더를 새로 열어요. 독도의날·한글날·크리스마스 키트는 <b>24명분</b>, 물티슈·각티슈는 한 묶음씩. 전체 합계 <b>20만 원 이하</b>.</p>
+    <p class="small muted" style="text-align:center;margin-top:12px">앱에서 연 <b>실습폴더</b> 그대로, 안의 <b>'3 웹 작업 - 학습준비물'</b> 파일을 씁니다. 독도의날·한글날·크리스마스 키트는 <b>24명분</b>, 물티슈·각티슈는 한 묶음씩. 전체 합계 <b>20만 원 이하</b>.</p>
   </div>
 </section>
 
@@ -1040,7 +1148,7 @@ figure.shot.missing::before {
       <div class="tile stuck">
         <h3>막히면</h3>
         <ul>
-          <li><b>파일을 못 찾는다</b>앱에서 연 폴더가 '3 웹 작업 - 학습준비물'인지 확인하세요.</li>
+          <li><b>파일을 못 찾는다</b>앱에서 연 폴더가 '실습폴더'인지 확인하세요.</li>
           <li><b>브라우저를 못 연다</b>프롬프트의 "브라우저로 직접 검색해서"를 "웹 검색으로 찾아 줘"로 바꿔 보세요.</li>
           <li><b>합계가 20만 원을 넘는다</b>"예산 안으로 다시 골라 줘"라고 한 번 더 부탁하세요.</li>
           <li><b>가격 대신 「선생님 혜택가」가 보인다</b>로그인해야 보이는 상품이에요. 로그인하지 말고 다른 상품을 고르라고 하세요.</li>
