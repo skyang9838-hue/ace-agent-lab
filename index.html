@@ -531,7 +531,7 @@ figure.shot img { cursor: zoom-in; }
         <span class="num">3</span>
         <div>
           <h3>바탕화면에 풀기</h3>
-          <p>받은 <b>실습폴더.zip</b>을 오른쪽 클릭 → <b>모두 압축 풀기</b> → 위치를 <b>바탕화면</b>으로.</p>
+          <p>받은 <b>실습폴더.zip</b>을 오른쪽 클릭 → <b>모두 압축 풀기</b> → 위치를 <b>바탕화면</b>으로. 풀면 <b>실습폴더</b> 안에 바로 1~4 폴더가 보여요.</p>
           <p><a class="btn" href="실습폴더.zip" download>실습 폴더 내려받기 ↓</a></p>
         </div>
       </div>
@@ -1140,28 +1140,26 @@ figure.shot img { cursor: zoom-in; }
 <!-- ============ 웹 기반 작업하기 · 가격 채우기 ============ -->
 <section class="slide" data-sec="s4" data-title="상황">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">웹 작업 · 가격 채우기</p><h2 class="headline">빈칸은 AI가 찾아서 채운다. <span class="badge" style="vertical-align:middle;margin:0">도전</span></h2>
+    <div class="head"><p class="eyebrow">웹 작업 · 가격 채우기</p><h2 class="headline">빈 양식을 AI가 다 채운다. <span class="badge" style="vertical-align:middle;margin:0">도전</span></h2>
       <p class="subhead">6학년 1반 24명. 행사 키트 3종과 교실 소모품을 <b>예산 20만 원</b> 안에서 산다. Agent가 아이스크림몰을 직접 열어 검색하고 비교한다.</p></div>
     <div class="sheet-wrap">
       <table class="sheet">
-        <thead><tr><th>내용</th><th>규격</th><th class="r">수량</th><th class="r">단가</th><th class="r">금액</th><th>상품 링크</th></tr></thead>
+        <thead><tr><th>내용</th><th>규격</th><th class="r">수량</th><th class="r">단가</th><th class="r">금액</th><th>구입처</th><th>상품 링크</th></tr></thead>
         <tbody>
-          <tr class="hl"><td>독도의날 만들기 키트</td><td>1인용</td><td class="r">24</td><td class="empty r">?</td><td class="empty r">?</td><td class="empty">?</td></tr>
-          <tr class="hl"><td>한글날 만들기 키트</td><td>1인용</td><td class="r">24</td><td class="empty r">?</td><td class="empty r">?</td><td class="empty">?</td></tr>
-          <tr class="hl"><td>크리스마스 만들기 키트</td><td>1인용</td><td class="r">24</td><td class="empty r">?</td><td class="empty r">?</td><td class="empty">?</td></tr>
-          <tr class="hl"><td>물티슈</td><td>캡형 70~100매, 10팩 묶음</td><td class="r">1</td><td class="empty r">?</td><td class="empty r">?</td><td class="empty">?</td></tr>
-          <tr class="hl"><td>각티슈</td><td>200매 이상, 6개 이상 묶음</td><td class="r">1</td><td class="empty r">?</td><td class="empty r">?</td><td class="empty">?</td></tr>
+<tr><td class="empty">&nbsp;</td><td class="empty"></td><td class="empty r"></td><td class="empty r"></td><td class="empty r"></td><td class="empty"></td><td class="empty"></td></tr>
+<tr><td class="empty">&nbsp;</td><td class="empty"></td><td class="empty r"></td><td class="empty r"></td><td class="empty r"></td><td class="empty"></td><td class="empty"></td></tr>
+<tr><td class="empty">&nbsp;</td><td class="empty"></td><td class="empty r"></td><td class="empty r"></td><td class="empty r"></td><td class="empty"></td><td class="empty"></td></tr>
         </tbody>
       </table>
     </div>
-    <p class="small muted" style="text-align:center;margin-top:12px">앱에서 연 <b>실습폴더</b> 그대로, 안의 <b>'3 웹 작업 - 학습준비물'</b> 파일을 씁니다. 독도의날·한글날·크리스마스 키트는 <b>24명분</b>, 물티슈·각티슈는 한 묶음씩. 전체 합계 <b>20만 원 이하</b>.</p>
+    <p class="small muted" style="text-align:center;margin-top:12px">앱에서 연 <b>실습폴더</b> 그대로, 안의 <b>'3 웹 작업 - 학습준비물'</b> <b>머리줄만 있는 빈 양식</b>을 씁니다. 살 것: 독도의날·한글날·크리스마스 키트는 <b>24명분</b>, 물티슈·각티슈는 한 묶음씩. 전체 합계 <b>20만 원 이하</b>.</p>
   </div>
 </section>
 
 <section class="slide" data-sec="s4" data-title="P4-1 예산 안에서 채우기">
   <div class="wrap">
     <div class="head"><p class="eyebrow">웹 작업 · 첫 번째 부탁</p><h2 class="headline">상황만 주고 맡긴다.</h2>
-      <p class="subhead"><b>새 채팅</b>에서 시작하세요.</p></div>
+      <p class="subhead"><b>새 채팅</b>에서 시작하세요. 강사 시연 모델은 <b>GPT-6 Luna</b> (브라우저 작업은 가벼운 모델로).</p></div>
     <div class="prompt-card">
       <p class="label"><span class="no">P4-1</span><b>예산 안에서 찾아 채우기</b></p>
       <pre class="prompt" id="p41">학습준비물 엑셀에 물티슈·각티슈·독도·한글날·크리스마스 키트, 학생 수(24명)에 맞춰 아이스크림몰에서 찾아서 링크랑 엑셀에 넣어 놔. 전체 20만 원 안으로.</pre>
@@ -1358,20 +1356,6 @@ figure.shot img { cursor: zoom-in; }
 </section>
 
 <!-- ============ 마무리 ============ -->
-<section class="slide" data-sec="s6" data-title="프롬프트 요령">
-  <div class="wrap">
-    <div class="head"><p class="eyebrow">공부법</p><h2 class="headline">잘 맡기는 법.</h2>
-      <p class="subhead">네 가지만 넣으면 됩니다.</p></div>
-    <div class="tile" style="text-align:center">
-      <div class="flow" style="justify-content:center"><span class="chip">무엇을</span><span class="chip">어떤 파일로</span><span class="chip">어디에 저장</span><span class="chip blue">검산까지</span></div>
-    </div>
-    <div class="grid2" style="margin-top:20px">
-      <div class="ex bad"><span class="tag">이렇게 말고</span><br>연구회 회계 정리해 줘.</div>
-      <div class="ex good"><span class="tag">이렇게</span><br>'에이스초 연구회 회계.xlsx'를 읽고 항목별 지출 표를 만들어 '결산 보고서.md'로 저장해 줘. 다 하면 원본과 숫자를 검산해 줘.</div>
-    </div>
-  </div>
-</section>
-
 <section class="slide" data-sec="s6" data-title="일이 바뀌면 새 대화">
   <div class="wrap">
     <div class="head"><p class="eyebrow">공부법</p><h2 class="headline">일이 바뀌면 새 대화.</h2>
@@ -1410,17 +1394,6 @@ figure.shot img { cursor: zoom-in; }
         <tr><td>Skills</td><td>필요할 때 꺼내 쓰는 <b>작업 설명서</b>. 자주 하는 일의 순서를 적어 둔 것</td></tr>
         <tr><td>MCP</td><td>AI에게 꽂아 주는 <b>도구 플러그</b>. 한글·브라우저·캘린더</td></tr>
       </table>
-    </div>
-  </div>
-</section>
-
-<section class="slide" data-sec="s6" data-title="안전하게 쓰기">
-  <div class="wrap">
-    <div class="head"><p class="eyebrow">공부법</p><h2 class="headline">안전하게 쓰기.</h2></div>
-    <div class="grid3">
-      <div class="tile"><h4>🔒 개인정보</h4><p class="muted">학생 이름·연락처·성적은 AI에게 넣지 않기.</p></div>
-      <div class="tile"><h4>✋ 허용 창 읽기</h4><p class="muted">무엇을 바꾸려는지 읽고 누르기. 모르면 거절해도 돼요.</p></div>
-      <div class="tile"><h4>📁 원본 지키기</h4><p class="muted">중요한 파일은 복사본으로 실습하고, "원본은 건드리지 마"를 적기.</p></div>
     </div>
   </div>
 </section>
