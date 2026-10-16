@@ -283,6 +283,20 @@ figure.shot img { cursor: zoom-in; }
 .shots2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; }
 
 /* 미니 비서 구조 */
+/* 챗봇 vs Agent 나란히 그림 */
+.duo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px; }
+.pane { background: var(--tile); border-radius: 18px; padding: 28px 32px; display: flex; flex-direction: column; gap: 12px; }
+.pane.agent { box-shadow: inset 0 0 0 2px var(--accent); }
+.pane .tag { font-size: 13px; font-weight: 600; color: var(--soft); margin: 0; }
+.pane h3 { font-size: 24px; font-weight: 600; margin: 0; }
+.box { background: var(--tile-alt); border-radius: 14px; padding: 14px 18px; font-size: 17px; }
+.box small { display: block; color: var(--muted); font-size: 14px; margin-top: 2px; }
+.relay { text-align: center; color: var(--warn); font-size: 15px; font-weight: 600; line-height: 1.6; }
+.folder-big { border: 2px dashed var(--accent); border-radius: 16px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.folder-big .lbl { font-weight: 600; }
+.ai-in { align-self: flex-start; background: var(--blue); color: #fff; border-radius: 980px; padding: 6px 14px; font-size: 15px; }
+.fileline { display: flex; justify-content: space-between; gap: 8px; background: var(--tile-alt); border-radius: 12px; padding: 10px 14px; font-size: 15px; }
+.fileline em { font-style: normal; color: var(--good); font-weight: 600; white-space: nowrap; }
 .tree { display: flex; align-items: stretch; gap: 12px; }
 .node { flex: 1; min-width: 0; background: var(--tile-alt); border-radius: 14px; padding: 20px; }
 .node code { font: 600 19px var(--font); color: var(--accent); background: none; padding: 0; }
@@ -354,6 +368,8 @@ figure.shot img { cursor: zoom-in; }
   .nums div { display: flex; justify-content: space-between; align-items: baseline; }
   .nums strong { font-size: 30px; }
   .tree { flex-direction: column; }
+  .duo { grid-template-columns: minmax(0, 1fr); }
+  .pane { padding: 22px 20px; }
   .tree .arrow { transform: rotate(90deg); }
   .bigstep { grid-template-columns: minmax(0, 1fr); }
   .bigstep .num { width: 44px; height: 44px; font-size: 19px; margin-bottom: 8px; }
@@ -403,7 +419,7 @@ figure.shot img { cursor: zoom-in; }
     <p class="subhead">대답만 하는 AI 말고, 일을 끝내는 AI.<br>인천효성남초 양상경</p>
     <div class="cta">
       <a class="btn big" href="실습폴더.zip" download>실습 폴더 내려받기 ↓</a>
-      <a class="btn big gray" href="#flow">시작하기</a>
+      <a class="btn big gray" href="https://forms.gle/HkEVLbyynueVVaAP8" target="_blank" rel="noopener">시작 전 설문 (1분) ↗</a>
     </div>
     <p class="note">무료 계정은 사용 한도가 있어 중간에 멈출 수 있어요. 막히면 잠시 기다리거나 강사 화면을 보며 따라 보세요.</p>
     <p class="hint"><kbd>Enter</kbd> 또는 <kbd>→</kbd> 로 다음 장 · <kbd>F</kbd> 전체화면 · <kbd>T</kbd> 목차</p>
@@ -533,41 +549,37 @@ figure.shot img { cursor: zoom-in; }
 </section>
 
 <!-- ============ 1 챗봇과 AI Agent ============ -->
-<section class="slide" data-sec="s1" data-title="챗봇은 묻고 답한다">
+<section class="slide" data-sec="s1" data-title="챗봇 vs AI Agent">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">챗봇과 AI Agent</p><h2 class="headline">챗봇은<br>묻고 답한다.</h2>
-      <p class="subhead">파일을 올리면 읽어 주고, 결과를 내려받게 해 줍니다. 그다음은 내 몫이에요.</p></div>
-    <div class="tile" style="text-align:center">
-      <div class="flow" style="justify-content:center">
-        <span class="chip">나</span><span class="arrow">→</span>
-        <span class="chip blue">질문 · 파일 올리기</span><span class="arrow">→</span>
-        <span class="chip">채팅창의 답</span><span class="arrow">→</span>
-        <span class="chip blue">내려받기 · 옮겨 적기</span>
+    <div class="head"><p class="eyebrow">챗봇과 AI Agent</p><h2 class="headline">챗봇은 파일을 받고,<br>Agent는 폴더로 들어온다.</h2></div>
+    <div class="duo">
+      <div class="pane">
+        <p class="tag">챗봇 · ChatGPT, Claude</p>
+        <h3>AI는 채팅창 안에</h3>
+        <div class="box">📁 내 폴더<small>연구회 회계.xlsx · 상황 메모.md</small></div>
+        <div class="relay">↓ 내가 찾아서 올리고<br>↑ 내가 받아서 옮겨 적고</div>
+        <div class="box">💬 채팅창<small>읽고, 답을 글로 쓴다. 그다음은 내 몫</small></div>
       </div>
-    </div>
-    <div class="grid2" style="margin-top:20px">
-      <div class="tile"><h4>AI가 하는 일</h4><p class="muted">읽고, 생각하고, 답을 글로 쓴다</p></div>
-      <div class="tile"><h4>내가 하는 일</h4><p class="muted">자료를 찾아 올리고, 답을 받아 내 파일에 옮긴다</p></div>
+      <div class="pane agent">
+        <p class="tag">AI Agent · Codex, Claude Code</p>
+        <h3>AI가 내 폴더 안에</h3>
+        <div class="folder-big">
+          <span class="lbl">📁 내 폴더</span>
+          <span class="ai-in">🤖 AI가 여기서 일한다</span>
+          <div class="fileline">연구회 회계.xlsx <em>읽고 · 고치고 · 저장</em></div>
+          <div class="fileline">상황 메모.md <em>읽음</em></div>
+          <div class="fileline">결산 보고서.md <em>새로 만듦</em></div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="slide" data-sec="s1" data-title="요즘 챗봇도 조금은 Agent">
+<section class="slide end" data-sec="s1" data-title="폴더를 맡긴다">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">챗봇과 AI Agent</p><h2 class="headline">요즘 챗봇도<br>조금은 Agent.</h2>
-      <p class="subhead">챗봇과 Agent의 경계는 점점 흐려지고 있어요.</p></div>
-    <div class="grid2">
-      <div class="tile">
-        <h3>챗봇 안에서</h3>
-        <p class="cap">웹을 찾아보거나, 계산을 돌려 보거나, 파일을 만들어 주기도 한다.</p>
-        <p class="muted">다만 <b style="color:var(--ink)">채팅창 안</b>에서 일어나는 일이에요.</p>
-      </div>
-      <div class="tile">
-        <h3>오늘 쓰는 Agent 앱</h3>
-        <p class="cap">내 컴퓨터의 폴더로 들어와서 일한다.</p>
-        <p class="muted">파일을 올리고 내려받을 필요가 <b style="color:var(--ink)">없어요</b>.</p>
-      </div>
-    </div>
+    <p class="eyebrow">오늘 가져갈 한 문장</p>
+    <h2 class="display">내 컴퓨터 폴더를<br><span class="accent">맡긴다.</span></h2>
+    <p class="subhead">올리고 내려받는 대신, 폴더를 열어 주고 일을 부탁한다.</p>
   </div>
 </section>
 
@@ -650,17 +662,6 @@ figure.shot img { cursor: zoom-in; }
 &gt; dir
 파일 3개를 찾았어요.</pre>
       </div>
-    </div>
-  </div>
-</section>
-
-<section class="slide" data-sec="s1" data-title="읽고·고치고·만든다">
-  <div class="wrap">
-    <div class="head"><p class="eyebrow">Agent의 장점</p><h2 class="headline">내 폴더의 파일을<br>읽고, 고치고, 만든다.</h2></div>
-    <div class="grid3">
-      <div class="tile"><h4>📂 읽는다</h4><p class="muted">복사·붙여넣기 없이 폴더의 파일을 직접 연다</p></div>
-      <div class="tile"><h4>✏️ 고친다</h4><p class="muted">엑셀 칸을 채우고, 문서를 손본다</p></div>
-      <div class="tile"><h4>📄 만든다</h4><p class="muted">결과가 채팅이 아니라 <b style="color:var(--ink)">파일</b>로 남는다</p></div>
     </div>
   </div>
 </section>
@@ -1379,15 +1380,24 @@ figure.shot img { cursor: zoom-in; }
       <div class="tile"><h4>새 대화로 끊기</h4><p class="muted">연구회 결산이 끝났으면 가격 채우기는 새 대화에서. 앞의 맥락을 끊어 주세요.</p></div>
       <div class="tile"><h4>기억할 건 파일로</h4><p class="muted">계속 알아야 할 것은 대화가 아니라 AGENTS.md나 카드에 적어 두세요. 새 대화도 그 파일을 읽어요.</p></div>
     </div>
-    <p class="note" style="text-align:center">추천: 이것저것 만들기(바이브 코딩)보다 <b>내 비서 하나</b>를 만들어 많이 써 보세요.</p>
   </div>
 </section>
 
-<section class="slide" data-sec="s6" data-title="강사는 터미널로">
+<section class="slide" data-sec="s6" data-title="강사는 이렇게 써요">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">공부법</p><h2 class="headline">강사는<br>터미널로 써요.</h2>
-      <p class="subhead">같은 Claude Code·Codex를 앱 대신 <b>VS Code</b>나 <b>터미널</b>에서 쓸 수도 있어요. 훨씬 가볍고 빨라요.</p></div>
-    <p class="note" style="text-align:center">기회가 되면 따로 알려 드릴게요.</p>
+    <div class="head"><p class="eyebrow">공부법 · 강사의 비서</p><h2 class="headline">강사는<br>이렇게 써요.</h2>
+      <p class="subhead">오늘 만든 미니 비서와 <b>같은 구조</b>를 매일 씁니다. 앱 대신 <b>터미널</b>에서요.</p></div>
+    <div class="tree">
+      <div class="node"><code>규칙 파일</code><p>AI가 먼저 읽는 업무 지침<br>(미니 비서의 AGENTS.md)</p></div>
+      <span class="arrow">+</span>
+      <div class="node"><code>카드</code><p>일마다 한 장<br>할 일 · 기한 · 기록</p></div>
+      <span class="arrow">→</span>
+      <div class="node"><code>"홈"</code><p>한마디면 카드를 다 읽고<br>오늘 할 일을 정리</p></div>
+    </div>
+    <div class="tile" style="text-align:center;margin-top:20px">
+      <h3>지금 실제 화면으로 보여 드릴게요.</h3>
+      <p class="muted">추천: 이것저것 만들기보다 <b style="color:var(--ink)">내 비서 하나</b>를 만들어 매일 써 보세요.</p>
+    </div>
   </div>
 </section>
 
@@ -1419,6 +1429,7 @@ figure.shot img { cursor: zoom-in; }
   <div class="wrap">
     <h2 class="display">이제,<br><span class="accent">맡겨 보세요.</span></h2>
     <p class="subhead">질문은 언제든 채팅창에.</p>
+    <div class="cta"><a class="btn big" href="https://forms.gle/aNJ6YFhUmN2MTiPv8" target="_blank" rel="noopener">마치고 설문 (2분) ↗</a></div>
     <footer>ACE 연구회 AI TED · 나만의 AI Agent 업무 비서 만들기 · 인천효성남초 양상경</footer>
   </div>
 </section>
