@@ -297,6 +297,11 @@ figure.shot img { cursor: zoom-in; }
 .ai-in { align-self: flex-start; background: var(--blue); color: #fff; border-radius: 980px; padding: 6px 14px; font-size: 15px; }
 .fileline { display: flex; justify-content: space-between; gap: 8px; background: var(--tile-alt); border-radius: 12px; padding: 10px 14px; font-size: 15px; }
 .fileline em { font-style: normal; color: var(--good); font-weight: 600; white-space: nowrap; }
+/* 컨텍스트 막대 */
+.ctxbar { display: flex; height: 60px; border-radius: 14px; overflow: hidden; font-size: 15px; font-weight: 600; }
+.ctxbar span { display: flex; align-items: center; justify-content: center; padding: 0 8px; color: #fff; text-align: center; line-height: 1.2; }
+.ctxbar .c1 { flex: 2; background: #0071E3; } .ctxbar .c2 { flex: 3; background: #5E5CE6; } .ctxbar .c3 { flex: 3; background: #8E8E93; } .ctxbar .c4 { flex: 2; background: var(--warn); }
+.def td.today { white-space: nowrap; }
 .tree { display: flex; align-items: stretch; gap: 12px; }
 .node { flex: 1; min-width: 0; background: var(--tile-alt); border-radius: 14px; padding: 20px; }
 .node code { font: 600 19px var(--font); color: var(--accent); background: none; padding: 0; }
@@ -614,27 +619,33 @@ figure.shot img { cursor: zoom-in; }
 
 <section class="slide" data-sec="s1" data-title="모델 서열">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">모델 서열</p><h2 class="headline">위로 갈수록 똑똑하고,<br>느리고, 비싸다.</h2>
-      <p class="subhead">앱 안에서 모델을 고를 수 있어요. 무료 계정은 고를 수 있는 모델이 적습니다.</p></div>
+    <div class="head"><p class="eyebrow">모델 고르기</p><h2 class="headline">똑똑할수록 느리고, 비싸다.</h2>
+      <p class="subhead">앱 아래쪽에서 모델을 바꿀 수 있어요. 일에 맞게 골라 쓰면 사용량을 아낄 수 있습니다.</p></div>
     <div class="grid2">
       <div class="tile">
-        <h3>GPT <span class="muted">(Codex · ChatGPT)</span></h3>
-        <ol class="olist">
-          <li><b>GPT-6 Astra</b> — 가장 똑똑함</li>
-          <li><b>GPT-6.1 Sol</b> — 최신 주력 <span class="badge">강사 시연</span></li>
-          <li>GPT-6 Sol · GPT-6 Luna</li>
-          <li class="muted">이전 세대: 5.6 Sol · <b style="color:var(--ink)">5.6 Terra</b> <span class="badge blue">오늘 실습</span> · 5.6 Luna</li>
-        </ol>
+        <h3>GPT <span class="muted">· Codex</span></h3>
+        <table class="def">
+          <tr><th>모델</th><th>특징</th><th>사용량</th></tr>
+          <tr><td><b>GPT-6 Astra</b></td><td>가장 똑똑함 · 느림</td><td>Luna의 약 100배</td></tr>
+          <tr><td><b>GPT-6.1 Sol</b></td><td>Astra에 가까움 · 보통</td><td>Luna의 20배</td></tr>
+          <tr><td><b>GPT-6 Luna</b></td><td>가장 빠르고 가벼움</td><td>기준</td></tr>
+        </table>
+        <p class="small muted" style="margin-top:12px"><b style="color:var(--ink)">무료 계정은 Luna</b>를 씁니다.</p>
       </div>
       <div class="tile">
-        <h3>Claude <span class="muted">(Claude Code · Claude)</span></h3>
-        <ol class="olist">
-          <li><b>Fable 5.1</b> — 가장 똑똑함</li>
-          <li><b>Opus 5.5</b></li>
-          <li>Sonnet 5.5</li>
-          <li>Haiku 5.5 — 가장 빠름</li>
-        </ol>
+        <h3>Claude <span class="muted">· Claude Code</span></h3>
+        <table class="def">
+          <tr><th>모델</th><th>특징</th></tr>
+          <tr><td><b>Fable 5.1</b></td><td>가장 똑똑함 · 어려운 일</td></tr>
+          <tr><td><b>Opus 5.5</b></td><td>대부분 여기서 시작</td></tr>
+          <tr><td><b>Sonnet 5.5</b></td><td>빠르고 똑똑함</td></tr>
+          <tr><td><b>Haiku 5.5</b></td><td>가장 빠름</td></tr>
+        </table>
+        <p class="small muted" style="margin-top:12px">Claude Code는 <b style="color:var(--ink)">유료 계정</b>부터.</p>
       </div>
+    </div>
+    <div class="tile" style="text-align:center">
+      <div class="flow" style="justify-content:center"><span class="chip">오늘 강사 시연</span><span class="chip blue">엑셀 · Astra</span><span class="chip blue">MCP · 6.1 Sol</span><span class="chip blue">웹 · Luna</span></div>
     </div>
   </div>
 </section>
@@ -1356,14 +1367,20 @@ figure.shot img { cursor: zoom-in; }
 </section>
 
 <!-- ============ 마무리 ============ -->
-<section class="slide" data-sec="s6" data-title="일이 바뀌면 새 대화">
+<section class="slide" data-sec="s6" data-title="컨텍스트">
   <div class="wrap">
-    <div class="head"><p class="eyebrow">공부법</p><h2 class="headline">일이 바뀌면 새 대화.</h2>
-      <p class="subhead">한 대화에 일을 계속 쌓으면 앞 내용과 섞여 엉뚱한 답이 나와요.</p></div>
-    <div class="grid2">
-      <div class="tile"><h4>새 대화로 끊기</h4><p class="muted">연구회 결산이 끝났으면 가격 채우기는 새 대화에서. 앞의 맥락을 끊어 주세요.</p></div>
-      <div class="tile"><h4>기억할 건 파일로</h4><p class="muted">계속 알아야 할 것은 대화가 아니라 AGENTS.md나 카드에 적어 두세요. 새 대화도 그 파일을 읽어요.</p></div>
+    <div class="head"><p class="eyebrow">공부법 · 컨텍스트</p><h2 class="headline">대화가 길수록,<br>AI는 흐려진다.</h2>
+      <p class="subhead">AI의 작업 기억을 <b>컨텍스트 창</b>이라고 해요. 대화, 읽은 파일, 실행 결과가 전부 여기에 쌓입니다.</p></div>
+    <div class="tile">
+      <div class="ctxbar"><span class="c1">내 부탁</span><span class="c2">읽은 파일</span><span class="c3">실행 결과</span><span class="c4">꽉 참!</span></div>
+      <p class="muted" style="margin-top:14px;text-align:center">차오를수록 <b style="color:var(--ink)">앞의 지시를 잊고 실수가 늘어요.</b> 꽉 차지 않아도 길어질수록 성능이 떨어진다는 연구도 있어요.</p>
     </div>
+    <div class="grid3" style="margin-top:20px">
+      <div class="tile"><h4>🆕 일이 바뀌면 새 대화</h4><p class="muted">연구회 결산이 끝났으면 가격 찾기는 새 채팅에서.</p></div>
+      <div class="tile"><h4>🗜️ 길어지면 압축</h4><p class="muted"><code>/status</code>로 얼마나 찼는지 보고, <code>/compact</code>로 줄인다.</p></div>
+      <div class="tile"><h4>📄 기억할 건 파일로</h4><p class="muted">계속 알아야 할 건 AGENTS.md나 카드에. 새 대화도 그 파일을 읽어요.</p></div>
+    </div>
+    <p class="note" style="text-align:center">"긴 대화보다, 깨끗한 새 대화에 더 좋은 부탁이 거의 항상 낫다." — Claude Code 공식 문서</p>
   </div>
 </section>
 
@@ -1382,6 +1399,23 @@ figure.shot img { cursor: zoom-in; }
       <h3>지금 실제 화면으로 보여 드릴게요.</h3>
       <p class="muted">추천: 이것저것 만들기보다 <b style="color:var(--ink)">내 비서 하나</b>를 만들어 매일 써 보세요.</p>
     </div>
+  </div>
+</section>
+
+<section class="slide" data-sec="s6" data-title="어디서 쓰나">
+  <div class="wrap">
+    <div class="head"><p class="eyebrow">공부법 · 어디서 쓰나</p><h2 class="headline">같은 엔진, 세 가지 창.</h2>
+      <p class="subhead">Codex와 Claude Code는 앱, VS Code, 터미널 어디서나 같은 두뇌로 일해요. AGENTS.md 같은 설정도 같이 씁니다.</p></div>
+    <div class="tile">
+      <table class="def">
+        <tr><th></th><th>데스크톱 앱</th><th>VS Code 확장</th><th>터미널 (CLI)</th></tr>
+        <tr><td>설치</td><td><b>가장 쉬움</b> · 받고 로그인</td><td>VS Code 먼저 설치</td><td>명령어로 설치</td></tr>
+        <tr><td>화면</td><td>채팅 목록 · 폴더 선택 · 바뀐 내용 보기</td><td>편집기 옆 사이드바 · 열린 파일을 바로 참고</td><td>글자만</td></tr>
+        <tr><td>잘하는 것</td><td>여러 작업 동시에, 문서·엑셀 열기, 브라우저</td><td>바뀐 부분을 그 자리에서 확인</td><td>기능이 가장 많음, 자동화, 가벼움</td></tr>
+        <tr><td>누구에게</td><td><b>처음 쓰는 분 · 오늘</b></td><td>파일을 직접 보며 고치는 분</td><td>익숙해진 분 · 강사</td></tr>
+      </table>
+    </div>
+    <p class="note" style="text-align:center">앱으로 시작해서, 익숙해지면 터미널로 옮겨 가도 늦지 않아요.</p>
   </div>
 </section>
 
